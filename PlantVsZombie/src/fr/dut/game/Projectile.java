@@ -4,6 +4,12 @@ public class Projectile implements GameObjects {
 	private double x;
 	private double y;
 	private double speed;
+	
+	public Projectile(double x, double y, double speed) {
+		this.x = x;
+		this.y = y;
+		this.speed = speed;
+	}
 
 	@Override
 	public void afficher() {

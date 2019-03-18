@@ -16,5 +16,11 @@ public class Scene {
 		}
 		
 	}
+	
+	public void Affichage() {
+		for (GameObjects g: objectsList) {
+			
+		}
+	}
 
 }
