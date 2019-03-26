@@ -1,4 +1,4 @@
-package java.dut.game;
+package dut.game;
 
 import java.awt.Graphics2D;
 import fr.umlv.zen5.ApplicationContext;

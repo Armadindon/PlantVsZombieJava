@@ -1,4 +1,4 @@
-package java.dut.game;
+package dut.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -6,7 +6,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
-import fr.umlv.zen5.ApplicationContext;
 
 public class SimpleGameView implements GameView {
 	private final int xOrigin;

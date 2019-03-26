@@ -1,4 +1,4 @@
-package java.dut.game;
+package dut.game;
 
 import java.awt.Color;
 
