@@ -81,7 +81,7 @@ public interface GameDrawer {
 	 * @param data     the GameData containing the game data.
 	 * @param moving   the moving element.
 	 */
-	public void moveAndDrawElement(Graphics2D graphics, GameData data, MovingElement moving);
+	public void moveAndDrawElement(Graphics2D graphics, GameData data, GameObject moving);
 
 	/**
 	 * Draws only the specified moving element in the game board from its data,
@@ -91,7 +91,7 @@ public interface GameDrawer {
 	 * @param data    the GameData containing the game data.
 	 * @param moving  the moving element.
 	 */
-	public default void moveAndDrawElement(ApplicationContext context, GameData data, MovingElement moving) {
+	public default void moveAndDrawElement(ApplicationContext context, GameData data, GameObject moving) {
 		context.renderFrame(graphics -> moveAndDrawElement(graphics, data, moving));
 	}
 }

@@ -1,14 +1,16 @@
 package dut.game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 public class GameData{
 	private final Cell[][] matrix;
 	private Coordinates selected;
+	private final ArrayList<GameObject> lstG;
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
-		
+		lstG = new ArrayList<>(); 
 	}
 
 	/**
@@ -97,5 +99,13 @@ public class GameData{
 	public void updateData() {
 		// update (attention traitement different si des cases sont
 		// selectionnées ou non...)
+	}
+	
+	public void addGameObject(GameObject g) {
+		lstG.add(g);
+	}
+	
+	public ArrayList<GameObject> getLstG(){
+		return lstG;
 	}
 }

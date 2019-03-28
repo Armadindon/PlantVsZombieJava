@@ -6,6 +6,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
+import fr.umlv.zen5.ApplicationContext;
+
 
 public class GameView implements GameDrawer {
 	private final int xOrigin;
@@ -141,11 +143,17 @@ public class GameView implements GameDrawer {
 	 * @param moving   the moving element.
 	 */
 	@Override
-	public void moveAndDrawElement(Graphics2D graphics, GameData data, MovingElement moving) {
+	public void moveAndDrawElement(Graphics2D graphics, GameData data, GameObject moving) {
 		graphics.setColor(graphics.getBackground());
 		graphics.fill(moving.draw());
 		moving.move();
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(Color.GREEN);
 		graphics.fill(moving.draw());
+	}
+	
+	public void moveAllAndDraw(ApplicationContext graphics,GameData data) {
+		for(GameObject g :data.getLstG()){
+			moveAndDrawElement(graphics, data, g);
+		}
 	}
 }
