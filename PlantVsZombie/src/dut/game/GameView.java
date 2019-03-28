@@ -1,12 +1,37 @@
 package dut.game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
-import fr.umlv.zen5.ApplicationContext;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 
-/**
- * The GameView class is in charge of the graphical view of a clicky game.
- */
-public interface GameView {
+
+public class GameView implements GameDrawer {
+	private final int xOrigin;
+	private final int yOrigin;
+	private final int width;
+	private final int length;
+	private final int squareSize;
+
+	private GameView(int xOrigin, int yOrigin, int length, int width, int squareSize) {
+		this.xOrigin = xOrigin;
+		this.yOrigin = yOrigin;
+		this.length = length;
+		this.width = width;
+		this.squareSize = squareSize;
+	}
+
+	public static GameView initGameGraphics(int xOrigin, int yOrigin, int length, GameData data) {
+		int squareSize = (int) (length * 1.0 / data.getNbLines());
+		return new GameView(xOrigin, yOrigin, length, data.getNbColumns() * squareSize, squareSize);
+	}
+
+	private int indexFromReaCoord(float coord, int origin) { // attention, il manque des test de validité des
+																// coordonnées!
+		return (int) ((coord - origin) / squareSize);
+	}
+
 	/**
 	 * Transforms a real y-coordinate into the index of the corresponding line.
 	 * 
@@ -15,7 +40,9 @@ public interface GameView {
 	 * @throws IllegalArgumentException if the float coordinate doesn't fit in the
 	 *                                  game board.
 	 */
-	public int lineFromY(float y);
+	public int lineFromY(float y) {
+		return indexFromReaCoord(y, yOrigin);
+	}
 
 	/**
 	 * Transforms a real x-coordinate into the index of the corresponding column.
@@ -25,7 +52,29 @@ public interface GameView {
 	 * @throws IllegalArgumentException if the float coordinate doesn't fit in the
 	 *                                  game board.
 	 */
-	public int columnFromX(float x);
+	public int columnFromX(float x) {
+		return indexFromReaCoord(x, xOrigin);
+	}
+
+	private float realCoordFromIndex(int index, int origin) {
+		return origin + index * squareSize;
+	}
+
+	private float xFromI(int i) {
+		return realCoordFromIndex(i, xOrigin);
+	}
+
+	private float yFromJ(int j) {
+		return realCoordFromIndex(j, yOrigin);
+	}
+
+	private RectangularShape drawCell(int i, int j) {
+		return new Rectangle2D.Float(xFromI(j) + 2, yFromJ(i) + 2, squareSize - 4, squareSize - 4);
+	}
+
+	private RectangularShape drawSelectedCell(int i, int j) {
+		return new Rectangle2D.Float(xFromI(j), yFromJ(i), squareSize, squareSize);
+	}
 
 	/**
 	 * Draws the game board from its data, using an existing Graphics2D object.
@@ -34,17 +83,36 @@ public interface GameView {
 	 *                 {@code draw(ApplicationContext, GameData)}
 	 * @param data     the GameData containing the game data.
 	 */
-	public void draw(Graphics2D graphics, SimpleGameData data);
+	@Override
+	public void draw(Graphics2D graphics, GameData data) {
+		// example
+		graphics.setColor(Color.LIGHT_GRAY);
+		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 
-	/**
-	 * Draws the game board from its data, using an existing
-	 * {@code ApplicationContext}.
-	 * 
-	 * @param context the {@code ApplicationContext} of the game
-	 * @param data    the GameData containing the game data.
-	 */
-	public default void draw(ApplicationContext context, SimpleGameData data) {
-		context.renderFrame(graphics -> draw(graphics, data));
+		graphics.setColor(Color.WHITE);
+		for (int i = 0; i <= data.getNbLines(); i++) {
+			graphics.draw(
+					new Line2D.Float(xOrigin, yOrigin + i * squareSize, xOrigin + width, yOrigin + i * squareSize));
+		}
+
+		for (int i = 0; i <= data.getNbColumns(); i++) {
+			graphics.draw(
+					new Line2D.Float(xOrigin + i * squareSize, yOrigin, xOrigin + i * squareSize, yOrigin + length));
+		}
+
+		Coordinates c = data.getSelected();
+		if (c != null) {
+			graphics.setColor(Color.BLACK);
+			graphics.fill(drawSelectedCell(c.getI(), c.getJ()));
+		}
+
+		for (int i = 0; i < data.getNbLines(); i++) {
+			for (int j = 0; j < data.getNbColumns(); j++) {
+				graphics.setColor(Color.LIGHT_GRAY);
+				graphics.fill(drawCell(i, j));
+				graphics.setColor(data.getCellColor(i, j));
+			}
+		}
 	}
 
 	/**
@@ -57,41 +125,27 @@ public interface GameView {
 	 * @param x        the float x-coordinate of the cell.
 	 * @param y        the float y-coordinate of the cell.
 	 */
-	public void drawOnlyOneCell(Graphics2D graphics, SimpleGameData data, int x, int y);
-
-	/**
-	 * Draws only the cell specified by the given coordinates in the game board from
-	 * its data, using an existing {@code ApplicationContext}.
-	 * 
-	 * @param context the {@code ApplicationContext} of the game
-	 * @param data    the GameData containing the game data.
-	 * @param x       the float x-coordinate of the cell.
-	 * @param y       the float y-coordinate of the cell.
-	 */
-	public default void drawOnlyOneCell(ApplicationContext context, SimpleGameData data, int x, int y) {
-		context.renderFrame(graphics -> drawOnlyOneCell(graphics, data, x, y));
+	@Override
+	public void drawOnlyOneCell(Graphics2D graphics, GameData data, int x, int y) {
+		graphics.setColor(Color.BLACK);
+		graphics.fill(new Rectangle2D.Float(x, y, 10, 10));
 	}
 
 	/**
-	 * Draws only only the specified moving element in the game board from its data,
-	 * using an existing Graphics2D object.
+	 * Draws only the cell specified by the given coordinates in the game board from
+	 * its data, using an existing Graphics2D object.
 	 * 
 	 * @param graphics a Graphics2D object provided by the default method
 	 *                 {@code draw(ApplicationContext, GameData)}
 	 * @param data     the GameData containing the game data.
 	 * @param moving   the moving element.
 	 */
-	public void moveAndDrawElement(Graphics2D graphics, SimpleGameData data, MovingElement moving);
-
-	/**
-	 * Draws only the specified moving element in the game board from its data,
-	 * using an existing {@code ApplicationContext}.
-	 * 
-	 * @param context the {@code ApplicationContext} of the game
-	 * @param data    the GameData containing the game data.
-	 * @param moving  the moving element.
-	 */
-	public default void moveAndDrawElement(ApplicationContext context, SimpleGameData data, MovingElement moving) {
-		context.renderFrame(graphics -> moveAndDrawElement(graphics, data, moving));
+	@Override
+	public void moveAndDrawElement(Graphics2D graphics, GameData data, MovingElement moving) {
+		graphics.setColor(graphics.getBackground());
+		graphics.fill(moving.draw());
+		moving.move();
+		graphics.setColor(Color.BLACK);
+		graphics.fill(moving.draw());
 	}
 }

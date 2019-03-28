@@ -8,7 +8,7 @@ import fr.umlv.zen5.Event;
 import fr.umlv.zen5.ScreenInfo;
 import fr.umlv.zen5.Event.Action;
 
-public class SimpleGameController {
+public class GameController {
 
 	static void simpleGame(ApplicationContext context) {
 		// get the size of the screen
@@ -17,9 +17,9 @@ public class SimpleGameController {
 		float height = screenInfo.getHeight();
 		System.out.println("size of the screen (" + width + " x " + height + ")");
 
-		SimpleGameData data = new SimpleGameData(5, 8);
+		GameData data = new GameData(5, 8);
 		data.setRandomMatrix();
-		SimpleGameView view = SimpleGameView.initGameGraphics(200, 50, 600, data);
+		GameView view = GameView.initGameGraphics(200, 50, 600, data);
 		view.draw(context, data);
 
 		Point2D.Float location;
@@ -57,6 +57,6 @@ public class SimpleGameController {
 	public static void main(String[] args) {
 		// pour changer de jeu, remplacer stupidGame par le nom de la méthode de jeu
 		// (elle doit avoir extaement la mieme en-tête).
-		Application.run(Color.LIGHT_GRAY, SimpleGameController::simpleGame); // attention, utilisation d'une lambda.
+		Application.run(Color.LIGHT_GRAY, GameController::simpleGame); // attention, utilisation d'une lambda.
 	}
 }

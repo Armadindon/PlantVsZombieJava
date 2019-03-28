@@ -2,11 +2,11 @@ package dut.game;
 
 import java.awt.Color;
 
-public class SimpleGameData{
+public class GameData{
 	private final Cell[][] matrix;
 	private Coordinates selected;
 
-	public SimpleGameData(int nbLines, int nbColumns) {
+	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
 		
 	}
