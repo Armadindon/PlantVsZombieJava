@@ -30,7 +30,7 @@ public class GameController {
 			view.draw(context, data);
 			if ((int)(Math.random()*100)==5) {
 				int ligne =(int) (Math.random()*5);
-				data.addGameObject(new BasicZombie(view.midCell((int) (width/4), 8,25),view.midCell((int) (height/4), ligne,25), 25));
+				data.addGameObject(new BasicZombie(view.midCell((int) (width/4), 8,40),view.midCell((int) (height/4), ligne,40), 40));
 				System.out.println("Nouveau zombie ligne "+ligne);
 			}
 			if (event == null) { // no event
