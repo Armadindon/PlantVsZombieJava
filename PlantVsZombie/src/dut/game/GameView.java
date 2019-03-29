@@ -29,8 +29,7 @@ public class GameView implements GameDrawer {
 		return new GameView(xOrigin, yOrigin, length, data.getNbColumns() * squareSize, squareSize);
 	}
 
-	private int indexFromReaCoord(float coord, int origin) { // attention, il manque des test de validité des
-																// coordonnées!
+	private int indexFromReaCoord(float coord, int origin) { // attention, il manque des test de validité des coordonnées!
 		return (int) ((coord - origin) / squareSize);
 	}
 
@@ -88,7 +87,7 @@ public class GameView implements GameDrawer {
 	@Override
 	public void draw(Graphics2D graphics, GameData data) {
 		// example
-		graphics.setColor(Color.LIGHT_GRAY);
+		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 
 		graphics.setColor(Color.WHITE);
@@ -110,7 +109,7 @@ public class GameView implements GameDrawer {
 
 		for (int i = 0; i < data.getNbLines(); i++) {
 			for (int j = 0; j < data.getNbColumns(); j++) {
-				graphics.setColor(Color.LIGHT_GRAY);
+				graphics.setColor(Color.GREEN);
 				graphics.fill(drawCell(i, j));
 				graphics.setColor(data.getCellColor(i, j));
 			}
@@ -147,7 +146,7 @@ public class GameView implements GameDrawer {
 		graphics.setColor(graphics.getBackground());
 		graphics.fill(moving.draw());
 		moving.move();
-		graphics.setColor(Color.GREEN);
+		graphics.setColor(Color.BLACK);
 		graphics.fill(moving.draw());
 	}
 	
@@ -155,5 +154,9 @@ public class GameView implements GameDrawer {
 		for(GameObject g :data.getLstG()){
 			moveAndDrawElement(graphics, data, g);
 		}
+	}
+	
+	public int midCell(int origin , int index,int taille) {
+		return (int) (realCoordFromIndex(index, origin)+(squareSize-taille)/2);
 	}
 }

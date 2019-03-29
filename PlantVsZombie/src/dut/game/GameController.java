@@ -21,18 +21,17 @@ public class GameController {
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
 		view.draw(context, data);
-
 		Point2D.Float location;
 		
 		
 		while (true) {
 			view.moveAllAndDraw(context, data);
-			Event event = context.pollOrWaitEvent(30); // modifier pour avoir un affichage fluide
+			Event event = context.pollOrWaitEvent(100); // modifier pour avoir un affichage fluide
 			view.draw(context, data);
 			if ((int)(Math.random()*100)==5) {
-				int ligne =(int) (Math.random()*8);
+				int ligne =(int) (Math.random()*5);
+				data.addGameObject(new BasicZombie(view.midCell((int) (width/4), 8,25),view.midCell((int) (height/4), ligne,25), 25));
 				System.out.println("Nouveau zombie ligne "+ligne);
-				data.addGameObject(new Zombie((int) ((height/5)*7+(height/20)),(int) ((height/5)*ligne+(height/20)),(int) (height/10),-5));
 			}
 			if (event == null) { // no event
 				continue;

@@ -8,12 +8,14 @@ public class Zombie implements GameObject{
 	private int y;
 	private int taille;
 	private final int speed;
+	private int health;
 
-	public Zombie(int x, int y, int taille,int speed) {
+	public Zombie(int x, int y, int taille,int speed,int health) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
 		this.speed = speed;
+		this.health = health;
 	}
 
 	@Override
