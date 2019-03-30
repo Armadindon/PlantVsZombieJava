@@ -4,25 +4,22 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
 
-public class Plant implements GameObject {
+public class Bullet implements GameObject {
+	
 	private int x;
 	private int y;
-	private final int taille;
-	private int health;
-	private int frequence;
-	private int compteur;
+	private int speed = 10;
+	private int damage = 1;
+	private int taille =5;
 	
-	public Plant(int x, int y,int taille,int health,int frequence) {
+	public Bullet(int x,int y) {
 		this.x = x;
 		this.y = y;
-		this.taille = taille;
-		this.health = health;
-		this.frequence=frequence;
 	}
-	
+
 	@Override
 	public void move() {
-		//ne fait rien
+		x+=speed;
 	}
 
 	@Override
@@ -43,16 +40,6 @@ public class Plant implements GameObject {
 	@Override
 	public boolean collision(Rectangle2D r) {
 		return r.getMinX()<=x+taille;//on vérifie que la variable x car on se déplace seulement sur cet axe
-	}
-	
-	public boolean isFire() {
-		compteur++;
-		if(compteur%frequence==0) {return true;}
-		return false;
-	}
-	
-	public Bullet bullet() {
-		return new Bullet(x+taille,y+taille/2);
 	}
 
 }

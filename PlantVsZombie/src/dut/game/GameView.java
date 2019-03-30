@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
+import java.util.ArrayList;
 
 import fr.umlv.zen5.ApplicationContext;
 
@@ -151,9 +152,18 @@ public class GameView implements GameDrawer {
 	}
 	
 	public void moveAllAndDraw(ApplicationContext graphics,GameData data) {
+		ArrayList<GameObject> lst = new ArrayList<GameObject>();
 		for(GameObject g :data.getLstG()){
+			if (g instanceof Plant) {
+				Plant p = (Plant) g;
+						if(p.isFire()) {
+							lst.add(p.bullet());
+							System.out.println("paf");
+						}
+			}
 			moveAndDrawElement(graphics, data, g);
 		}
+		data.getLstG().addAll(lst);
 	}
 	
 	public int midCell(int origin , int index,int taille) {
