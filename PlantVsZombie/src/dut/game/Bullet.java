@@ -3,6 +3,7 @@ package dut.game;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Bullet implements GameObject {
 	
@@ -11,6 +12,7 @@ public class Bullet implements GameObject {
 	private int speed = 10;
 	private int damage = 1;
 	private int taille =5;
+	private boolean alive = true;
 	
 	public Bullet(int x,int y) {
 		this.x = x;
@@ -39,7 +41,28 @@ public class Bullet implements GameObject {
 
 	@Override
 	public boolean collision(Rectangle2D r) {
-		return r.getMinX()<=x+taille;//on vérifie que la variable x car on se déplace seulement sur cet axe
+		if(r.getMinX()<=x+taille) {
+			alive = false;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isAlive() {
+		return alive;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Bullet)) {return false;}
+		Bullet b = (Bullet) o;
+		return x==b.x &&  y==b.y && taille == b.taille && speed==b.speed && damage == b.damage && alive == b.alive;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(x,y,speed,damage,taille,alive);
 	}
 
 }

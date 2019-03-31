@@ -10,4 +10,5 @@ public interface GameObject {
 	
 	public GameObject colliding(ArrayList<GameObject> lst);
 	public boolean collision(Rectangle2D r);
+	public boolean isAlive();
 }

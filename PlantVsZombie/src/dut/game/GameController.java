@@ -20,15 +20,16 @@ public class GameController {
 		GameData data = new GameData(5, 8);
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
-		data.addGameObject(new Plant(view.midCell((int) (width/4), 1,40), view.midCell((int) (height/4),1,40), 40, 1, 50));
+		data.addGameObject(new Plant(view.midCell((int) (width/4), 1,40), view.midCell((int) (height/4),1,40), 40, 1, 50, Color.BLUE));
 		view.draw(context, data);
 		Point2D.Float location;
 		
 		
 		while (true) {
+			view.draw(context, data);
+
 			view.moveAllAndDraw(context, data);
 			Event event = context.pollOrWaitEvent(100); // modifier pour avoir un affichage fluide
-			view.draw(context, data);
 			if ((int)(Math.random()*100)==5) {
 				int ligne =(int) (Math.random()*5);
 				data.addGameObject(new BasicZombie(view.midCell((int) (width/4), 8,40),view.midCell((int) (height/4), ligne,40), 40));

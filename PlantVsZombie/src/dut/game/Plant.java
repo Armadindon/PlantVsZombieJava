@@ -1,8 +1,10 @@
 package dut.game;
 
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Plant implements GameObject {
 	private int x;
@@ -11,13 +13,15 @@ public class Plant implements GameObject {
 	private int health;
 	private int frequence;
 	private int compteur;
+	private Color color;
 	
-	public Plant(int x, int y,int taille,int health,int frequence) {
+	public Plant(int x, int y,int taille,int health,int frequence,Color color) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
 		this.health = health;
 		this.frequence=frequence;
+		this.color = color;
 	}
 	
 	@Override
@@ -54,5 +58,23 @@ public class Plant implements GameObject {
 	public Bullet bullet() {
 		return new Bullet(x+taille,y+taille/2);
 	}
+
+	@Override
+	public boolean isAlive() {
+		return health>0;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Plant)) {return false;}
+		Plant p = (Plant) o;
+		return x==p.x &&  y==p.y && taille == p.taille && health==p.health && frequence == p.frequence;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(x,y,taille,health,frequence);
+	}
+	
 
 }

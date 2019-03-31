@@ -42,6 +42,11 @@ public class Zombie implements GameObject{
 	public boolean collision(Rectangle2D r) {
 		return r.getMaxX()<=x;//on vérifie que la variable x car on se déplace seulement sur cet axe
 	}
+
+	@Override
+	public boolean isAlive() {
+		return health>0;
+	}
 	
 	
 }
