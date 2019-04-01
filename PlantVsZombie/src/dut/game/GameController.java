@@ -26,6 +26,7 @@ public class GameController {
 		
 		
 		while (true) {
+			
 			view.draw(context, data);
 			data.updateData(view);
 			view.moveAllAndDraw(context, data);

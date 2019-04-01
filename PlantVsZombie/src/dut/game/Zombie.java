@@ -72,7 +72,7 @@ public class Zombie implements GameObject{
 	}
 	
 	public boolean matrixOut(GameView v) {
-		return v.isOut(x);
+		return v.isOutZombie(x);
 	}
 	
 	@Override

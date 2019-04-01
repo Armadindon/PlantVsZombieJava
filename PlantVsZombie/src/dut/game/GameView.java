@@ -167,6 +167,9 @@ public class GameView implements GameDrawer {
 	}
 	
 	public boolean isOut(int x) {
-		return x<xOrigin || x>width;
+		return x<xOrigin || x>width+xOrigin;
+	}
+	public boolean isOutZombie(int x) {
+		return x<xOrigin;
 	}
 }

@@ -100,13 +100,11 @@ public class GameData{
 		ArrayList<GameObject> deleted= new ArrayList<>();
 		ArrayList<GameObject> added= new ArrayList<>();
 		for(GameObject g : lstG) {
-			if(g instanceof Zombie) {//TODO:Gérer les zombies
-				continue;
-			}else {
-				if (g.matrixOut(v)) {
-					deleted.add(g);
-				}
+
+			if (g.matrixOut(v)) {
+				deleted.add(g);
 			}
+
 			if(g instanceof Plant) {
 				Plant p = (Plant) g;
 				if(p.isFire()) {
