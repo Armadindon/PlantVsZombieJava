@@ -96,25 +96,33 @@ public class GameData{
 	/**
 	 * Updates the data contained in the GameData.
 	 */
-	public void updateData(GameView v) {
+	public void updateData(GameView v,int width , int height) {
 		ArrayList<GameObject> deleted= new ArrayList<>();
 		ArrayList<GameObject> added= new ArrayList<>();
 		for(GameObject g : lstG) {
 
 			if (g.matrixOut(v)) {
 				deleted.add(g);
+				System.out.println(g+" est supprimé , il est sorti de la matrice");
 			}
 
 			if(g instanceof Plant) {
 				Plant p = (Plant) g;
 				if(p.isFire()) {
 					added.add(p.bullet());
+					System.out.println(g+" Tire une balle !");
 				}
 			}
+			
 			
 		}
 		lstG.removeAll(deleted);
 		lstG.addAll(added);
+		if ((int)(Math.random()*100)==5) {
+			int ligne =(int) (Math.random()*5);
+			this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+			System.out.println("Nouveau zombie ligne "+ligne);
+		}
 	}
 	
 	public void addGameObject(GameObject g) {
