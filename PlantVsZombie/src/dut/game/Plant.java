@@ -76,5 +76,12 @@ public class Plant implements GameObject {
 		return Objects.hash(x,y,taille,health,frequence);
 	}
 	
+	public Color getColor() {
+		return color;
+	}
+	@Override
+	public boolean matrixOut(GameView v) {
+		return false;//une plante ne peut pas être en dehors de la matrice puisqu'elle ne bouge pas
+	}
 
 }

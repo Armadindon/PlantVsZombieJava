@@ -1,5 +1,6 @@
 package dut.game;
 
+import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Bullet implements GameObject {
 	private int damage = 1;
 	private int taille =5;
 	private boolean alive = true;
+	private final Color color= Color.BLACK; 
 	
 	public Bullet(int x,int y) {
 		this.x = x;
@@ -63,6 +65,16 @@ public class Bullet implements GameObject {
 	@Override
 	public int hashCode() {
 		return Objects.hash(x,y,speed,damage,taille,alive);
+	}
+
+	@Override
+	public Color getColor() {
+		return color;
+	}
+
+	@Override
+	public boolean matrixOut(GameView v) {
+		return v.isOut(x);
 	}
 
 }

@@ -96,9 +96,27 @@ public class GameData{
 	/**
 	 * Updates the data contained in the GameData.
 	 */
-	public void updateData() {
-		// update (attention traitement different si des cases sont
-		// selectionnées ou non...)
+	public void updateData(GameView v) {
+		ArrayList<GameObject> deleted= new ArrayList<>();
+		ArrayList<GameObject> added= new ArrayList<>();
+		for(GameObject g : lstG) {
+			if(g instanceof Zombie) {//TODO:Gérer les zombies
+				continue;
+			}else {
+				if (g.matrixOut(v)) {
+					deleted.add(g);
+				}
+			}
+			if(g instanceof Plant) {
+				Plant p = (Plant) g;
+				if(p.isFire()) {
+					added.add(p.bullet());
+				}
+			}
+			
+		}
+		lstG.removeAll(deleted);
+		lstG.addAll(added);
 	}
 	
 	public void addGameObject(GameObject g) {

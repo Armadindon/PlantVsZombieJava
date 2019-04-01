@@ -27,7 +27,7 @@ public class GameController {
 		
 		while (true) {
 			view.draw(context, data);
-
+			data.updateData(view);
 			view.moveAllAndDraw(context, data);
 			Event event = context.pollOrWaitEvent(100); // modifier pour avoir un affichage fluide
 			if ((int)(Math.random()*100)==5) {

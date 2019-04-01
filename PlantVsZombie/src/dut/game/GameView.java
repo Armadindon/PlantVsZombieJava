@@ -144,10 +144,14 @@ public class GameView implements GameDrawer {
 	 */
 	@Override
 	public void moveAndDrawElement(Graphics2D graphics, GameData data, GameObject moving) {
-		graphics.setColor(graphics.getBackground());
+		if(moving.matrixOut(this)) {
+			graphics.setColor(graphics.getBackground());
+		}else {
+			graphics.setColor(Color.GREEN);
+		}
 		graphics.fill(moving.draw());
 		moving.move();
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(moving.getColor());
 		graphics.fill(moving.draw());
 	}
 	
@@ -160,5 +164,9 @@ public class GameView implements GameDrawer {
 	
 	public int midCell(int origin , int index,int taille) {
 		return (int) (realCoordFromIndex(index, origin)+(squareSize-taille)/2);
+	}
+	
+	public boolean isOut(int x) {
+		return x<xOrigin || x>width;
 	}
 }
