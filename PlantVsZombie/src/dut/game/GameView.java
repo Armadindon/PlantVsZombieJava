@@ -104,7 +104,7 @@ public class GameView implements GameDrawer {
 
 		Coordinates c = data.getSelected();
 		if (c != null) {
-			graphics.setColor(Color.BLACK);
+			graphics.setColor(Color.lightGray);
 			graphics.fill(drawSelectedCell(c.getI(), c.getJ()));
 		}
 
@@ -115,6 +115,7 @@ public class GameView implements GameDrawer {
 				graphics.setColor(data.getCellColor(i, j));
 			}
 		}
+
 	}
 
 	/**
