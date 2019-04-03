@@ -14,4 +14,6 @@ public interface GameObject {
 	public boolean isAlive();
 	public Color getColor();
 	public boolean matrixOut(GameView v);
+	public void addToHealth(int i);
+	public int getDamage();
 }

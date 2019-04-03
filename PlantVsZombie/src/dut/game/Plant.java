@@ -37,7 +37,8 @@ public class Plant implements GameObject {
 	@Override
 	public GameObject colliding(ArrayList<GameObject> lst) {
 		for(GameObject g: lst) {
-			if(collision(g.draw())) {
+			if(collision(g.draw()) && !(equals(g))) {
+				System.out.println("COllision plante");
 				return g;
 			}
 		}
@@ -46,7 +47,7 @@ public class Plant implements GameObject {
 
 	@Override
 	public boolean collision(Rectangle2D r) {
-		return r.getMinX()<=x+taille;//on vérifie que la variable x car on se déplace seulement sur cet axe
+		return r.getBounds2D().intersects(this.draw());
 	}
 	
 	public boolean isFire() {
@@ -56,7 +57,7 @@ public class Plant implements GameObject {
 	}
 	
 	public Bullet bullet() {
-		return new Bullet(x+taille,y+taille/2);
+		return new Bullet(x+taille+10,y+taille/2);
 	}
 
 	@Override
@@ -85,6 +86,16 @@ public class Plant implements GameObject {
 	}
 	public String toString() {
 		return " Cette plante possède " + health + " point de vie";
+	}
+
+	@Override
+	public void addToHealth(int i) {
+		health+= i;
+	}
+
+	@Override
+	public int getDamage() {
+		return 0;
 	}
 
 }

@@ -35,7 +35,9 @@ public class Zombie implements GameObject{
 	@Override
 	public GameObject colliding(ArrayList<GameObject> lst) {
 		for(GameObject g: lst) {
-			if(collision(g.draw())) {
+			if(collision(g.draw()) && !(equals(g))) {
+				System.out.println("COllision Zombie");
+
 				return g;
 			}
 		}
@@ -44,7 +46,7 @@ public class Zombie implements GameObject{
 
 	@Override
 	public boolean collision(Rectangle2D r) {
-		return r.getMaxX()<=x;//on vérifie que la variable x car on se déplace seulement sur cet axe
+		return r.getBounds2D().intersects(this.draw());
 	}
 
 	@Override
@@ -78,5 +80,15 @@ public class Zombie implements GameObject{
 	@Override
 	public String toString() {
 		return "Zombie en"+x+" "+y+" de couleur "+color;
+	}
+	
+	@Override
+	public void addToHealth(int i) {
+		health+= i;
+	}
+
+	@Override
+	public int getDamage() {
+		return 1;
 	}
 }

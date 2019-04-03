@@ -13,7 +13,6 @@ public class Bullet implements GameObject {
 	private int speed = 10;
 	private int damage = 1;
 	private int taille =5;
-	private boolean alive = true;
 	private final Color color= Color.BLACK; 
 	
 	public Bullet(int x,int y) {
@@ -34,7 +33,8 @@ public class Bullet implements GameObject {
 	@Override
 	public GameObject colliding(ArrayList<GameObject> lst) {
 		for(GameObject g: lst) {
-			if(collision(g.draw())) {
+			if(collision(g.draw())&& !(equals(g))) {
+				System.out.println("Collision tir");
 				return g;
 			}
 		}
@@ -43,8 +43,7 @@ public class Bullet implements GameObject {
 
 	@Override
 	public boolean collision(Rectangle2D r) {
-		if(r.getMinX()<=x+taille) {
-			alive = false;
+		if(r.getBounds2D().intersects(this.draw())) {
 			return true;
 		}
 		return false;
@@ -52,19 +51,19 @@ public class Bullet implements GameObject {
 
 	@Override
 	public boolean isAlive() {
-		return alive;
+		return true;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof Bullet)) {return false;}
 		Bullet b = (Bullet) o;
-		return x==b.x &&  y==b.y && taille == b.taille && speed==b.speed && damage == b.damage && alive == b.alive;
+		return x==b.x &&  y==b.y && taille == b.taille && speed==b.speed && damage == b.damage;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(x,y,speed,damage,taille,alive);
+		return Objects.hash(x,y,speed,damage,taille);
 	}
 
 	@Override
@@ -80,5 +79,14 @@ public class Bullet implements GameObject {
 	public String toString() {
 		return "Un tir en position " + x + " "+ y + " a une vitesse de " + speed;
 	}
+	
+	@Override
+	public void addToHealth(int i) {// ne fait rien
+		
+	}
 
+	@Override
+	public int getDamage() {
+		return damage;
+	}
 }

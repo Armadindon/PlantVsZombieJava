@@ -102,6 +102,7 @@ public class GameData{
 	 * Updates the data contained in the GameData.
 	 */
 	public void updateData(GameView v,int width , int height) {
+		GameObject col;
 		ArrayList<GameObject> deleted= new ArrayList<>();
 		ArrayList<GameObject> added= new ArrayList<>();
 		for(GameObject g : lstG) {
@@ -118,7 +119,20 @@ public class GameData{
 					System.out.println(g+" Tire une balle !");
 				}
 			}
-			
+			col = g.colliding(lstG);
+			if(col!=null) {
+				if (!(g instanceof Bullet && col instanceof Plant)) {
+					
+					col.addToHealth(-g.getDamage());
+					if(g instanceof Bullet) {
+						deleted.add(g);
+					}
+				}
+				
+			}
+			if(!(g.isAlive())) {
+				deleted.add(g);
+			}
 			
 		}
 		lstG.removeAll(deleted);
