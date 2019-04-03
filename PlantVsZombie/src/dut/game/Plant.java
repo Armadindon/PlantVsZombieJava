@@ -83,5 +83,8 @@ public class Plant implements GameObject {
 	public boolean matrixOut(GameView v) {
 		return false;//une plante ne peut pas être en dehors de la matrice puisqu'elle ne bouge pas
 	}
+	public String toString() {
+		return " Cette plante possède " + health + " point de vie";
+	}
 
 }

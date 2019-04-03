@@ -76,5 +76,9 @@ public class Bullet implements GameObject {
 	public boolean matrixOut(GameView v) {
 		return v.isOut(x);
 	}
+	
+	public String toString() {
+		return "Un tir en position " + x + " "+ y + " a une vitesse de " + speed;
+	}
 
 }

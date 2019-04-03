@@ -75,7 +75,12 @@ public class GameData{
 		if (selected != null) {
 			throw new IllegalStateException("First cell already selected");
 		}
-		selected = new Coordinates(i, j);
+		if (i >= 0 && i < matrix.length ) {
+			if (j >= 0 && j < matrix[0].length) {
+				selected = new Coordinates(i, j);
+			}
+		}
+		
 	}
 
 	/**

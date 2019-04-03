@@ -88,6 +88,8 @@ public class GameView implements GameDrawer {
 	@Override
 	public void draw(Graphics2D graphics, GameData data) {
 		// example
+		graphics.setColor(graphics.getBackground());
+		graphics.fill(new Rectangle2D.Float(0, 0, 5000, 5000));
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 
@@ -104,7 +106,7 @@ public class GameView implements GameDrawer {
 
 		Coordinates c = data.getSelected();
 		if (c != null) {
-			graphics.setColor(Color.lightGray);
+			graphics.setColor(Color.black);
 			graphics.fill(drawSelectedCell(c.getI(), c.getJ()));
 		}
 
@@ -173,4 +175,5 @@ public class GameView implements GameDrawer {
 	public boolean isOutZombie(int x) {
 		return x<xOrigin;
 	}
+	
 }
