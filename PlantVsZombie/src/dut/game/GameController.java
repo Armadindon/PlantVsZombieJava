@@ -21,16 +21,15 @@ public class GameController {
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
 		data.addGameObject(new Peashotter(view.midCell((int) (width/4), 1,40), view.midCell((int) (height/4),1,40)));
-		view.draw(context, data);
+		view.draw(context, data,screenInfo);
 		Point2D.Float location;
 		
 		
 		while (true) {
-			
-			view.draw(context, data);
+			view.draw(context, data,screenInfo);
 			data.updateData(view,(int) width,(int) height);
 			view.moveAllAndDraw(context, data);
-			Event event = context.pollOrWaitEvent(100); // modifier pour avoir un affichage fluide
+			Event event = context.pollOrWaitEvent(40); // modifier pour avoir un affichage fluide
 			
 			if (event == null) { // no event
 				continue;
@@ -55,6 +54,7 @@ public class GameController {
 			} else {
 				data.unselect();
 			}
+
 		}
 	}
 

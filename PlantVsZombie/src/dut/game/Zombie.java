@@ -10,10 +10,10 @@ public class Zombie implements GameObject{
 	private int y;
 	private int taille;
 	private final int speed;
-	private int health;
+	private double health;
 	private final Color color;
 
-	public Zombie(int x, int y, int taille,int speed,int health,Color color) {
+	public Zombie(int x, int y, int taille,int speed,double health,Color color) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
@@ -83,12 +83,12 @@ public class Zombie implements GameObject{
 	}
 	
 	@Override
-	public void addToHealth(int i) {
+	public void addToHealth(double i) {
 		health+= i;
 	}
 
 	@Override
-	public int getDamage() {
+	public double getDamage() {
 		return 1;
 	}
 }

@@ -2,6 +2,7 @@ package dut.game;
 
 import java.awt.Graphics2D;
 import fr.umlv.zen5.ApplicationContext;
+import fr.umlv.zen5.ScreenInfo;
 
 /**
  * The GameView class is in charge of the graphical view of a clicky game.
@@ -34,7 +35,7 @@ public interface GameDrawer {
 	 *                 {@code draw(ApplicationContext, GameData)}
 	 * @param data     the GameData containing the game data.
 	 */
-	public void draw(Graphics2D graphics, GameData data);
+	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen);
 
 	/**
 	 * Draws the game board from its data, using an existing
@@ -43,8 +44,8 @@ public interface GameDrawer {
 	 * @param context the {@code ApplicationContext} of the game
 	 * @param data    the GameData containing the game data.
 	 */
-	public default void draw(ApplicationContext context, GameData data) {
-		context.renderFrame(graphics -> draw(graphics, data));
+	public default void draw(ApplicationContext context, GameData data,ScreenInfo screen) {
+		context.renderFrame(graphics -> draw(graphics, data,screen));
 	}
 
 	/**

@@ -11,7 +11,7 @@ public class Bullet implements GameObject {
 	private int x;
 	private int y;
 	private int speed = 10;
-	private int damage = 1;
+	private double damage = 1;
 	private int taille =5;
 	private final Color color= Color.BLACK; 
 	
@@ -81,12 +81,12 @@ public class Bullet implements GameObject {
 	}
 	
 	@Override
-	public void addToHealth(int i) {// ne fait rien
+	public void addToHealth(double i) {// ne fait rien
 		
 	}
 
 	@Override
-	public int getDamage() {
+	public double getDamage() {
 		return damage;
 	}
 }

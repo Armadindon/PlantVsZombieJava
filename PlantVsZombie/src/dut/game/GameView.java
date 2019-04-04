@@ -8,6 +8,7 @@ import java.awt.geom.RectangularShape;
 
 
 import fr.umlv.zen5.ApplicationContext;
+import fr.umlv.zen5.ScreenInfo;
 
 
 public class GameView implements GameDrawer {
@@ -86,10 +87,10 @@ public class GameView implements GameDrawer {
 	 * @param data     the GameData containing the game data.
 	 */
 	@Override
-	public void draw(Graphics2D graphics, GameData data) {
+	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen) {
 		// example
 		graphics.setColor(graphics.getBackground());
-		graphics.fill(new Rectangle2D.Float(0, 0, 5000, 5000));
+		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on réaffiche le fond
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 
@@ -160,7 +161,6 @@ public class GameView implements GameDrawer {
 	
 	public void moveAllAndDraw(ApplicationContext graphics,GameData data) {
 		for(GameObject g :data.getLstG()){
-			
 			moveAndDrawElement(graphics, data, g);
 		}
 	}

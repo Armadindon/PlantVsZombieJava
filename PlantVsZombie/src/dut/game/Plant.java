@@ -10,7 +10,7 @@ public class Plant implements GameObject {
 	private int x;
 	private int y;
 	private final int taille;
-	private int health;
+	private double health;
 	private int frequence;
 	private int compteur;
 	private Color color;
@@ -85,16 +85,16 @@ public class Plant implements GameObject {
 		return false;//une plante ne peut pas être en dehors de la matrice puisqu'elle ne bouge pas
 	}
 	public String toString() {
-		return " Cette plante possède " + health + " point de vie";
+		return "Plante en position "+x+" "+y+" ayant "+ health + " point de vie";
 	}
 
 	@Override
-	public void addToHealth(int i) {
+	public void addToHealth(double i) {
 		health+= i;
 	}
 
 	@Override
-	public int getDamage() {
+	public double getDamage() {
 		return 0;
 	}
 
