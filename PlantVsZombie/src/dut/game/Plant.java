@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 public class Plant implements GameObject {
@@ -35,7 +36,7 @@ public class Plant implements GameObject {
 	}
 
 	@Override
-	public GameObject colliding(ArrayList<GameObject> lst) {
+	public GameObject colliding(LinkedList<GameObject> lst) {
 		for(GameObject g: lst) {
 			if(collision(g.draw()) && !(equals(g))) {
 				System.out.println("COllision plante");
@@ -96,6 +97,15 @@ public class Plant implements GameObject {
 	@Override
 	public double getDamage() {
 		return 0;
+	}
+
+	@Override
+	public int getY() {
+		return y;
+	}
+	
+	public void decrementCompteur(){
+		compteur--;
 	}
 
 }

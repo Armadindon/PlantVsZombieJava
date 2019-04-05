@@ -20,7 +20,6 @@ public class GameController {
 		GameData data = new GameData(5, 8);
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
-		data.addGameObject(new Peashotter(view.midCell((int) (width/4), 1,40), view.midCell((int) (height/4),1,40)));
 		view.draw(context, data,screenInfo);
 		Point2D.Float location;
 		

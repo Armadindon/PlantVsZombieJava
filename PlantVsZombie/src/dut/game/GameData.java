@@ -2,15 +2,18 @@ package dut.game;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class GameData{
 	private final Cell[][] matrix;
 	private Coordinates selected;
-	private final ArrayList<GameObject> lstG;
+	private final LinkedList<GameObject> lstG;
+	private int zombieNumber[];
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
-		lstG = new ArrayList<>(); 
+		lstG = new LinkedList<>(); 
+		zombieNumber = new int[nbLines];
 	}
 
 	/**
@@ -116,8 +119,13 @@ public class GameData{
 			if(g instanceof Plant) {
 				Plant p = (Plant) g;
 				if(p.isFire()) {
-					added.add(p.bullet());
-					st.append(g).append(" Tire une balle !\n");
+					if(zombieNumber[v.lineFromY(p.getY())] !=0) {
+						added.add(p.bullet());
+						st.append(g).append(" Tire une balle !\n");
+					}else {
+						p.decrementCompteur();
+					}
+					
 				}
 			}
 			col = g.colliding(lstG);
@@ -133,6 +141,10 @@ public class GameData{
 			}
 			if(!(g.isAlive())) {
 				deleted.add(g);
+				if (g instanceof Zombie) {
+					Zombie z = (Zombie) g;
+					zombieNumber[v.lineFromY(z.getY())]-=1;
+				}
 			}
 			
 		}
@@ -140,6 +152,7 @@ public class GameData{
 		lstG.addAll(added);
 		if ((int)(Math.random()*100)==5) {
 			int ligne =(int) (Math.random()*5);
+			zombieNumber[ligne]+=1;
 			this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
 			st.append("Nouveau zombie ligne").append(ligne).append("\n");
 		}
@@ -150,7 +163,7 @@ public class GameData{
 		lstG.add(g);
 	}
 	
-	public ArrayList<GameObject> getLstG(){
+	public LinkedList<GameObject> getLstG(){
 		return lstG;
 	}
 	
