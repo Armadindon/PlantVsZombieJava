@@ -3,7 +3,6 @@ package dut.game;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -38,7 +37,7 @@ public class Plant implements GameObject {
 	@Override
 	public GameObject colliding(LinkedList<GameObject> lst) {
 		for(GameObject g: lst) {
-			if(collision(g.draw()) && !(equals(g))) {
+			if(collision(g.draw()) && !(equals(g)) && g instanceof Zombie) {
 				System.out.println("COllision plante");
 				return g;
 			}

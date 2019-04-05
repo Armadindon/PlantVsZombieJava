@@ -107,13 +107,16 @@ public class GameData{
 	public void updateData(GameView v,int width , int height) {
 		StringBuilder st = new StringBuilder();
 		GameObject col;
-		ArrayList<GameObject> deleted= new ArrayList<>();
-		ArrayList<GameObject> added= new ArrayList<>();
+		LinkedList<GameObject> deleted= new LinkedList<>();
+		LinkedList<GameObject> added= new LinkedList<>();
 		for(GameObject g : lstG) {
 
 			if (g.matrixOut(v)) {
 				deleted.add(g);
 				st.append(g).append(" est supprimé , il est sorti de la matrice\n");
+				if(g instanceof Zombie) {
+					zombieNumber[v.lineFromY(g.getY())]--;
+				}
 			}
 
 			if(g instanceof Plant) {
@@ -128,17 +131,20 @@ public class GameData{
 					
 				}
 			}
-			col = g.colliding(lstG);
-			if(col!=null) {
-				if (!(g instanceof Bullet && col instanceof Plant)) {
-					
-					col.addToHealth(-g.getDamage());
-					if(g instanceof Bullet) {
-						deleted.add(g);
+			
+			if(zombieNumber[v.lineFromY(g.getY())] !=0) {
+				col = g.colliding(lstG);
+				if(col!=null) {
+					if (!(g instanceof Bullet && col instanceof Plant)) {
+						col.addToHealth(-g.getDamage());
+						if(g instanceof Bullet) {
+							deleted.add(g);
+						}
 					}
+					
 				}
-				
 			}
+			
 			if(!(g.isAlive())) {
 				deleted.add(g);
 				if (g instanceof Zombie) {
@@ -150,7 +156,7 @@ public class GameData{
 		}
 		lstG.removeAll(deleted);
 		lstG.addAll(added);
-		if ((int)(Math.random()*100)==5) {
+		if ((int)(Math.random()*50)==5) {
 			int ligne =(int) (Math.random()*5);
 			zombieNumber[ligne]+=1;
 			this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
