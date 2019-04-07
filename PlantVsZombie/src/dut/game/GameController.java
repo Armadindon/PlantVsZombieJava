@@ -54,7 +54,7 @@ public class GameController {
 				if(view.lineFromY(location.y) == data.getNbLines()+1) {
 					ChoixPlante = view.columnFromX(location.x);
 				}
-				if (view.lineFromY(location.y) >=0 && view.lineFromY(location.y) <data.getNbLines()) {
+				if (view.lineFromY(location.y) >=0 && view.lineFromY(location.y) <data.getNbLines() && (view.columnFromX(location.x) >=0 && view.columnFromX(location.x) < data.getNbColumns())) {
 					switch (ChoixPlante) {
 					case 0:
 						data.addGameObject( new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
