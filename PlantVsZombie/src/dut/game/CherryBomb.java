@@ -15,22 +15,22 @@ public class CherryBomb extends Plant{
 	private Rectangle2D drawImpact(GameView v) {
 		int x =  (int) v.xFromI(v.columnFromX(getX())-1);
 		int y =  (int) v.yFromJ(v.lineFromY(getY())-1);
-		int x2 = (int) v.xFromI(v.columnFromX(getX())+1);
-		int y2 =  (int) v.yFromJ(v.lineFromY(getY())+1);
+		int x2 = (int) v.getSquareSize()*3;
+		int y2 = (int) v.getSquareSize()*3;
 		return new Rectangle2D.Float(x,y,x2,y2);
 	}
 	
 	@Override
 	public boolean isFire() {
 		compteur++;
-		if(compteur>100) {
+		if(compteur>75) {
 			return true;
 		}
 		return false;
 	}
 	
 	private boolean collisionExplosion(GameObject g,GameView v) {
-		return g.draw().getBounds().intersects(drawImpact(v));
+		return drawImpact(v).getBounds().intersects(g.draw());
 	}
 	
 	public ArrayList<GameObject> collidingExplosion(LinkedList<GameObject> lstG,GameView v){

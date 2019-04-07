@@ -94,16 +94,23 @@ public class GameView implements GameDrawer {
 		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on réaffiche le fond
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
+		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin+squareSize*(data.getNbLines()+1), width,squareSize));
+		graphics.setColor(Color.BLUE);
+		graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
+		graphics.setColor(Color.YELLOW);
+		graphics.fill(new Wallnut(midCell(xOrigin,1,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
+		graphics.setColor(Color.RED);
+		graphics.fill(new Wallnut(midCell(xOrigin,2,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
 
 		graphics.setColor(Color.WHITE);
-		for (int i = 0; i <= data.getNbLines(); i++) {
+		for (int i = 0; i <= data.getNbLines()+2; i++) {
 			graphics.draw(
 					new Line2D.Float(xOrigin, yOrigin + i * squareSize, xOrigin + width, yOrigin + i * squareSize));
 		}
 
 		for (int i = 0; i <= data.getNbColumns(); i++) {
-			graphics.draw(
-					new Line2D.Float(xOrigin + i * squareSize, yOrigin, xOrigin + i * squareSize, yOrigin + length));
+			graphics.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin, xOrigin + i * squareSize, yOrigin + length));
+			graphics.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+1), xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+2)));
 		}
 
 		Coordinates c = data.getSelected();
@@ -175,6 +182,10 @@ public class GameView implements GameDrawer {
 	}
 	public boolean isOutZombie(int x) {
 		return x<xOrigin;
+	}
+	
+	public int getSquareSize() {
+		return squareSize;
 	}
 	
 }

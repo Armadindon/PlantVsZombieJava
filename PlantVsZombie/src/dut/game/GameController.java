@@ -2,6 +2,7 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
@@ -12,6 +13,7 @@ public class GameController {
 
 	static void simpleGame(ApplicationContext context) {
 		// get the size of the screen
+		int ChoixPlante = -1;
 		ScreenInfo screenInfo = context.getScreenInfo();
 		float width = screenInfo.getWidth();
 		float height = screenInfo.getHeight();
@@ -49,10 +51,24 @@ public class GameController {
 			if (!data.hasASelectedCell()) { // no cell is selected
 				location = event.getLocation(); // !!! attention aucune vérfifcation des coordonnées!!!
 				data.selectCell(view.lineFromY(location.y), view.columnFromX(location.x));
-				data.addGameObject(new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
-			}
-			if (view.lineFromY(location.y)==? && (view.columnFromX(location.x)==?  view.columnFromX(location.x) ==?  view.columnFromX(location.x) == ?{
-				    data.selectCell(view.lineFromY(location.y), view.columnFromX(location.x)
+				if(view.lineFromY(location.y) == data.getNbLines()+1) {
+					ChoixPlante = view.columnFromX(location.x);
+				}
+				if (view.lineFromY(location.y) >=0 && view.lineFromY(location.y) <data.getNbLines()) {
+					switch (ChoixPlante) {
+					case 0:
+						data.addGameObject( new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
+						break;
+					
+					case 1:
+						data.addGameObject( new Wallnut(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
+
+						break;
+					
+					case 2:
+						data.addGameObject( new CherryBomb(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
+						break;	
+					}				
 				}
 			} else {
 				data.unselect();

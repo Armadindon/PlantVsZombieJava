@@ -10,9 +10,10 @@ public class Zombie implements GameObject{
 	private int x;
 	private int y;
 	private int taille;
-	private final int speed;
+	private int speed;
 	private double health;
 	private final Color color;
+	private final int initialSpeed;
 
 	public Zombie(int x, int y, int taille,int speed,double health,Color color) {
 		this.x = x;
@@ -21,6 +22,7 @@ public class Zombie implements GameObject{
 		this.speed = speed;
 		this.health = health;
 		this.color = color;
+		this.initialSpeed = speed;
 	}
 
 	@Override
@@ -95,5 +97,13 @@ public class Zombie implements GameObject{
 	
 	public int getY() {
 		return y;
+	}
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+	
+	public int getInitialSpeed() {
+		return initialSpeed;
 	}
 }

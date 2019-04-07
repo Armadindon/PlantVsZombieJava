@@ -80,7 +80,7 @@ public class GameData{
 		if (selected != null) {
 			throw new IllegalStateException("First cell already selected");
 		}
-		if (i >= 0 && i < matrix.length ) {
+		if (i >= 0 && i < matrix.length  || i == matrix.length+1 ) {
 			if (j >= 0 && j < matrix[0].length) {
 				selected = new Coordinates(i, j);
 			}
@@ -149,6 +149,14 @@ public class GameData{
 				col = g.colliding(lstG);
 				if(col.size()!=0) {
 					for(GameObject g2 : col) {
+						if (g instanceof Zombie) {
+							Zombie z =  (Zombie) g;
+							z.setSpeed(0);
+						} else if(g2 instanceof Zombie) {
+							Zombie z =  (Zombie) g2;
+							z.setSpeed(0);
+						}
+						
 						if (!(g instanceof Bullet && g2 instanceof Plant)) {
 							g2.addToHealth(-g.getDamage());
 							if(g instanceof Bullet) {
@@ -158,6 +166,11 @@ public class GameData{
 					}
 					
 					
+				}else {
+					if (g instanceof Zombie) {
+						Zombie z =  (Zombie) g;
+						z.setSpeed(z.getInitialSpeed());
+					}
 				}
 			}
 			
@@ -176,7 +189,17 @@ public class GameData{
 		if ((int)(Math.random()*50)==5 && nbZombies-1!=0) {
 			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
-			this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+			int typeZombie = (int)(Math.random()*2);
+			System.out.println(typeZombie);
+			switch (typeZombie) {
+			case 0:
+				this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+				break;
+
+			case 1:
+				this.addGameObject(new ConeheadZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+				break;
+			}
 			st.append("Nouveau zombie ligne").append(ligne).append("\n");
 		}
 		System.out.print(st.toString());
