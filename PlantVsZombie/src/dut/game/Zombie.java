@@ -92,7 +92,7 @@ public class Zombie implements GameObject{
 
 	@Override
 	public double getDamage() {
-		return 1;
+		return 0.1;
 	}
 	
 	public int getY() {
