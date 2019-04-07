@@ -50,6 +50,10 @@ public class GameController {
 				location = event.getLocation(); // !!! attention aucune vérfifcation des coordonnées!!!
 				data.selectCell(view.lineFromY(location.y), view.columnFromX(location.x));
 				data.addGameObject(new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
+			}
+			if (view.lineFromY(location.y)==? && (view.columnFromX(location.x)==?  view.columnFromX(location.x) ==?  view.columnFromX(location.x) == ?{
+				    data.selectCell(view.lineFromY(location.y), view.columnFromX(location.x)
+				}
 			} else {
 				data.unselect();
 			}

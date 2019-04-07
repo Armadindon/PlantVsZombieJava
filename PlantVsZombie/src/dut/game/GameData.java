@@ -184,7 +184,7 @@ public class GameData{
 			System.out.println("Vous Avez Perdu !");
 			System.exit(0);
 		}else if(nbZombies == 0){
-			System.out.println("Vous Avez Gagné !");
+			System.out.println("Vous Avez Gagnï¿½ !");
 			System.exit(0);
 		}
 	}
