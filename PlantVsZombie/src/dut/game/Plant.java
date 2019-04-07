@@ -3,6 +3,7 @@ package dut.game;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -35,14 +36,15 @@ public class Plant implements GameObject {
 	}
 
 	@Override
-	public GameObject colliding(LinkedList<GameObject> lst) {
+	public ArrayList<GameObject> colliding(LinkedList<GameObject> lst) {
+		ArrayList<GameObject> lstCol = new ArrayList();
 		for(GameObject g: lst) {
 			if(collision(g.draw()) && !(equals(g)) && g instanceof Zombie) {
 				System.out.println("COllision plante");
-				return g;
+				lstCol.add(g);
 			}
 		}
-		return null;
+		return lstCol;
 	}
 
 	@Override
@@ -101,6 +103,10 @@ public class Plant implements GameObject {
 	@Override
 	public int getY() {
 		return y;
+	}
+	
+	public int getX() {
+		return x;
 	}
 	
 	public void decrementCompteur(){

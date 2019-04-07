@@ -2,6 +2,7 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public interface GameObject {
@@ -9,7 +10,7 @@ public interface GameObject {
 
 	public Rectangle2D.Float draw();
 	
-	public GameObject colliding(LinkedList<GameObject> lst);
+	public ArrayList<GameObject> colliding(LinkedList<GameObject> lst);
 	public boolean collision(Rectangle2D r);
 	public boolean isAlive();
 	public Color getColor();

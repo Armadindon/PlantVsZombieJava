@@ -25,6 +25,7 @@ public class GameView implements GameDrawer {
 		this.width = width;
 		this.squareSize = squareSize;
 	}
+	
 
 	public static GameView initGameGraphics(int xOrigin, int yOrigin, int length, GameData data) {
 		int squareSize = (int) (length * 1.0 / data.getNbLines());
@@ -63,11 +64,11 @@ public class GameView implements GameDrawer {
 		return origin + index * squareSize;
 	}
 
-	private float xFromI(int i) {
+	public float xFromI(int i) {
 		return realCoordFromIndex(i, xOrigin);
 	}
 
-	private float yFromJ(int j) {
+	public float yFromJ(int j) {
 		return realCoordFromIndex(j, yOrigin);
 	}
 

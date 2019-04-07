@@ -9,6 +9,8 @@ public class GameData{
 	private Coordinates selected;
 	private final LinkedList<GameObject> lstG;
 	private int zombieNumber[];
+	private int nbZombies= 20;
+	private int playerHealth = 3;
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
@@ -106,7 +108,7 @@ public class GameData{
 	 */
 	public void updateData(GameView v,int width , int height) {
 		StringBuilder st = new StringBuilder();
-		GameObject col;
+		ArrayList<GameObject> col;
 		LinkedList<GameObject> deleted= new LinkedList<>();
 		LinkedList<GameObject> added= new LinkedList<>();
 		for(GameObject g : lstG) {
@@ -116,13 +118,24 @@ public class GameData{
 				st.append(g).append(" est supprimÃ© , il est sorti de la matrice\n");
 				if(g instanceof Zombie) {
 					zombieNumber[v.lineFromY(g.getY())]--;
+					nbZombies--;
+					playerHealth--;
 				}
 			}
 
 			if(g instanceof Plant) {
 				Plant p = (Plant) g;
 				if(p.isFire()) {
-					if(zombieNumber[v.lineFromY(p.getY())] !=0) {
+					if (p instanceof CherryBomb) {
+						CherryBomb c = (CherryBomb) p;
+						ArrayList<GameObject> lstColExp = c.collidingExplosion(lstG, v);
+						if (lstColExp.size() !=0) {
+							deleted.add(g);
+							for(GameObject g2 : lstColExp) {
+								g2.addToHealth(-120);
+							}
+						}
+					}else if(zombieNumber[v.lineFromY(p.getY())] !=0) {
 						added.add(p.bullet());
 						st.append(g).append(" Tire une balle !\n");
 					}else {
@@ -134,13 +147,16 @@ public class GameData{
 			
 			if(zombieNumber[v.lineFromY(g.getY())] !=0) {
 				col = g.colliding(lstG);
-				if(col!=null) {
-					if (!(g instanceof Bullet && col instanceof Plant)) {
-						col.addToHealth(-g.getDamage());
-						if(g instanceof Bullet) {
-							deleted.add(g);
+				if(col.size()!=0) {
+					for(GameObject g2 : col) {
+						if (!(g instanceof Bullet && g2 instanceof Plant)) {
+							g2.addToHealth(-g.getDamage());
+							if(g instanceof Bullet) {
+								deleted.add(g);
+							}
 						}
 					}
+					
 					
 				}
 			}
@@ -150,19 +166,27 @@ public class GameData{
 				if (g instanceof Zombie) {
 					Zombie z = (Zombie) g;
 					zombieNumber[v.lineFromY(z.getY())]-=1;
+					nbZombies--;
 				}
 			}
 			
 		}
 		lstG.removeAll(deleted);
 		lstG.addAll(added);
-		if ((int)(Math.random()*50)==5) {
-			int ligne =(int) (Math.random()*5);
+		if ((int)(Math.random()*50)==5 && nbZombies-1!=0) {
+			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
 			this.addGameObject(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
 			st.append("Nouveau zombie ligne").append(ligne).append("\n");
 		}
 		System.out.print(st.toString());
+		if(playerHealth == 0) {
+			System.out.println("Vous Avez Perdu !");
+			System.exit(0);
+		}else if(nbZombies == 0){
+			System.out.println("Vous Avez Gagné !");
+			System.exit(0);
+		}
 	}
 	
 	public void addGameObject(GameObject g) {

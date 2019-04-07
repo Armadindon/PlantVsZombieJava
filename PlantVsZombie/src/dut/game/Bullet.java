@@ -3,6 +3,7 @@ package dut.game;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -31,14 +32,15 @@ public class Bullet implements GameObject {
 	}
 
 	@Override
-	public GameObject colliding(LinkedList<GameObject> lst) {
+	public ArrayList<GameObject> colliding(LinkedList<GameObject> lst) {
+		ArrayList<GameObject> lstCol = new ArrayList<GameObject>();
 		for(GameObject g: lst) {
-			if(collision(g.draw())&& !(equals(g)) && g instanceof Zombie) {
-				System.out.println("Collision tir");
-				return g;
+			if(collision(g.draw()) && !(equals(g)) && g instanceof Zombie) {
+				System.out.println("COllision plante");
+				lstCol.add(g);
 			}
 		}
-		return null;
+		return lstCol;
 	}
 
 	@Override
