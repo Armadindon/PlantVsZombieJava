@@ -1,6 +1,7 @@
 package dut.game;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 import fr.umlv.zen5.Application;
@@ -30,7 +31,7 @@ public class GameController {
 			view.draw(context, data,screenInfo);
 			data.updateData(view,(int) width,(int) height);
 			view.moveAllAndDraw(context, data);
-			Event event = context.pollOrWaitEvent(40); // modifier pour avoir un affichage fluide
+			Event event = context.pollOrWaitEvent(60); // modifier pour avoir un affichage fluide
 			
 			if (event == null) { // no event
 				continue;
@@ -57,16 +58,16 @@ public class GameController {
 				if (view.lineFromY(location.y) >=0 && view.lineFromY(location.y) <data.getNbLines() && (view.columnFromX(location.x) >=0 && view.columnFromX(location.x) < data.getNbColumns())) {
 					switch (ChoixPlante) {
 					case 0:
-						data.addGameObject( new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
+						data.addPlant( new Peashotter(view.midCell((int) (width/4), view.columnFromX(location.x),40), view.midCell((int) (height/4),view.lineFromY(location.y),40)));
 						break;
 					
 					case 1:
-						data.addGameObject( new Wallnut(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
+						data.addPlant( new Wallnut(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
 
 						break;
 					
 					case 2:
-						data.addGameObject( new CherryBomb(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
+						data.addPlant( new CherryBomb(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
 						break;	
 					}
 					

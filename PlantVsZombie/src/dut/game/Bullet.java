@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class Bullet implements GameObject {
+public class Bullet {
 	
 	private int x;
 	private int y;
@@ -21,21 +21,20 @@ public class Bullet implements GameObject {
 		this.y = y;
 	}
 
-	@Override
+	
 	public void move() {
 		x+=speed;
 	}
 
-	@Override
+	
 	public Float draw() {
 		return new Rectangle2D.Float(x, y, taille,taille);
 	}
 
-	@Override
-	public ArrayList<GameObject> colliding(LinkedList<GameObject> lst) {
-		ArrayList<GameObject> lstCol = new ArrayList<GameObject>();
-		for(GameObject g: lst) {
-			if(collision(g.draw()) && !(equals(g)) && g instanceof Zombie) {
+	public ArrayList<Zombie> colliding(LinkedList<Zombie> lst) {
+		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
+		for(Zombie g: lst) {
+			if(collision(g.draw()) && !(equals(g)) && g instanceof ZombieImplementation) {
 				System.out.println("COllision plante");
 				lstCol.add(g);
 			}
@@ -43,7 +42,6 @@ public class Bullet implements GameObject {
 		return lstCol;
 	}
 
-	@Override
 	public boolean collision(Rectangle2D r) {
 		if(r.getBounds2D().intersects(this.draw())) {
 			return true;
@@ -51,10 +49,6 @@ public class Bullet implements GameObject {
 		return false;
 	}
 
-	@Override
-	public boolean isAlive() {
-		return true;
-	}
 	
 	@Override
 	public boolean equals(Object o) {
@@ -68,12 +62,10 @@ public class Bullet implements GameObject {
 		return Objects.hash(x,y,speed,damage,taille);
 	}
 
-	@Override
 	public Color getColor() {
 		return color;
 	}
 
-	@Override
 	public boolean matrixOut(GameView v) {
 		return v.isOut(x);
 	}
@@ -82,17 +74,11 @@ public class Bullet implements GameObject {
 		return "Un tir en position " + x + " "+ y + " a une vitesse de " + speed;
 	}
 	
-	@Override
-	public void addToHealth(double i) {// ne fait rien
-		
-	}
 
-	@Override
 	public double getDamage() {
 		return damage;
 	}
 	
-	@Override
 	public int getY() {
 		return y;
 	}

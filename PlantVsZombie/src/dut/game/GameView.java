@@ -154,23 +154,30 @@ public class GameView implements GameDrawer {
 	 * @param data     the GameData containing the game data.
 	 * @param moving   the moving element.
 	 */
-	@Override
-	public void moveAndDrawElement(Graphics2D graphics, GameData data, GameObject moving) {
-		if(moving.matrixOut(this)) {
-			graphics.setColor(graphics.getBackground());
-		}else {
-			graphics.setColor(Color.GREEN);
-		}
-		graphics.fill(moving.draw());
-		moving.move();
-		graphics.setColor(moving.getColor());
-		graphics.fill(moving.draw());
-	}
+
 	
-	public void moveAllAndDraw(ApplicationContext graphics,GameData data) {
-		for(GameObject g :data.getLstG()){
-			moveAndDrawElement(graphics, data, g);
+	public void moveAllAndDraw(Graphics2D graphics,GameData data) {
+		for(Zombie g :data.getLstZ()){
+			if(g.matrixOut(this)) {
+				graphics.setColor(graphics.getBackground());
+			}else {
+				graphics.setColor(Color.GREEN);
+			}
+			graphics.setColor(g.getColor());
+			graphics.fill(g.draw());
 		}
+		for(Plant g :data.getLstP()){
+			graphics.fill(g.draw());
+			graphics.setColor(g.getColor());
+			graphics.fill(g.draw());
+		}
+		for(Bullet g :data.getLstB()){
+			graphics.fill(g.draw());
+			g.move();
+			graphics.setColor(g.getColor());
+			graphics.fill(g.draw());
+		}
+		
 	}
 	
 	public int midCell(int origin , int index,int taille) {
