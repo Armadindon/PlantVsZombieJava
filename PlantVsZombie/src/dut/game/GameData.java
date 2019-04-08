@@ -152,7 +152,7 @@ public class GameData{
 				}
 			}
 		}
-		if((int)(Math.random()*100)==5) {
+		if((int)(Math.random()*100)==5 && nbZombies-alive!=0) {
 			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
 			int typeZombie = (int)(Math.random()*2);
@@ -167,6 +167,7 @@ public class GameData{
 				break;
 			}
 			System.out.println("Nouveau zombie ligne "+ligne);
+			alive++;
 		}
 		lstZ.removeAll(deleted);
 	}

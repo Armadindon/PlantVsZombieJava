@@ -1,7 +1,6 @@
 package dut.game;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 import fr.umlv.zen5.Application;
@@ -31,7 +30,7 @@ public class GameController {
 			view.draw(context, data,screenInfo);
 			data.updateData(view,(int) width,(int) height);
 			view.moveAllAndDraw(context, data);
-			Event event = context.pollOrWaitEvent(60); // modifier pour avoir un affichage fluide
+			Event event = context.pollOrWaitEvent(40); // modifier pour avoir un affichage fluide
 			
 			if (event == null) { // no event
 				continue;

@@ -7,7 +7,6 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
 
-import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.ScreenInfo;
 
 
