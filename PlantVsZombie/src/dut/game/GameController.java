@@ -68,7 +68,8 @@ public class GameController {
 					case 2:
 						data.addGameObject( new CherryBomb(view.midCell((int) (width/4), view.columnFromX(location.x),50), view.midCell((int) (height/4),view.lineFromY(location.y),50)));
 						break;	
-					}				
+					}
+					
 				}
 			} else {
 				data.unselect();
