@@ -157,15 +157,21 @@ public class GameData{
 			zombieNumber[ligne]+=1;
 			int typeZombie = (int)(Math.random()*2);
 			System.out.println(typeZombie);
-			switch (typeZombie) {
-			case 0:
-				lstZ.add(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
-				break;
+			if (nbZombies-alive != 1) {
+				switch (typeZombie) {
+				case 0:
+					lstZ.add(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+					break;
 
-			case 1:
-				lstZ.add(new ConeheadZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
-				break;
+				case 1:
+					lstZ.add(new ConeheadZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+					break;
+				}
+			}else {
+				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+
 			}
+			
 			System.out.println("Nouveau zombie ligne "+ligne);
 			alive++;
 		}
