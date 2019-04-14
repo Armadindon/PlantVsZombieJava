@@ -21,16 +21,26 @@ public class Bullet {
 		this.y = y;
 	}
 
-	
+	/**
+	 * Move the Bullet using his speed
+	 */
 	public void move() {
 		x+=speed;
 	}
 
-	
+	/**
+	 * Draw the current state of the Bullet
+	 * @return Rectangle who represent the bullet at this time
+	 */
 	public Float draw() {
 		return new Rectangle2D.Float(x, y, taille,taille);
 	}
-
+	
+	/**
+	 * Check Collision with Each Zombie From the List
+	 * @param lst List of Zombies
+	 * @return lLst LinkedList who contains every zombie touching the Bullet
+	 */
 	public ArrayList<Zombie> colliding(LinkedList<Zombie> lst) {
 		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
 		for(Zombie g: lst) {
@@ -41,7 +51,12 @@ public class Bullet {
 		}
 		return lstCol;
 	}
-
+	
+	/**
+	 * Check the collision with the rectangle
+	 * @param r Rectangle of the test
+	 * @return Boolean
+	 */
 	public boolean collision(Rectangle2D r) {
 		if(r.getBounds2D().intersects(this.draw())) {
 			return true;
@@ -61,11 +76,20 @@ public class Bullet {
 	public int hashCode() {
 		return Objects.hash(x,y,speed,damage,taille);
 	}
-
+	
+	/**
+	 * Return the color of the item
+	 * @return color
+	 */
 	public Color getColor() {
 		return color;
 	}
-
+	
+	/**
+	 * Tell if the item is out of the Matrix
+	 * @param v View Used for checking if the item is out
+	 * @return boolean
+	 */
 	public boolean matrixOut(GameView v) {
 		return v.isOut(x);
 	}
@@ -73,12 +97,19 @@ public class Bullet {
 	public String toString() {
 		return "Un tir en position " + x + " "+ y + " a une vitesse de " + speed;
 	}
-	
 
+	/**
+	 * Return the damagegiven by the bullet
+	 * @return Damage int
+	 */
 	public double getDamage() {
 		return damage;
 	}
 	
+	/**
+	 * Return the Y pos of the item
+	 * @return y (int)
+	 */
 	public int getY() {
 		return y;
 	}

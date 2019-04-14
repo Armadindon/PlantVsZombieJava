@@ -62,11 +62,21 @@ public class GameView implements GameDrawer {
 	private float realCoordFromIndex(int index, int origin) {
 		return origin + index * squareSize;
 	}
-
+	
+	/**
+	 * Return the column corresponding to the x coordinates given
+	 * @param x
+	 * @return column (int)
+	 */
 	public float xFromI(int i) {
 		return realCoordFromIndex(i, xOrigin);
 	}
-
+	
+	/**
+	 * Return the line corresponding to the y coordinates given
+	 * @param y
+	 * @return column (int)
+	 */
 	public float yFromJ(int j) {
 		return realCoordFromIndex(j, yOrigin);
 	}
@@ -179,10 +189,23 @@ public class GameView implements GameDrawer {
 		
 	}
 	
+	
+	/**
+	 * Give the coordinate for placing a new object of size taille to the given index
+	 * @param origin
+	 * @param index
+	 * @param taille
+	 * @return
+	 */
 	public int midCell(int origin , int index,int taille) {
 		return (int) (realCoordFromIndex(index, origin)+(squareSize-taille)/2);
 	}
 	
+	/**
+	 * Check if 
+	 * @param x
+	 * @return
+	 */
 	public boolean isOut(int x) {
 		return x<xOrigin || x>width+xOrigin;
 	}
