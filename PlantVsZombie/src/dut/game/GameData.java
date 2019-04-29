@@ -1,8 +1,11 @@
 package dut.game;
 
 import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import fr.umlv.zen5.Event;
 
 public class GameData{
 	private final Cell[][] matrix;
@@ -14,6 +17,7 @@ public class GameData{
 	private int nbZombies= 20;
 	private int playerHealth = 3;
 	private int alive = 0;
+	private int choixPlante = -1;
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
@@ -82,9 +86,6 @@ public class GameData{
 	 * @throws IllegalStateException if a first cell is already selected.
 	 */
 	public void selectCell(int i, int j) {
-		if (selected != null) {
-			throw new IllegalStateException("First cell already selected");
-		}
 		if (i >= 0 && i < matrix.length  || i == matrix.length+1 ) {
 			if (j >= 0 && j < matrix[0].length) {
 				selected = new Coordinates(i, j);
@@ -208,10 +209,41 @@ public class GameData{
 	 * -Bullet
 	 * -Zombies
 	 */
-	public void updateData(GameView v,int width , int height) {
+	public void updateData(GameView v,int width , int height,Event event) {
+		Point2D.Float location;
+		updateZombie(v,width,height);
 		updatePlant(v);
 		updateBullet(v);
-		updateZombie(v,width,height);
+		
+		
+		if (event == null) {
+			return;
+		}
+		
+		location = event.getLocation();
+		selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
+		//pour sélectionner la plante
+		if(v.lineFromY(location.y) == getNbLines()+1) {
+			choixPlante = v.columnFromX(location.x);
+		}
+
+		if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
+			switch (choixPlante) {
+			case 0:
+				addPlant(new Peashotter(v.midCell((int) (width/4), v.columnFromX(location.x),40), v.midCell((int) (height/4),v.lineFromY(location.y),40)));
+				break;
+			
+			case 1:
+				addPlant( new Wallnut(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
+				break;
+			
+			case 2:
+				addPlant( new CherryBomb(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
+				break;	
+			}
+			
+		}
+		
 		if(playerHealth == 0) {
 			System.out.println("Vous Avez Perdu !");
 			System.exit(0);
@@ -219,107 +251,7 @@ public class GameData{
 			System.out.println("Vous Avez Gagnï¿½ !");
 			System.exit(0);
 		}
-		
-		
-//		for(GameObject g : lstG) {
-//
-//			if (g.matrixOut(v)) {
-//				deleted.add(g);
-//				st.append(g).append(" est supprimÃ© , il est sorti de la matrice\n");
-//				if(g instanceof ZombieImplementation) {
-//					zombieNumber[v.lineFromY(g.getY())]--;
-//					nbZombies--;
-//					playerHealth--;
-//				}
-//			}
-//
-//			if(g instanceof PlantImplementation) {
-//				PlantImplementation p = (PlantImplementation) g;
-//				if(p.isFire()) {
-//					if (p instanceof CherryBomb) {
-//						CherryBomb c = (CherryBomb) p;
-//						ArrayList<GameObject> lstColExp = c.collidingExplosion(lstG, v);
-//						if (lstColExp.size() !=0) {
-//							deleted.add(g);
-//							for(GameObject g2 : lstColExp) {
-//								g2.addToHealth(-120);
-//							}
-//						}
-//					}else if(zombieNumber[v.lineFromY(p.getY())] !=0) {
-//						added.add(p.bullet());
-//						st.append(g).append(" Tire une balle !\n");
-//					}else {
-//						p.decrementCompteur();
-//					}
-//					
-//				}
-//			}
-//			
-//			if(zombieNumber[v.lineFromY(g.getY())] !=0) {
-//				col = g.colliding(lstG);
-//				if(col.size()!=0) {
-//					for(GameObject g2 : col) {
-//						if (g instanceof ZombieImplementation) {
-//							ZombieImplementation z =  (ZombieImplementation) g;
-//							z.setSpeed(0);
-//						} else if(g2 instanceof ZombieImplementation) {
-//							ZombieImplementation z =  (ZombieImplementation) g2;
-//							z.setSpeed(0);
-//						}
-//						
-//						if (!(g instanceof Bullet && g2 instanceof PlantImplementation)) {
-//							g2.addToHealth(-g.getDamage());
-//							if(g instanceof Bullet) {
-//								deleted.add(g);
-//							}
-//						}
-//					}
-//					
-//					
-//				}else {
-//					if (g instanceof ZombieImplementation) {
-//						ZombieImplementation z =  (ZombieImplementation) g;
-//						z.setSpeed(z.getInitialSpeed());
-//					}
-//				}
-//			}
-//			
-//			if(!(g.isAlive())) {
-//				deleted.add(g);
-//				if (g instanceof ZombieImplementation) {
-//					ZombieImplementation z = (ZombieImplementation) g;
-//					zombieNumber[v.lineFromY(z.getY())]-=1;
-//					nbZombies--;
-//				}
-//			}
-//			
-//		}
-//		lstG.removeAll(deleted);
-//		lstG.addAll(added);
-//		if ((int)(Math.random()*50)==5 && nbZombies-1!=0) {
-//			int ligne =(int) (Math.random()*getNbLines());
-//			zombieNumber[ligne]+=1;
-//			int typeZombie = (int)(Math.random()*2);
-//			System.out.println(typeZombie);
-//			switch (typeZombie) {
-//			case 0:
-//				lstZ.add(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
-//				break;
-//
-//			case 1:
-//				lstZ.add(new ConeheadZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
-//				break;
-//			}
-//			st.append("Nouveau zombie ligne").append(ligne).append("\n");
-//		}
-//		System.out.print(st.toString());
-//		if(playerHealth == 0) {
-//			System.out.println("Vous Avez Perdu !");
-//			System.exit(0);
-//		}else if(nbZombies == 0){
-//			System.out.println("Vous Avez Gagnï¿½ !");
-//			System.exit(0);
-//		}
+
 	}
 	
 	public void addPlant(Plant p) {
@@ -342,5 +274,9 @@ public class GameData{
 	
 	public LinkedList<Plant> getLstP() {
 		return lstP;
+	}
+	
+	public int getChoixPlante() {
+		return choixPlante;
 	}
 }

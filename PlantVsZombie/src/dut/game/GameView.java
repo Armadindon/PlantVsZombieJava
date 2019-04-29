@@ -2,6 +2,7 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Label;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
@@ -97,20 +98,53 @@ public class GameView implements GameDrawer {
 	 * @param data     the GameData containing the game data.
 	 */
 	@Override
-	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen) {
-		// example
+	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen,int choixPlante) {
+		
+		
 		graphics.setColor(graphics.getBackground());
 		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on rÃ©affiche le fond
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin+squareSize*(data.getNbLines()+1), width,squareSize));
+		
+		//on affiche la cellule selectionnée
+		Coordinates c = data.getSelected();
+		if (c != null) {
+			graphics.setColor(Color.black);
+			graphics.fill(drawSelectedCell(c.getI(), c.getJ()));
+			graphics.setColor(Color.green);
+			graphics.fill(drawCell(c.getI(),  c.getJ()));
+		}
+		
+		//on affiche le selecteur
 		graphics.setColor(Color.BLUE);
 		graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
 		graphics.setColor(Color.YELLOW);
 		graphics.fill(new Wallnut(midCell(xOrigin,1,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
 		graphics.setColor(Color.RED);
 		graphics.fill(new Wallnut(midCell(xOrigin,2,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
+		
+		//on affiche la plante selectionnée
+		switch (choixPlante) {
+		case 0:
+			graphics.setColor(Color.BLUE);
+			graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,-1,40)).draw());
+			break;
+		
+		case 1:
+			graphics.setColor(Color.YELLOW);
+			graphics.fill(new Wallnut(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
+			break;
+		
+		case 2:
+			graphics.setColor(Color.RED);
+			graphics.fill(new CherryBomb(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
+			break;
 
+		default:
+			break;
+		}
+		
 		graphics.setColor(Color.WHITE);
 		for (int i = 0; i <= data.getNbLines()+2; i++) {
 			graphics.draw(
@@ -122,12 +156,7 @@ public class GameView implements GameDrawer {
 			graphics.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+1), xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+2)));
 		}
 
-		Coordinates c = data.getSelected();
-		if (c != null) {
-			graphics.setColor(Color.black);
-			graphics.fill(drawSelectedCell(c.getI(), c.getJ()));
-		}
-
+		
 		for (int i = 0; i < data.getNbLines(); i++) {
 			for (int j = 0; j < data.getNbColumns(); j++) {
 				graphics.setColor(Color.GREEN);

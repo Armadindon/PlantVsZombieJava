@@ -35,7 +35,7 @@ public interface GameDrawer {
 	 *                 {@code draw(ApplicationContext, GameData)}
 	 * @param data     the GameData containing the game data.
 	 */
-	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen);
+	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen,int choixPlante);
 
 	/**
 	 * Draws the game board from its data, using an existing
@@ -44,8 +44,8 @@ public interface GameDrawer {
 	 * @param context the {@code ApplicationContext} of the game
 	 * @param data    the GameData containing the game data.
 	 */
-	public default void draw(ApplicationContext context, GameData data,ScreenInfo screen) {
-		context.renderFrame(graphics -> draw(graphics, data,screen));
+	public default void draw(ApplicationContext context, GameData data,ScreenInfo screen,int choixPlante) {
+		context.renderFrame(graphics -> draw(graphics, data,screen,choixPlante));
 	}
 
 	/**
