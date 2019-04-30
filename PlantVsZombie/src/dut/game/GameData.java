@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import fr.umlv.zen5.Event;
+import fr.umlv.zen5.Event.Action;
 
 public class GameData{
 	private final Cell[][] matrix;
@@ -42,7 +43,7 @@ public class GameData{
 	public int getNbColumns() {
 		return matrix[0].length;
 	}
-	
+
 	/**
 	 * The color of the cell specified by its coordinates.
 	 * @param i the first coordinate of the cell.
@@ -52,7 +53,7 @@ public class GameData{
 	public Color getCellColor(int i, int j) {
 		return matrix[i][j].getColor();
 	}
-	
+
 	/**
 	 * The value of the cell specified by its coordinates.
 	 * @param i the first coordinate of the cell.
@@ -62,7 +63,7 @@ public class GameData{
 	public int getCellValue(int i, int j) {
 		return matrix[i][j].getValue();
 	}
-	
+
 	/**
 	 * The coordinates of the cell selected, if a cell is selected.
 	 * @return the coordinates of the selected cell; null otherwise.
@@ -91,7 +92,7 @@ public class GameData{
 				selected = new Coordinates(i, j);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -108,7 +109,7 @@ public class GameData{
 			}
 		}
 	}
-	
+
 	public void updatePlant(GameView v) {
 		ArrayList<Plant> deleted = new ArrayList<>();
 		for(Plant p:lstP) {
@@ -117,7 +118,7 @@ public class GameData{
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet()!=null) {
 					lstB.add(p.bullet());
-					}
+				}
 			}
 			for(Zombie z:p.colliding(lstZ)) {
 				p.addToHealth(-z.getDamage());
@@ -127,10 +128,10 @@ public class GameData{
 				deleted.add(p);
 			}
 		}
-		
+
 		lstP.removeAll(deleted);
 	}
-	
+
 	public void updateZombie(GameView v,int width,int height) {
 		ArrayList<Zombie> deleted = new ArrayList<>();
 		for(Zombie z:lstZ) {
@@ -172,13 +173,13 @@ public class GameData{
 				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
 
 			}
-			
+
 			System.out.println("Nouveau zombie ligne "+ligne);
 			alive++;
 		}
 		lstZ.removeAll(deleted);
 	}
-	
+
 	public void updateBullet(GameView v) {
 		ArrayList<Bullet> deleted = new ArrayList<>();
 		for(Bullet b:lstB) {
@@ -195,7 +196,7 @@ public class GameData{
 		}
 		lstB.removeAll(deleted);
 	}
-	
+
 	/**
 	 * Updates the data contained in the GameData.
 	 * Order :
@@ -209,41 +210,66 @@ public class GameData{
 	 * -Bullet
 	 * -Zombies
 	 */
-	public void updateData(GameView v,int width , int height,Event event) {
+	public void updateData(GameView v,int width , int height,Event event,boolean debug) {
 		Point2D.Float location;
 		updateZombie(v,width,height);
 		updatePlant(v);
 		updateBullet(v);
-		
-		
-		if (event == null) {
+
+
+		if ((event == null || event.getAction() != Action.POINTER_DOWN)&& !(debug) ) {
 			return;
 		}
 		
-		location = event.getLocation();
-		selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
-		//pour sélectionner la plante
-		if(v.lineFromY(location.y) == getNbLines()+1) {
-			choixPlante = v.columnFromX(location.x);
-		}
+		if(!(debug)) {
+			location = event.getLocation();
+			selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
+			//pour sélectionner la plante
+			if(v.lineFromY(location.y) == getNbLines()+1) {
+				choixPlante = v.columnFromX(location.x);
+			}
 
-		if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
-			switch (choixPlante) {
-			case 0:
-				addPlant(new Peashotter(v.midCell((int) (width/4), v.columnFromX(location.x),40), v.midCell((int) (height/4),v.lineFromY(location.y),40)));
-				break;
-			
-			case 1:
-				addPlant( new Wallnut(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
-				break;
-			
-			case 2:
-				addPlant( new CherryBomb(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
-				break;	
+			if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
+				switch (choixPlante) {
+				case 0:
+					addPlant(new Peashotter(v.midCell((int) (width/4), v.columnFromX(location.x),40), v.midCell((int) (height/4),v.lineFromY(location.y),40)));
+					break;
+
+				case 1:
+					addPlant( new Wallnut(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
+					break;
+
+				case 2:
+					addPlant( new CherryBomb(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
+					break;	
+				}
+
+			}
+		} else {
+			if((int)(Math.random()*100)==5) {
+				choixPlante = (int) (Math.random()*3);
+				System.out.println(choixPlante);
+				switch (choixPlante) {
+				case 0:
+					addPlant(new Peashotter(v.midCell((int) (width/4), (int)(Math.random()*getNbColumns()),40), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),40)));
+					System.out.println("Ajout Plante");
+					break;
+
+				case 1:
+					addPlant(new Wallnut(v.midCell((int) (width/4),(int)(Math.random()*getNbColumns()),50), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),50)));
+					System.out.println("Ajout Plante");
+					break;
+
+				case 2:
+					addPlant(new CherryBomb(v.midCell((int) (width/4), (int)(Math.random()*getNbColumns()),50), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),50)));
+					System.out.println("Ajout Plante");
+					break;	
+				}
 			}
 			
 		}
 		
+
 		if(playerHealth == 0) {
 			System.out.println("Vous Avez Perdu !");
 			System.exit(0);
@@ -253,29 +279,29 @@ public class GameData{
 		}
 
 	}
-	
+
 	public void addPlant(Plant p) {
 		lstP.add(p);
 	}
-	
-	
-	
+
+
+
 	public void updateAll() {
-		
+
 	}
 
 	public LinkedList<Zombie> getLstZ() {
 		return lstZ;
 	}
-	
+
 	public LinkedList<Bullet> getLstB() {
 		return lstB;
 	}
-	
+
 	public LinkedList<Plant> getLstP() {
 		return lstP;
 	}
-	
+
 	public int getChoixPlante() {
 		return choixPlante;
 	}
