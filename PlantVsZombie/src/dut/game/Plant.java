@@ -16,4 +16,5 @@ public interface Plant {
 	public boolean isAlive();
 	public Color getColor();
 	public void decrementCompteur();
+	public int getCost();
 }

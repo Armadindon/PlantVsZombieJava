@@ -15,14 +15,16 @@ public class PlantImplementation implements Plant  {
 	private int frequence;
 	private int compteur;
 	private Color color;
+	private int cost;
 	
-	public PlantImplementation(int x, int y,int taille,int health,int frequence,Color color) {
+	public PlantImplementation(int x, int y,int taille,int health,int frequence,Color color,int cost) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
 		this.health = health;
 		this.frequence=frequence;
 		this.color = color;
+		this.cost = cost;
 	}
 
 	@Override
@@ -99,6 +101,11 @@ public class PlantImplementation implements Plant  {
 	
 	public int getY() {
 		return y;
+	}
+	
+	@Override
+	public int getCost() {
+		return cost;
 	}
 
 }

@@ -16,7 +16,7 @@ public class GameData{
 	private final LinkedList<Plant> lstP;
 	private final LinkedList<Bullet> lstB;
 	private final LinkedList<Sun> lstS;
-	private final int sunNumber = 0;
+	private int sunNumber = 0;
 	private int zombieNumber[];
 	private int nbZombies= 20;
 	private int playerHealth = 3;
@@ -158,7 +158,7 @@ public class GameData{
 				}
 			}
 		}
-		if((int)(Math.random()*100)==5 && nbZombies-alive!=0) {
+		if((int)(Math.random()*200)==5 && nbZombies-alive!=0) {
 			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
 			int typeZombie = (int)(Math.random()*2);
@@ -201,13 +201,59 @@ public class GameData{
 		lstB.removeAll(deleted);
 	}
 	
-	public boolean canPlant(int i,int j,GameView v) {
+	public boolean canPlant(int i,int j,GameView v,int choixPlante) {
+		int prix;
+		switch (choixPlante) {
+		case 0:
+			prix = new Peashotter(0, 0).getCost();
+			break;
+		
+		case 1:
+			prix = new Wallnut(0, 0).getCost();
+			break;
+		
+		case 2:
+			prix = new CherryBomb(0, 0).getCost();
+			break;
+
+		default:
+			return false;
+			
+		}
+		if(sunNumber < prix) {
+			System.out.println("Pas assez de soleils : "+sunNumber+"<"+prix);
+			return false;
+		}
 		for(Plant p: lstP) {
 			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
 				return false;
 			}
 		}
+		sunNumber -= prix;
 		return true;
+	}
+	
+	public void clickOnSun (int i,int j,GameView v) {
+		LinkedList<Sun> deleted = new LinkedList<Sun>();
+		for(Sun s: lstS) {
+			if(s.draw().getBounds2D().intersects(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
+				System.out.println("Ramasse un soleil");
+				sunNumber++;
+				deleted.add(s);
+			}
+		}
+		lstS.removeAll(deleted);
+	}
+	
+	public void updateSun(GameView v,int width,int height) {
+		
+		if((int)(Math.random()*100) == 5) {
+			int i = (int)(Math.random()*getNbColumns());
+			int j = (int)(Math.random()*getNbLines());
+			System.out.println("Soleil en "+i+","+j);
+			lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30)));
+		}
+		
 	}
 
 	/**
@@ -228,6 +274,7 @@ public class GameData{
 		updateZombie(v,width,height);
 		updatePlant(v);
 		updateBullet(v);
+		updateSun(v,width,height);
 		
 		if(playerHealth == 0) {
 			System.out.println("Vous Avez Perdu !");
@@ -243,6 +290,7 @@ public class GameData{
 		
 		if(!(debug)) {
 			location = event.getLocation();
+			clickOnSun(v.columnFromX(location.x), v.lineFromY(location.y), v);
 			selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
 			//pour sélectionner la plante
 			if(v.lineFromY(location.y) == getNbLines()+1) {
@@ -250,7 +298,7 @@ public class GameData{
 			}
 
 			if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
-				if(canPlant(v.columnFromX(location.x),v.lineFromY(location.y),v)) {
+				if(canPlant(v.columnFromX(location.x),v.lineFromY(location.y),v,choixPlante)) {
 
 				switch (choixPlante) {
 				case 0:
@@ -292,7 +340,6 @@ public class GameData{
 			
 		}
 		
-
 		
 
 	}
@@ -321,5 +368,9 @@ public class GameData{
 
 	public int getChoixPlante() {
 		return choixPlante;
+	}
+	
+	public LinkedList<Sun> getLstS() {
+		return lstS;
 	}
 }

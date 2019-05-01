@@ -215,6 +215,10 @@ public class GameView implements GameDrawer {
 			graphics.setColor(g.getColor());
 			graphics.fill(g.draw());
 		}
+		graphics.setColor(Color.YELLOW);
+		for (Sun s:data.getLstS()) {
+			graphics.fill(s.draw());
+		}
 		
 	}
 	
