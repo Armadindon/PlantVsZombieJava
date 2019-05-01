@@ -22,6 +22,8 @@ public class GameData{
 	private int playerHealth = 3;
 	private int alive = 0;
 	private int choixPlante = -1;
+	private int respawnTime[] = {-1,-1,-1};
+	private int compteur = 0;
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
@@ -203,17 +205,21 @@ public class GameData{
 	
 	public boolean canPlant(int i,int j,GameView v,int choixPlante) {
 		int prix;
+		int respawn;
 		switch (choixPlante) {
 		case 0:
 			prix = new Peashotter(0, 0).getCost();
+			respawn = new Peashotter(0, 0).getRespawnTime();
 			break;
 		
 		case 1:
 			prix = new Wallnut(0, 0).getCost();
+			respawn = new Wallnut(0, 0).getRespawnTime();
 			break;
 		
 		case 2:
 			prix = new CherryBomb(0, 0).getCost();
+			respawn = new CherryBomb(0, 0).getRespawnTime();
 			break;
 
 		default:
@@ -224,11 +230,17 @@ public class GameData{
 			System.out.println("Pas assez de soleils : "+sunNumber+"<"+prix);
 			return false;
 		}
+		if(respawnTime[choixPlante] != -1 && respawnTime[choixPlante]+respawn > compteur ) {
+			System.out.println("Temps de recharge non terminé");
+			System.out.println((respawnTime[choixPlante]+respawn)+" "+compteur);
+			return false;
+		}
 		for(Plant p: lstP) {
 			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
 				return false;
 			}
 		}
+		respawnTime[choixPlante] = compteur;
 		sunNumber -= prix;
 		return true;
 	}
@@ -240,6 +252,7 @@ public class GameData{
 				System.out.println("Ramasse un soleil");
 				sunNumber++;
 				deleted.add(s);
+				choixPlante = -1;
 			}
 		}
 		lstS.removeAll(deleted);
@@ -270,6 +283,7 @@ public class GameData{
 	 * -Zombies
 	 */
 	public void updateData(GameView v,int width , int height,Event event,boolean debug) {
+		compteur++;
 		Point2D.Float location;
 		updateZombie(v,width,height);
 		updatePlant(v);
@@ -314,7 +328,7 @@ public class GameData{
 					break;	
 				}
 				choixPlante=-1;
-				}
+				}else {choixPlante = -1;}
 			}
 		} else {
 			if((int)(Math.random()*100)==5) {

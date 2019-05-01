@@ -16,8 +16,9 @@ public class PlantImplementation implements Plant  {
 	private int compteur;
 	private Color color;
 	private int cost;
+	private int respawnTime;
 	
-	public PlantImplementation(int x, int y,int taille,int health,int frequence,Color color,int cost) {
+	public PlantImplementation(int x, int y,int taille,int health,int frequence,Color color,int cost,int respawnTime) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
@@ -25,6 +26,7 @@ public class PlantImplementation implements Plant  {
 		this.frequence=frequence;
 		this.color = color;
 		this.cost = cost;
+		this.respawnTime = respawnTime;
 	}
 
 	@Override
@@ -107,5 +109,9 @@ public class PlantImplementation implements Plant  {
 	public int getCost() {
 		return cost;
 	}
-
+	
+	@Override
+	public int getRespawnTime() {
+		return respawnTime;
+	}
 }

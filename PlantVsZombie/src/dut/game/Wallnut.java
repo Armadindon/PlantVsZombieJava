@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class Wallnut extends PlantImplementation {
 	
 	public Wallnut(int x, int y) {
-		super(x,y,50,20,50,Color.YELLOW,1);
+		super(x,y,50,20,50,Color.YELLOW,1,300);
 	}
 	
 	@Override

@@ -2,8 +2,6 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Objects;
 
 public class ZombieImplementation implements Zombie{

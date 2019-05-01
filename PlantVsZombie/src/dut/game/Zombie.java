@@ -2,8 +2,6 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.LinkedList;
 
 public interface Zombie {
 	public boolean matrixOut(GameView v);

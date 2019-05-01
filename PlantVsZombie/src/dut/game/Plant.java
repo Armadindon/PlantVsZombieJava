@@ -17,4 +17,5 @@ public interface Plant {
 	public Color getColor();
 	public void decrementCompteur();
 	public int getCost();
+	public int getRespawnTime();
 }
