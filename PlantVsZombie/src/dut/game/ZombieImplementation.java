@@ -35,17 +35,6 @@ public class ZombieImplementation implements Zombie{
 		return new Rectangle2D.Float(x, y, taille,taille);
 	}
 
-	//On garde pour le moment , mais potentiellement inutile
-//	public ArrayList<GameObject> colliding(LinkedList<GameObject> lst) {
-//		ArrayList<GameObject> lstCol = new ArrayList<GameObject>();
-//		for(GameObject g: lst) {
-//			if(collision(g.draw()) && !(equals(g)) && g instanceof PlantImplementation) {
-//				System.out.println("Collision Zombie");
-//				lstCol.add(g);
-//			}
-//		}
-//		return lstCol;
-//	}
 
 	@Override
 	public boolean collision(Rectangle2D r) {

@@ -2,6 +2,7 @@ package dut.game;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -14,6 +15,8 @@ public class GameData{
 	private final LinkedList<Zombie> lstZ;
 	private final LinkedList<Plant> lstP;
 	private final LinkedList<Bullet> lstB;
+	private final LinkedList<Sun> lstS;
+	private final int sunNumber = 0;
 	private int zombieNumber[];
 	private int nbZombies= 20;
 	private int playerHealth = 3;
@@ -25,6 +28,7 @@ public class GameData{
 		lstZ = new LinkedList<>(); 
 		lstP = new LinkedList<>(); 
 		lstB = new LinkedList<>(); 
+		lstS = new LinkedList<>(); 
 		zombieNumber = new int[nbLines];
 	}
 
@@ -196,6 +200,15 @@ public class GameData{
 		}
 		lstB.removeAll(deleted);
 	}
+	
+	public boolean canPlant(int i,int j,GameView v) {
+		for(Plant p: lstP) {
+			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Updates the data contained in the GameData.
@@ -215,7 +228,14 @@ public class GameData{
 		updateZombie(v,width,height);
 		updatePlant(v);
 		updateBullet(v);
-
+		
+		if(playerHealth == 0) {
+			System.out.println("Vous Avez Perdu !");
+			System.exit(0);
+		}else if(nbZombies == 0){
+			System.out.println("Vous Avez Gagn� !");
+			System.exit(0);
+		}
 
 		if ((event == null || event.getAction() != Action.POINTER_DOWN)&& !(debug) ) {
 			return;
@@ -230,6 +250,8 @@ public class GameData{
 			}
 
 			if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
+				if(canPlant(v.columnFromX(location.x),v.lineFromY(location.y),v)) {
+
 				switch (choixPlante) {
 				case 0:
 					addPlant(new Peashotter(v.midCell((int) (width/4), v.columnFromX(location.x),40), v.midCell((int) (height/4),v.lineFromY(location.y),40)));
@@ -243,7 +265,8 @@ public class GameData{
 					addPlant( new CherryBomb(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
 					break;	
 				}
-
+				choixPlante=-1;
+				}
 			}
 		} else {
 			if((int)(Math.random()*100)==5) {
@@ -270,13 +293,7 @@ public class GameData{
 		}
 		
 
-		if(playerHealth == 0) {
-			System.out.println("Vous Avez Perdu !");
-			System.exit(0);
-		}else if(nbZombies == 0){
-			System.out.println("Vous Avez Gagn� !");
-			System.exit(0);
-		}
+		
 
 	}
 
