@@ -100,7 +100,7 @@ public class GameView implements GameDrawer {
 	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen,int choixPlante) {
 		
 		
-		graphics.setColor(graphics.getBackground());
+		graphics.setColor(Color.WHITE);
 		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on réaffiche le fond
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
@@ -163,6 +163,7 @@ public class GameView implements GameDrawer {
 				graphics.setColor(data.getCellColor(i, j));
 			}
 		}
+		
 
 	}
 
@@ -219,6 +220,13 @@ public class GameView implements GameDrawer {
 			graphics.fill(s.draw());
 		}
 		
+		for(LawnMower l :data.getLstL()) {
+			if (l!=null) {
+				graphics.setColor(l.getColor());
+				graphics.fill(l.draw());
+			}
+		}
+		
 	}
 	
 	
@@ -240,6 +248,10 @@ public class GameView implements GameDrawer {
 	 */
 	public boolean isOut(int x) {
 		return x<xOrigin || x>width+xOrigin;
+	}
+	
+	public boolean isOut2(int x) {
+		return x>width+xOrigin;
 	}
 	public boolean isOutZombie(int x) {
 		return x<xOrigin;

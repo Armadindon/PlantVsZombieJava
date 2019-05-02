@@ -16,6 +16,8 @@ public class GameData{
 	private final LinkedList<Plant> lstP;
 	private final LinkedList<Bullet> lstB;
 	private final LinkedList<Sun> lstS;
+	private final ArrayList<LawnMower> lstL;
+	private int LawnMowerNb[];
 	private int sunNumber = 0;
 	private int zombieNumber[];
 	private int nbZombies= 20;
@@ -31,7 +33,19 @@ public class GameData{
 		lstP = new LinkedList<>(); 
 		lstB = new LinkedList<>(); 
 		lstS = new LinkedList<>(); 
+		lstL = new ArrayList<LawnMower>();
+		
 		zombieNumber = new int[nbLines];
+		LawnMowerNb = new int[nbLines];
+		for (int i=0;i<nbLines;i++) {
+			LawnMowerNb[i]=1;
+		}
+	}
+	
+	public void initLawnMower(GameView v,int width,int height) {
+		for (int i=0;i<getNbLines();i++) {
+			lstL.add(new LawnMower(v.midCell((int) (width/4), -1, 50),v.midCell((int) (height/4), i, 50)));
+		}
 	}
 
 	/**
@@ -137,6 +151,25 @@ public class GameData{
 
 		lstP.removeAll(deleted);
 	}
+	
+	public void updateLawnMower(GameView v) {
+		ArrayList<Integer> deleted = new ArrayList<>();
+		for (LawnMower l: lstL) {
+			if(l!=null && l.isRunning()) {
+				ArrayList<Zombie> colliding = l.colliding(lstZ);
+				l.move();
+				if(colliding.size()!=0) {
+					lstZ.removeAll(colliding);
+				}
+				if(l.matrixOut(v)) {
+					deleted.add(v.lineFromY(l.getY()));
+				}
+			}
+		}
+		for(int i:deleted) {
+			lstL.set(i, null);
+		}
+	}
 
 	public void updateZombie(GameView v,int width,int height) {
 		ArrayList<Zombie> deleted = new ArrayList<>();
@@ -148,7 +181,14 @@ public class GameData{
 				System.out.println("Le zombie "+z+" est sorti de la matrice! On le suprimme");
 				nbZombies--;
 				alive--;
-				playerHealth--;
+				if(LawnMowerNb[v.lineFromY(z.getY())]==1) {
+					System.out.println("Tondeuse lancée en "+v.lineFromY(z.getY()));
+					lstL.get(v.lineFromY(z.getY())).run();
+					LawnMowerNb[v.lineFromY(z.getY())]=0;
+				}else {
+					System.out.println("Perdu");
+					System.exit(0);
+				}
 				zombieNumber[v.lineFromY(z.getY())]--;
 			}else {
 				if(!(z.isAlive())) {
@@ -289,11 +329,10 @@ public class GameData{
 		updatePlant(v);
 		updateBullet(v);
 		updateSun(v,width,height);
+		updateLawnMower(v);
 		
-		if(playerHealth == 0) {
-			System.out.println("Vous Avez Perdu !");
-			System.exit(0);
-		}else if(nbZombies == 0){
+
+		if(nbZombies == 0){
 			System.out.println("Vous Avez Gagnï¿½ !");
 			System.exit(0);
 		}
@@ -386,5 +425,9 @@ public class GameData{
 	
 	public LinkedList<Sun> getLstS() {
 		return lstS;
+	}
+	
+	public ArrayList<LawnMower> getLstL() {
+		return lstL;
 	}
 }

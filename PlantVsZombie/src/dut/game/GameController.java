@@ -22,6 +22,7 @@ public class GameController {
 		GameData data = new GameData(5, 8);
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
+		data.initLawnMower(view,(int) width,(int) height);
 		view.draw(context, data,screenInfo,data.getChoixPlante());
 
 
