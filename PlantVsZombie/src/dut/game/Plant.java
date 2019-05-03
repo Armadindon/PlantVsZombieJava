@@ -12,7 +12,7 @@ public interface Plant {
 	public ArrayList<Zombie> colliding(LinkedList<Zombie> lst);
 	public boolean collision(Rectangle2D r);
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]);
-	public Bullet bullet();
+	public Bullet bullet(GameData data);
 	public boolean isAlive();
 	public Color getColor();
 	public void decrementCompteur();

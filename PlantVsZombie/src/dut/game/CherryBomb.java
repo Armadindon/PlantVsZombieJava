@@ -37,7 +37,7 @@ public class CherryBomb extends PlantImplementation{
 	}
 	
 	@Override
-	public Bullet bullet() {
+	public Bullet bullet(GameData data) {
 		return null;
 	}
 	

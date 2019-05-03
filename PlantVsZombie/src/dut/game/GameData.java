@@ -24,7 +24,7 @@ public class GameData{
 	private int playerHealth = 3;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1};
+	private int respawnTime[] = {-1,-1,-1,-1};
 	private int compteur = 0;
 
 	public GameData(int nbLines, int nbColumns) {
@@ -136,8 +136,8 @@ public class GameData{
 			//on tire
 			if(p.isFire(lstZ, v,zombieNumber)) {
 				System.out.println("La plante "+p+" Tire / Explose !");
-				if(p.bullet()!=null) {
-					lstB.add(p.bullet());
+				if(p.bullet(this)!=null) {
+					lstB.add(p.bullet(this));
 				}
 			}
 			for(Zombie z:p.colliding(lstZ)) {
@@ -169,6 +169,31 @@ public class GameData{
 		for(int i:deleted) {
 			lstL.set(i, null);
 		}
+	}
+	
+	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
+		if(canPlant(i,j,v,choixPlante) || debug) {
+
+			switch (choixPlante) {
+			case 0:
+				addPlant(new Peashotter(v.midCell((int) (width/4), i,40), v.midCell((int) (height/4),j,40)));
+				break;
+
+			case 1:
+				addPlant( new Wallnut(v.midCell((int) (width/4), i,50), v.midCell((int) (height/4),j,50)));
+				break;
+
+			case 2:
+				addPlant( new CherryBomb(v.midCell((int) (width/4), i,50), v.midCell((int) (height/4),j,50)));
+				break;	
+			
+			case 3:
+				addPlant( new SunFlower(v.midCell((int) (width/4), i,40), v.midCell((int) (height/4),j,40)));
+				break;	
+			}
+			choixPlante=-1;
+			}else {choixPlante = -1;}
+		
 	}
 
 	public void updateZombie(GameView v,int width,int height) {
@@ -261,6 +286,11 @@ public class GameData{
 			prix = new CherryBomb(0, 0).getCost();
 			respawn = new CherryBomb(0, 0).getRespawnTime();
 			break;
+		
+		case 3:
+			prix = new SunFlower(0, 0).getCost();
+			respawn = new SunFlower(0, 0).getRespawnTime();
+			break;
 
 		default:
 			return false;
@@ -351,44 +381,12 @@ public class GameData{
 			}
 
 			if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
-				if(canPlant(v.columnFromX(location.x),v.lineFromY(location.y),v,choixPlante)) {
-
-				switch (choixPlante) {
-				case 0:
-					addPlant(new Peashotter(v.midCell((int) (width/4), v.columnFromX(location.x),40), v.midCell((int) (height/4),v.lineFromY(location.y),40)));
-					break;
-
-				case 1:
-					addPlant( new Wallnut(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
-					break;
-
-				case 2:
-					addPlant( new CherryBomb(v.midCell((int) (width/4), v.columnFromX(location.x),50), v.midCell((int) (height/4),v.lineFromY(location.y),50)));
-					break;	
-				}
-				choixPlante=-1;
-				}else {choixPlante = -1;}
+				planterPlante(v.columnFromX(location.x), v.lineFromY(location.y), v, choixPlante, width, height,debug);
 			}
 		} else {
 			if((int)(Math.random()*100)==5) {
 				choixPlante = (int) (Math.random()*3);
-				System.out.println(choixPlante);
-				switch (choixPlante) {
-				case 0:
-					addPlant(new Peashotter(v.midCell((int) (width/4), (int)(Math.random()*getNbColumns()),40), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),40)));
-					System.out.println("Ajout Plante");
-					break;
-
-				case 1:
-					addPlant(new Wallnut(v.midCell((int) (width/4),(int)(Math.random()*getNbColumns()),50), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),50)));
-					System.out.println("Ajout Plante");
-					break;
-
-				case 2:
-					addPlant(new CherryBomb(v.midCell((int) (width/4), (int)(Math.random()*getNbColumns()),50), v.midCell((int) (height/4),(int)(Math.random()*getNbLines()),50)));
-					System.out.println("Ajout Plante");
-					break;	
-				}
+				planterPlante((int)(Math.random()*getNbColumns()), (int)(Math.random()*getNbLines()), v, choixPlante, width, height,debug);
 			}
 			
 		}
@@ -399,12 +397,6 @@ public class GameData{
 
 	public void addPlant(Plant p) {
 		lstP.add(p);
-	}
-
-
-
-	public void updateAll() {
-
 	}
 
 	public LinkedList<Zombie> getLstZ() {
@@ -430,4 +422,9 @@ public class GameData{
 	public ArrayList<LawnMower> getLstL() {
 		return lstL;
 	}
+	
+	public void addSun(Sun s) {
+		lstS.add(s);
+	}
+	
 }

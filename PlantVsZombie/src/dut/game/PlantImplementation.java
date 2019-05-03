@@ -58,7 +58,7 @@ public class PlantImplementation implements Plant  {
 		return false;
 	}
 	
-	public Bullet bullet() {
+	public Bullet bullet(GameData data) {
 		return new Bullet(x+taille+10,y+taille/2);
 	}
 
@@ -101,6 +101,10 @@ public class PlantImplementation implements Plant  {
 		compteur--;
 	}
 	
+	public void incrementCompteur() {
+		compteur++;
+	}
+	
 	public int getY() {
 		return y;
 	}
@@ -113,5 +117,12 @@ public class PlantImplementation implements Plant  {
 	@Override
 	public int getRespawnTime() {
 		return respawnTime;
+	}
+	
+	public int getCompteur() {
+		return compteur;
+	}
+	public int getFrequence() {
+		return frequence;
 	}
 }

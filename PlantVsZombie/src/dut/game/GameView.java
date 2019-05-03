@@ -116,12 +116,15 @@ public class GameView implements GameDrawer {
 		}
 		
 		//on affiche le selecteur
-		graphics.setColor(Color.BLUE);
+		graphics.setColor(new Peashotter(0, 0).getColor());
 		graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
-		graphics.setColor(Color.YELLOW);
+		graphics.setColor(new Wallnut(0, 0).getColor());
 		graphics.fill(new Wallnut(midCell(xOrigin,1,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
-		graphics.setColor(Color.RED);
+		graphics.setColor(new CherryBomb(0, 0).getColor());
 		graphics.fill(new Wallnut(midCell(xOrigin,2,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
+		graphics.setColor(new SunFlower(0, 0).getColor());
+		graphics.fill(new SunFlower(midCell(xOrigin,3,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
+		
 		
 		//on affiche la plante selectionnée
 		switch (choixPlante) {
@@ -138,6 +141,11 @@ public class GameView implements GameDrawer {
 		case 2:
 			graphics.setColor(Color.RED);
 			graphics.fill(new CherryBomb(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
+			break;
+		
+		case 3:
+			graphics.setColor(new Color(255,255,102));
+			graphics.fill(new SunFlower(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
 			break;
 
 		default:
