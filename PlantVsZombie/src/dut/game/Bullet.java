@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import dut.game.zombie.Zombie;
+import dut.game.zombie.ZombieImplementation;
+
 public class Bullet {
 	
 	private int x;

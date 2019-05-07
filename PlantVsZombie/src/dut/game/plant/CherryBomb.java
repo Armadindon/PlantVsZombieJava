@@ -1,9 +1,14 @@
-package dut.game;
+package dut.game.plant;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import dut.game.Bullet;
+import dut.game.GameData;
+import dut.game.GameView;
+import dut.game.zombie.Zombie;
 
 public class CherryBomb extends PlantImplementation{
 	private int compteur =0;

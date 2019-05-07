@@ -1,10 +1,15 @@
-package dut.game;
+package dut.game.plant;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
 import java.util.LinkedList;
+
+import dut.game.Bullet;
+import dut.game.GameData;
+import dut.game.GameView;
+import dut.game.zombie.Zombie;
 
 public interface Plant {
 	public void addToHealth(double i);

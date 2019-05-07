@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import dut.game.zombie.Zombie;
+
 public class LawnMower {
 	private int x;
 	private int y;

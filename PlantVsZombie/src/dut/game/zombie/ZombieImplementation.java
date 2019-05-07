@@ -1,8 +1,10 @@
-package dut.game;
+package dut.game.zombie;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.Objects;
+
+import dut.game.GameView;
 
 public class ZombieImplementation implements Zombie{
 	private int x;

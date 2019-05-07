@@ -1,7 +1,10 @@
-package dut.game;
+package dut.game.plant;
 
 import java.awt.Color;
 import java.util.LinkedList;
+
+import dut.game.GameView;
+import dut.game.zombie.Zombie;
 
 public class Wallnut extends PlantImplementation {
 	

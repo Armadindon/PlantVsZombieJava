@@ -1,4 +1,4 @@
-package dut.game;
+package dut.game.plant;
 
 import java.awt.Color;
 

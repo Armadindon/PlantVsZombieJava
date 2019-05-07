@@ -1,4 +1,4 @@
-package dut.game;
+package dut.game.zombie;
 
 import java.awt.Color;
 

@@ -1,7 +1,13 @@
-package dut.game;
+package dut.game.plant;
 
 import java.awt.Color;
 import java.util.LinkedList;
+
+import dut.game.Bullet;
+import dut.game.GameData;
+import dut.game.GameView;
+import dut.game.Sun;
+import dut.game.zombie.Zombie;
 
 public class SunFlower extends PlantImplementation {
 

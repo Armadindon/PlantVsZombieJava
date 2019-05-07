@@ -6,7 +6,12 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 
-
+import dut.game.plant.CherryBomb;
+import dut.game.plant.Peashotter;
+import dut.game.plant.Plant;
+import dut.game.plant.SunFlower;
+import dut.game.plant.Wallnut;
+import dut.game.zombie.Zombie;
 import fr.umlv.zen5.ScreenInfo;
 
 

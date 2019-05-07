@@ -1,7 +1,9 @@
-package dut.game;
+package dut.game.zombie;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+
+import dut.game.GameView;
 
 public interface Zombie {
 	public boolean matrixOut(GameView v);

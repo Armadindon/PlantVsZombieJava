@@ -6,6 +6,15 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import dut.game.plant.CherryBomb;
+import dut.game.plant.Peashotter;
+import dut.game.plant.Plant;
+import dut.game.plant.SunFlower;
+import dut.game.plant.Wallnut;
+import dut.game.zombie.BasicZombie;
+import dut.game.zombie.ConeheadZombie;
+import dut.game.zombie.FlagZombie;
+import dut.game.zombie.Zombie;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.Event.Action;
 
