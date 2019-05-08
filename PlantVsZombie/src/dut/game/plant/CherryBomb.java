@@ -61,5 +61,10 @@ public class CherryBomb extends PlantImplementation{
 		return lstCol;
 	}
 	
+	@Override
+	public Plant instantiateFlower(int x ,int y) {
+		return new CherryBomb(x, y);
+	}
+	
 	
 }

@@ -23,4 +23,6 @@ public interface Plant {
 	public void decrementCompteur();
 	public int getCost();
 	public int getRespawnTime();
+	public Plant instantiateFlower(int x,int y);
+	public int getSize();
 }

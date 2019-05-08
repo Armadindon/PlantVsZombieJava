@@ -16,5 +16,10 @@ public class Wallnut extends PlantImplementation {
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]) {
 		return false;// ne tire jamais
 	}
+	
+	@Override
+	public Plant instantiateFlower(int x ,int y) {
+		return new Wallnut(x, y);
+	}
 
 }

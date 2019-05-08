@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import dut.game.plant.CherryBomb;
 import dut.game.plant.Peashotter;
@@ -30,11 +32,11 @@ public class GameData{
 	private int sunNumber = 0;
 	private int zombieNumber[];
 	private int nbZombies= 20;
-	private int playerHealth = 3;
 	private int alive = 0;
 	private int choixPlante = -1;
 	private int respawnTime[] = {-1,-1,-1,-1};
 	private int compteur = 0;
+	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
@@ -49,6 +51,11 @@ public class GameData{
 		for (int i=0;i<nbLines;i++) {
 			LawnMowerNb[i]=1;
 		}
+		selectedPlant.add(new Peashotter(0, 0));
+		selectedPlant.add(new CherryBomb(0, 0));
+		selectedPlant.add(new Wallnut(0, 0));
+		selectedPlant.add(new SunFlower(0, 0));
+
 	}
 	
 	public void initLawnMower(GameView v,int width,int height) {
@@ -182,24 +189,9 @@ public class GameData{
 	
 	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
 		if(canPlant(i,j,v,choixPlante) || debug) {
+			int size = selectedPlant.get(choixPlante).getSize();
+			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,size),  v.midCell((int) (height/4),j,size)));
 
-			switch (choixPlante) {
-			case 0:
-				addPlant(new Peashotter(v.midCell((int) (width/4), i,40), v.midCell((int) (height/4),j,40)));
-				break;
-
-			case 1:
-				addPlant( new Wallnut(v.midCell((int) (width/4), i,50), v.midCell((int) (height/4),j,50)));
-				break;
-
-			case 2:
-				addPlant( new CherryBomb(v.midCell((int) (width/4), i,50), v.midCell((int) (height/4),j,50)));
-				break;	
-			
-			case 3:
-				addPlant( new SunFlower(v.midCell((int) (width/4), i,40), v.midCell((int) (height/4),j,40)));
-				break;	
-			}
 			choixPlante=-1;
 			}else {choixPlante = -1;}
 		
@@ -278,33 +270,12 @@ public class GameData{
 	}
 	
 	public boolean canPlant(int i,int j,GameView v,int choixPlante) {
-		int prix;
-		int respawn;
-		switch (choixPlante) {
-		case 0:
-			prix = new Peashotter(0, 0).getCost();
-			respawn = new Peashotter(0, 0).getRespawnTime();
-			break;
-		
-		case 1:
-			prix = new Wallnut(0, 0).getCost();
-			respawn = new Wallnut(0, 0).getRespawnTime();
-			break;
-		
-		case 2:
-			prix = new CherryBomb(0, 0).getCost();
-			respawn = new CherryBomb(0, 0).getRespawnTime();
-			break;
-		
-		case 3:
-			prix = new SunFlower(0, 0).getCost();
-			respawn = new SunFlower(0, 0).getRespawnTime();
-			break;
-
-		default:
+		if(choixPlante==-1) {
 			return false;
-			
 		}
+		int prix=selectedPlant.get(choixPlante).getCost();
+		int respawn=selectedPlant.get(i).getRespawnTime();
+		
 		if(sunNumber < prix) {
 			System.out.println("Pas assez de soleils : "+sunNumber+"<"+prix);
 			return false;
@@ -434,6 +405,10 @@ public class GameData{
 	
 	public void addSun(Sun s) {
 		lstS.add(s);
+	}
+	
+	public List<Plant> getSelectedPlant() {
+		return Collections.unmodifiableList(selectedPlant);
 	}
 	
 }

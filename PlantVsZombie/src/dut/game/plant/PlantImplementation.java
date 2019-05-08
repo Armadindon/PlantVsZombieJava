@@ -23,7 +23,7 @@ public class PlantImplementation implements Plant  {
 	private int cost;
 	private int respawnTime;
 	
-	public PlantImplementation(int x, int y,int taille,int health,int frequence,Color color,int cost,int respawnTime) {
+	public PlantImplementation(int x, int y,int taille,double health,int frequence,Color color,int cost,int respawnTime) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
@@ -129,5 +129,15 @@ public class PlantImplementation implements Plant  {
 	}
 	public int getFrequence() {
 		return frequence;
+	}
+
+	@Override
+	public Plant instantiateFlower(int x ,int y) {
+		return new PlantImplementation(x, y, taille, health, frequence, color, cost, respawnTime);
+	}
+	
+	@Override
+	public int getSize() {
+		return taille;
 	}
 }

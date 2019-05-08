@@ -1,10 +1,12 @@
 package dut.game;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
+import java.util.List;
 
 import dut.game.plant.CherryBomb;
 import dut.game.plant.Peashotter;
@@ -121,41 +123,24 @@ public class GameView implements GameDrawer {
 		}
 		
 		//on affiche le selecteur
-		graphics.setColor(new Peashotter(0, 0).getColor());
-		graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
-		graphics.setColor(new Wallnut(0, 0).getColor());
-		graphics.fill(new Wallnut(midCell(xOrigin,1,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
-		graphics.setColor(new CherryBomb(0, 0).getColor());
-		graphics.fill(new Wallnut(midCell(xOrigin,2,50), midCell(yOrigin,data.getNbLines()+1,50)).draw());
-		graphics.setColor(new SunFlower(0, 0).getColor());
-		graphics.fill(new SunFlower(midCell(xOrigin,3,40), midCell(yOrigin,data.getNbLines()+1,40)).draw());
+		graphics.setFont(new Font("Regular",0, 20));
+		
+		List<Plant> selectedPlant = data.getSelectedPlant();
+		for(int i=0;i<data.getSelectedPlant().size();i++) {
+			graphics.setColor(selectedPlant.get(i).getColor());
+			int size = selectedPlant.get(i).getSize();
+			graphics.fill(selectedPlant.get(i).instantiateFlower(midCell(xOrigin,i,size), midCell(yOrigin,data.getNbLines()+1,size)).draw());
+		}
+		
+		
 		
 		
 		//on affiche la plante selectionnée
-		switch (choixPlante) {
-		case 0:
-			graphics.setColor(Color.BLUE);
-			graphics.fill(new Peashotter(midCell(xOrigin,0,40), midCell(yOrigin,-1,40)).draw());
-			break;
-		
-		case 1:
-			graphics.setColor(Color.YELLOW);
-			graphics.fill(new Wallnut(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
-			break;
-		
-		case 2:
-			graphics.setColor(Color.RED);
-			graphics.fill(new CherryBomb(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
-			break;
-		
-		case 3:
-			graphics.setColor(new Color(255,255,102));
-			graphics.fill(new SunFlower(midCell(xOrigin,0,50), midCell(yOrigin,-1,50)).draw());
-			break;
-
-		default:
-			break;
+		if(choixPlante!=-1) {
+			graphics.setColor(selectedPlant.get(choixPlante).getColor());
+			graphics.fill(selectedPlant.get(choixPlante).instantiateFlower(midCell(xOrigin,0,40), midCell(yOrigin,-1,40)).draw());
 		}
+		
 		
 		graphics.setColor(Color.WHITE);
 		for (int i = 0; i <= data.getNbLines()+2; i++) {
@@ -223,7 +208,6 @@ public class GameView implements GameDrawer {
 			graphics.fill(g.draw());
 		}
 		for(Bullet g :data.getLstB()){
-			graphics.fill(g.draw());
 			g.move();
 			graphics.setColor(g.getColor());
 			graphics.fill(g.draw());
