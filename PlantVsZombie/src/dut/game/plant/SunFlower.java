@@ -12,12 +12,12 @@ import dut.game.zombie.Zombie;
 public class SunFlower extends PlantImplementation {
 
 	public SunFlower(int x, int y) {
-		super(x, y, 40, 1, 50, new Color(204,153,0), 1, 100);
+		super(x, y, 40, 1, 50, new Color(204,153,0), 50, 100);
 	}
 	
 	@Override
 	public Bullet bullet(GameData data) {
-		data.addSun(new Sun(getX(), getY()));
+		data.addSun(new Sun(getX(), getY(),25));
 		return null;
 	}
 	

@@ -29,7 +29,7 @@ public class GameData{
 	private final LinkedList<Sun> lstS;
 	private final ArrayList<LawnMower> lstL;
 	private int LawnMowerNb[];
-	private int sunNumber = 0;
+	private int sunNumber = 50;
 	private int zombieNumber[];
 	private int nbZombies= 20;
 	private int alive = 0;
@@ -175,6 +175,10 @@ public class GameData{
 				ArrayList<Zombie> colliding = l.colliding(lstZ);
 				l.move();
 				if(colliding.size()!=0) {
+					for(Zombie z: colliding) {
+						nbZombies--;
+						zombieNumber[v.lineFromY(z.getY())]--;
+					}
 					lstZ.removeAll(colliding);
 				}
 				if(l.matrixOut(v)) {
@@ -191,7 +195,9 @@ public class GameData{
 		if(canPlant(i,j,v,choixPlante) || debug) {
 			int size = selectedPlant.get(choixPlante).getSize();
 			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,size),  v.midCell((int) (height/4),j,size)));
-
+			
+			sunNumber-= selectedPlant.get(choixPlante).getCost();
+			respawnTime[choixPlante]=compteur;
 			choixPlante=-1;
 			}else {choixPlante = -1;}
 		
@@ -274,7 +280,7 @@ public class GameData{
 			return false;
 		}
 		int prix=selectedPlant.get(choixPlante).getCost();
-		int respawn=selectedPlant.get(i).getRespawnTime();
+		int respawn=selectedPlant.get(choixPlante).getRespawnTime();
 		
 		if(sunNumber < prix) {
 			System.out.println("Pas assez de soleils : "+sunNumber+"<"+prix);
@@ -290,8 +296,6 @@ public class GameData{
 				return false;
 			}
 		}
-		respawnTime[choixPlante] = compteur;
-		sunNumber -= prix;
 		return true;
 	}
 	
@@ -300,7 +304,7 @@ public class GameData{
 		for(Sun s: lstS) {
 			if(s.draw().getBounds2D().intersects(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
 				System.out.println("Ramasse un soleil");
-				sunNumber++;
+				sunNumber+=s.getValeur();
 				deleted.add(s);
 				choixPlante = -1;
 			}
@@ -314,7 +318,7 @@ public class GameData{
 			int i = (int)(Math.random()*getNbColumns());
 			int j = (int)(Math.random()*getNbLines());
 			System.out.println("Soleil en "+i+","+j);
-			lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30)));
+			lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30),50));
 		}
 		
 	}
@@ -376,6 +380,7 @@ public class GameData{
 	}
 
 	public void addPlant(Plant p) {
+		
 		lstP.add(p);
 	}
 
@@ -409,6 +414,10 @@ public class GameData{
 	
 	public List<Plant> getSelectedPlant() {
 		return Collections.unmodifiableList(selectedPlant);
+	}
+	
+	public Integer getSunNumber() {
+		return sunNumber;
 	}
 	
 }

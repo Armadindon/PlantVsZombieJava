@@ -14,7 +14,7 @@ public class CherryBomb extends PlantImplementation{
 	private int compteur =0;
 	
 	public CherryBomb(int x, int y) {
-		super(x,y,50,1,1,Color.RED,3,200);
+		super(x,y,50,1,1,Color.RED,150,200);
 	}
 	
 	private Rectangle2D drawImpact(GameView v) {

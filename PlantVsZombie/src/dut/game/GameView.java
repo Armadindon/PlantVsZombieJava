@@ -127,9 +127,15 @@ public class GameView implements GameDrawer {
 		
 		List<Plant> selectedPlant = data.getSelectedPlant();
 		for(int i=0;i<data.getSelectedPlant().size();i++) {
-			graphics.setColor(selectedPlant.get(i).getColor());
+			if(data.canPlant(100, 100, this, i)) {
+				graphics.setColor(selectedPlant.get(i).getColor());
+			}else {
+				graphics.setColor(Color.GRAY);
+			}
 			int size = selectedPlant.get(i).getSize();
 			graphics.fill(selectedPlant.get(i).instantiateFlower(midCell(xOrigin,i,size), midCell(yOrigin,data.getNbLines()+1,size)).draw());
+			graphics.setColor(Color.black);
+			graphics.drawString(selectedPlant.get(i).getCost().toString(), xOrigin+(squareSize*i)+5, yOrigin+(squareSize*(data.getNbLines()+2))-5);
 		}
 		
 		
@@ -140,6 +146,12 @@ public class GameView implements GameDrawer {
 			graphics.setColor(selectedPlant.get(choixPlante).getColor());
 			graphics.fill(selectedPlant.get(choixPlante).instantiateFlower(midCell(xOrigin,0,40), midCell(yOrigin,-1,40)).draw());
 		}
+		
+		//on affiche le nombre de soleils
+		graphics.setColor(Color.YELLOW);
+		graphics.fill(new Sun(xOrigin+squareSize*(data.getNbColumns()-1)+squareSize/3,yOrigin-35,0).draw());
+		graphics.setColor(Color.BLACK);
+		graphics.drawString(data.getSunNumber().toString(), xOrigin+squareSize*data.getNbColumns()-30, yOrigin-10);
 		
 		
 		graphics.setColor(Color.WHITE);

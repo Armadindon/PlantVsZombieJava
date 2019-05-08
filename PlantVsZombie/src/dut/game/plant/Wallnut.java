@@ -9,7 +9,7 @@ import dut.game.zombie.Zombie;
 public class Wallnut extends PlantImplementation {
 	
 	public Wallnut(int x, int y) {
-		super(x,y,50,20,50,Color.YELLOW,1,300);
+		super(x,y,50,20,50,Color.YELLOW,50,300);
 	}
 	
 	@Override

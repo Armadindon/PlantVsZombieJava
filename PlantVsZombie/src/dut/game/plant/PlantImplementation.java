@@ -115,7 +115,7 @@ public class PlantImplementation implements Plant  {
 	}
 	
 	@Override
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
 	
