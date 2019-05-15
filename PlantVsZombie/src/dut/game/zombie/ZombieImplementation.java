@@ -7,15 +7,15 @@ import java.util.Objects;
 import dut.game.GameView;
 
 public class ZombieImplementation implements Zombie{
-	private int x;
+	private double x;
 	private int y;
 	private int taille;
-	private int speed;
+	private double speed;
 	private double health;
 	private final Color color;
-	private final int initialSpeed;
+	private final double initialSpeed;
 
-	public ZombieImplementation(int x, int y, int taille,int speed,double health,Color color) {
+	public ZombieImplementation(int x, int y, int taille,double speed,double health,Color color) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
@@ -32,7 +32,7 @@ public class ZombieImplementation implements Zombie{
 	
 	@Override
 	public Rectangle2D.Float draw(){
-		return new Rectangle2D.Float(x, y, taille,taille);
+		return new Rectangle2D.Float((float) x, y, taille,taille);
 	}
 
 
@@ -66,7 +66,7 @@ public class ZombieImplementation implements Zombie{
 	}
 	
 	public boolean matrixOut(GameView v) {
-		return v.isOutZombie(x);
+		return v.isOutZombie((int) x);
 	}
 	
 	@Override

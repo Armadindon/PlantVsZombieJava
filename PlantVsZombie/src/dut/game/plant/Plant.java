@@ -20,7 +20,6 @@ public interface Plant {
 	public Bullet bullet(GameData data);
 	public boolean isAlive();
 	public Color getColor();
-	public void decrementCompteur();
 	public Integer getCost();
 	public int getRespawnTime();
 	public Plant instantiateFlower(int x,int y);

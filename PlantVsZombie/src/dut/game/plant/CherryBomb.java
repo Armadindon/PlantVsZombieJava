@@ -11,10 +11,9 @@ import dut.game.GameView;
 import dut.game.zombie.Zombie;
 
 public class CherryBomb extends PlantImplementation{
-	private int compteur =0;
 	
 	public CherryBomb(int x, int y) {
-		super(x,y,50,1,1,Color.RED,150,200);
+		super(x,y,50,1,3000,Color.RED,150,200);
 	}
 	
 	private Rectangle2D drawImpact(GameView v) {
@@ -27,16 +26,13 @@ public class CherryBomb extends PlantImplementation{
 	
 	@Override
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[]) {
-		compteur++;
-		if(compteur>75) {
-			if(collidingExplosion(lstZ, v).size()!=0) {
+		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 				for(Zombie z: collidingExplosion(lstZ, v)) {
 					z.addToHealth(-10);
 					this.addToHealth(-100);
 				}
 				return true;
 				
-			}
 		}
 		return false;
 	}

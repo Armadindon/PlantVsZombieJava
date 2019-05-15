@@ -17,13 +17,14 @@ public class PlantImplementation implements Plant  {
 	private int y;
 	private final int taille;
 	private double health;
-	private int frequence;
-	private int compteur;
+	private long frequence;
+	private long lastFired = System.currentTimeMillis();
 	private Color color;
 	private int cost;
 	private int respawnTime;
+	private boolean isFire=false;
 	
-	public PlantImplementation(int x, int y,int taille,double health,int frequence,Color color,int cost,int respawnTime) {
+	public PlantImplementation(int x, int y,int taille,double health,long frequence,Color color,int cost,int respawnTime) {
 		this.x = x;
 		this.y = y;
 		this.taille = taille;
@@ -58,12 +59,15 @@ public class PlantImplementation implements Plant  {
 	
 	@Override
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]) {
-		compteur++;
-		if(compteur%frequence==0 && zombieNumber[v.lineFromY(y)]!=0) {return true;}
+		if(System.currentTimeMillis()>lastFired+frequence) {
+			isFire=true;
+		}
+		if(isFire && zombieNumber[v.lineFromY(y)]!=0) {isFire=false;return true;}
 		return false;
 	}
 	
 	public Bullet bullet(GameData data) {
+		lastFired=System.currentTimeMillis();
 		return new Bullet(x+taille+10,y+taille/2);
 	}
 
@@ -101,14 +105,7 @@ public class PlantImplementation implements Plant  {
 	public int getX() {
 		return x;
 	}
-	
-	public void decrementCompteur(){
-		compteur--;
-	}
-	
-	public void incrementCompteur() {
-		compteur++;
-	}
+
 	
 	public int getY() {
 		return y;
@@ -123,11 +120,8 @@ public class PlantImplementation implements Plant  {
 	public int getRespawnTime() {
 		return respawnTime;
 	}
-	
-	public int getCompteur() {
-		return compteur;
-	}
-	public int getFrequence() {
+
+	public long getFrequence() {
 		return frequence;
 	}
 
@@ -139,5 +133,13 @@ public class PlantImplementation implements Plant  {
 	@Override
 	public int getSize() {
 		return taille;
+	}
+	
+	public long getLastFired() {
+		return lastFired;
+	}
+	
+	public void setLastFired(long lastFired) {
+		this.lastFired = lastFired;
 	}
 }

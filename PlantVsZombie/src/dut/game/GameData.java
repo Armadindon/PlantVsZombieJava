@@ -214,7 +214,7 @@ public class GameData{
 				nbZombies--;
 				alive--;
 				if(LawnMowerNb[v.lineFromY(z.getY())]==1) {
-					System.out.println("Tondeuse lancée en "+v.lineFromY(z.getY()));
+					System.out.println("Tondeuse lancï¿½e en "+v.lineFromY(z.getY()));
 					lstL.get(v.lineFromY(z.getY())).run();
 					LawnMowerNb[v.lineFromY(z.getY())]=0;
 				}else {
@@ -283,12 +283,10 @@ public class GameData{
 		int respawn=selectedPlant.get(choixPlante).getRespawnTime();
 		
 		if(sunNumber < prix) {
-			System.out.println("Pas assez de soleils : "+sunNumber+"<"+prix);
 			return false;
 		}
 		if(respawnTime[choixPlante] != -1 && respawnTime[choixPlante]+respawn > compteur ) {
-			System.out.println("Temps de recharge non terminé");
-			System.out.println((respawnTime[choixPlante]+respawn)+" "+compteur);
+
 			return false;
 		}
 		for(Plant p: lstP) {
@@ -359,7 +357,7 @@ public class GameData{
 			location = event.getLocation();
 			clickOnSun(v.columnFromX(location.x), v.lineFromY(location.y), v);
 			selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
-			//pour sélectionner la plante
+			//pour sï¿½lectionner la plante
 			if(v.lineFromY(location.y) == getNbLines()+1) {
 				choixPlante = v.columnFromX(location.x);
 			}
