@@ -13,7 +13,7 @@ import dut.game.zombie.Zombie;
 public class CherryBomb extends PlantImplementation{
 	
 	public CherryBomb(int x, int y) {
-		super(x,y,50,1,3000,Color.RED,150,200);
+		super(x,y,50,50,1,3000,Color.RED,150,200);
 	}
 	
 	private Rectangle2D drawImpact(GameView v) {

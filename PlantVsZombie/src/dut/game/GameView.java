@@ -113,7 +113,7 @@ public class GameView implements GameDrawer {
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin+squareSize*(data.getNbLines()+1), width,squareSize));
 		
-		//on affiche la cellule selectionnée
+		//on affiche la cellule selectionnï¿½e
 		Coordinates c = data.getSelected();
 		if (c != null) {
 			graphics.setColor(Color.black);
@@ -132,8 +132,8 @@ public class GameView implements GameDrawer {
 			}else {
 				graphics.setColor(Color.GRAY);
 			}
-			int size = selectedPlant.get(i).getSize();
-			graphics.fill(selectedPlant.get(i).instantiateFlower(midCell(xOrigin,i,size), midCell(yOrigin,data.getNbLines()+1,size)).draw());
+			int sizeX = selectedPlant.get(i).getSizeX();int sizeY = selectedPlant.get(i).getSizeY();
+			graphics.fill(selectedPlant.get(i).instantiateFlower(midCell(xOrigin,i,sizeX), midCell(yOrigin,data.getNbLines()+1,sizeY)).draw());
 			graphics.setColor(Color.black);
 			graphics.drawString(selectedPlant.get(i).getCost().toString(), xOrigin+(squareSize*i)+5, yOrigin+(squareSize*(data.getNbLines()+2))-5);
 		}
@@ -141,7 +141,7 @@ public class GameView implements GameDrawer {
 		
 		
 		
-		//on affiche la plante selectionnée
+		//on affiche la plante selectionnï¿½e
 		if(choixPlante!=-1) {
 			graphics.setColor(selectedPlant.get(choixPlante).getColor());
 			graphics.fill(selectedPlant.get(choixPlante).instantiateFlower(midCell(xOrigin,0,40), midCell(yOrigin,-1,40)).draw());

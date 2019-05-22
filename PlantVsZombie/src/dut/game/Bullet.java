@@ -15,13 +15,14 @@ public class Bullet {
 	private int x;
 	private int y;
 	private int speed = 10;
-	private double damage = 1;
+	private double damage;
 	private int taille =5;
 	private final Color color= Color.BLACK; 
 	
-	public Bullet(int x,int y) {
+	public Bullet(int x,int y,double damage) {
 		this.x = x;
 		this.y = y;
+		this.damage = damage;
 	}
 
 	/**

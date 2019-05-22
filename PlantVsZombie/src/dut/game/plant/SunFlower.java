@@ -12,7 +12,7 @@ import dut.game.zombie.Zombie;
 public class SunFlower extends PlantImplementation {
 
 	public SunFlower(int x, int y) {
-		super(x, y, 40, 1, 24000, new Color(204,153,0), 50, 100);
+		super(x, y, 40,40, 1, 24000, Color.YELLOW, 50, 100);
 		setLastFired(System.currentTimeMillis()-17000);
 	}
 	

@@ -13,6 +13,7 @@ import dut.game.plant.Peashotter;
 import dut.game.plant.Plant;
 import dut.game.plant.SunFlower;
 import dut.game.plant.Wallnut;
+import dut.game.plant.PotatoMine;
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
@@ -34,9 +35,11 @@ public class GameData{
 	private int nbZombies= 20;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1,-1};
+	private int respawnTime[] = {-1,-1,-1,-1,-1};
 	private int compteur = 0;
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
+	private long initialTime = System.currentTimeMillis();
+	private long lastSun = 0;
 
 	public GameData(int nbLines, int nbColumns) {
 		matrix = new Cell[nbLines][nbColumns];
@@ -55,6 +58,7 @@ public class GameData{
 		selectedPlant.add(new CherryBomb(0, 0));
 		selectedPlant.add(new Wallnut(0, 0));
 		selectedPlant.add(new SunFlower(0, 0));
+		selectedPlant.add(new PotatoMine(0, 0));
 
 	}
 	
@@ -177,6 +181,8 @@ public class GameData{
 				if(colliding.size()!=0) {
 					for(Zombie z: colliding) {
 						nbZombies--;
+						alive--;
+						System.out.println("Supression zombie , Restant= "+nbZombies);
 						zombieNumber[v.lineFromY(z.getY())]--;
 					}
 					lstZ.removeAll(colliding);
@@ -193,8 +199,8 @@ public class GameData{
 	
 	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
 		if(canPlant(i,j,v,choixPlante) || debug) {
-			int size = selectedPlant.get(choixPlante).getSize();
-			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,size),  v.midCell((int) (height/4),j,size)));
+			int sizeX = selectedPlant.get(choixPlante).getSizeX();int sizeY = selectedPlant.get(choixPlante).getSizeY();
+			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
 			
 			sunNumber-= selectedPlant.get(choixPlante).getCost();
 			respawnTime[choixPlante]=compteur;
@@ -211,6 +217,7 @@ public class GameData{
 			if(z.matrixOut(v)) {
 				deleted.add(z);
 				System.out.println("Le zombie "+z+" est sorti de la matrice! On le suprimme");
+				System.out.println("Supression zombie , Restant= "+nbZombies);
 				nbZombies--;
 				alive--;
 				if(LawnMowerNb[v.lineFromY(z.getY())]==1) {
@@ -227,17 +234,19 @@ public class GameData{
 					deleted.add(z);
 					System.out.println("Mort du zombie : "+z);
 					zombieNumber[v.lineFromY(z.getY())]--;
+					System.out.println("Supression zombie , Restant= "+nbZombies);
 					nbZombies--;
 					alive--;	
 				}
 			}
 		}
-		if((int)(Math.random()*200)==5 && nbZombies-alive!=0) {
+		int spawnRate = (nbZombies>5)?125:50;
+		if((int)(Math.random()*spawnRate)==5 && nbZombies-alive!=0 && initialTime+10000<System.currentTimeMillis()) {
 			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
 			int typeZombie = (int)(Math.random()*2);
 			System.out.println(typeZombie);
-			if (nbZombies-alive != 1) {
+			if (nbZombies-alive != 5) {
 				switch (typeZombie) {
 				case 0:
 					lstZ.add(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
@@ -312,9 +321,10 @@ public class GameData{
 	
 	public void updateSun(GameView v,int width,int height) {
 		
-		if((int)(Math.random()*100) == 5) {
+		if(lastSun+10000<System.currentTimeMillis()) {
 			int i = (int)(Math.random()*getNbColumns());
 			int j = (int)(Math.random()*getNbLines());
+			lastSun = System.currentTimeMillis();
 			System.out.println("Soleil en "+i+","+j);
 			lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30),50));
 		}

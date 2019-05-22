@@ -81,7 +81,7 @@ public class ZombieImplementation implements Zombie{
 
 	@Override
 	public double getDamage() {
-		return 0.1;
+		return 0.05;
 	}
 	
 	public int getY() {

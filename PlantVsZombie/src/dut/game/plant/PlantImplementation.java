@@ -1,6 +1,7 @@
 package dut.game.plant;
 
 import java.awt.Color;
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import dut.game.zombie.Zombie;
 public class PlantImplementation implements Plant  {
 	private int x;
 	private int y;
-	private final int taille;
+	private final int tailleX;
+	private final int tailleY;
 	private double health;
 	private long frequence;
 	private long lastFired = System.currentTimeMillis();
@@ -24,10 +26,11 @@ public class PlantImplementation implements Plant  {
 	private int respawnTime;
 	private boolean isFire=false;
 	
-	public PlantImplementation(int x, int y,int taille,double health,long frequence,Color color,int cost,int respawnTime) {
+	public PlantImplementation(int x, int y,int tailleX,int tailleY,double health,long frequence,Color color,int cost,int respawnTime) {
 		this.x = x;
 		this.y = y;
-		this.taille = taille;
+		this.tailleX = tailleX;
+		this.tailleY= tailleY;
 		this.health = health;
 		this.frequence=frequence;
 		this.color = color;
@@ -36,8 +39,8 @@ public class PlantImplementation implements Plant  {
 	}
 
 	@Override
-	public Float draw() {
-		return new Rectangle2D.Float(x, y, taille,taille);
+	public Shape draw() {
+		return new Rectangle2D.Float(x, y, tailleX,tailleY);
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class PlantImplementation implements Plant  {
 
 	@Override
 	public boolean collision(Rectangle2D r) {
-		return r.getBounds2D().intersects(this.draw());
+		return r.getBounds2D().intersects(this.draw().getBounds2D());
 	}
 	
 	@Override
@@ -68,7 +71,7 @@ public class PlantImplementation implements Plant  {
 	
 	public Bullet bullet(GameData data) {
 		lastFired=System.currentTimeMillis();
-		return new Bullet(x+taille+10,y+taille/2);
+		return new Bullet(x+tailleX+10,y+tailleY/2,0.5);
 	}
 
 	@Override
@@ -80,12 +83,12 @@ public class PlantImplementation implements Plant  {
 	public boolean equals(Object o) {
 		if(!(o instanceof PlantImplementation)) {return false;}
 		PlantImplementation p = (PlantImplementation) o;
-		return x==p.x &&  y==p.y && taille == p.taille && health==p.health && frequence == p.frequence;
+		return x==p.x &&  y==p.y && tailleX == p.tailleX && tailleY == p.tailleY && health==p.health && frequence == p.frequence;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(x,y,taille,health,frequence);
+		return Objects.hash(x,y,tailleX,tailleY,health,frequence);
 	}
 	
 	public Color getColor() {
@@ -127,12 +130,16 @@ public class PlantImplementation implements Plant  {
 
 	@Override
 	public Plant instantiateFlower(int x ,int y) {
-		return new PlantImplementation(x, y, taille, health, frequence, color, cost, respawnTime);
+		return new PlantImplementation(x, y, tailleX,tailleY, health, frequence, color, cost, respawnTime);
 	}
 	
 	@Override
-	public int getSize() {
-		return taille;
+	public int getSizeX() {
+		return tailleX;
+	}
+	@Override
+	public int getSizeY() {
+		return tailleY;
 	}
 	
 	public long getLastFired() {
