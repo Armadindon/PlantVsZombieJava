@@ -14,6 +14,7 @@ import dut.game.plant.Plant;
 import dut.game.plant.SunFlower;
 import dut.game.plant.Wallnut;
 import dut.game.plant.PotatoMine;
+import dut.game.plant.Repeatter;
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
@@ -35,7 +36,7 @@ public class GameData{
 	private int nbZombies= 20;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1,-1,-1};
+	private int respawnTime[] = {-1,-1,-1,-1,-1,-1};
 	private int compteur = 0;
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 	private long initialTime = System.currentTimeMillis();
@@ -59,6 +60,7 @@ public class GameData{
 		selectedPlant.add(new Wallnut(0, 0));
 		selectedPlant.add(new SunFlower(0, 0));
 		selectedPlant.add(new PotatoMine(0, 0));
+		selectedPlant.add(new Repeatter(0, 0));
 
 	}
 	

@@ -25,6 +25,7 @@ public class PlantImplementation implements Plant  {
 	private int cost;
 	private int respawnTime;
 	private boolean isFire=false;
+
 	
 	public PlantImplementation(int x, int y,int tailleX,int tailleY,double health,long frequence,Color color,int cost,int respawnTime) {
 		this.x = x;
@@ -149,4 +150,8 @@ public class PlantImplementation implements Plant  {
 	public void setLastFired(long lastFired) {
 		this.lastFired = lastFired;
 	}
+	
+	
+	
+	
 }

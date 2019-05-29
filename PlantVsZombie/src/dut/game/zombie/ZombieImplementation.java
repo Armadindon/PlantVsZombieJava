@@ -14,6 +14,8 @@ public class ZombieImplementation implements Zombie{
 	private double health;
 	private final Color color;
 	private final double initialSpeed;
+	private boolean frozen = false;
+	private long lastFrozen;
 
 	public ZombieImplementation(int x, int y, int taille,double speed,double health,Color color) {
 		this.x = x;
@@ -97,4 +99,13 @@ public class ZombieImplementation implements Zombie{
 	public void setToInitialSpeed() {
 		speed= initialSpeed;
 	}
+	
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
+	}
+	
+	public boolean isFrozen() {
+		return frozen;
+	}
+
 }
