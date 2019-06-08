@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import dut.game.Terrains.Terrain;
 import dut.game.plant.CherryBomb;
 import dut.game.plant.Peashotter;
 import dut.game.plant.Plant;
@@ -15,6 +16,7 @@ import dut.game.plant.SunFlower;
 import dut.game.plant.Wallnut;
 import dut.game.plant.PotatoMine;
 import dut.game.plant.Repeatter;
+import dut.game.plant.SnowPea;
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
@@ -36,23 +38,25 @@ public class GameData{
 	private int nbZombies= 20;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1,-1,-1,-1};
+	private int respawnTime[] = {-1,-1,-1,-1,-1,-1,-1};
 	private int compteur = 0;
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 	private long initialTime = System.currentTimeMillis();
 	private long lastSun = 0;
+	private Terrain level;
 
-	public GameData(int nbLines, int nbColumns) {
-		matrix = new Cell[nbLines][nbColumns];
+	public GameData(Terrain t) {
+		level = t;
+		matrix = new Cell[t.getHauteur()][t.getLargeur()];
 		lstZ = new LinkedList<>(); 
 		lstP = new LinkedList<>(); 
 		lstB = new LinkedList<>(); 
 		lstS = new LinkedList<>(); 
 		lstL = new ArrayList<LawnMower>();
 		
-		zombieNumber = new int[nbLines];
-		LawnMowerNb = new int[nbLines];
-		for (int i=0;i<nbLines;i++) {
+		zombieNumber = new int[t.getHauteur()];
+		LawnMowerNb = new int[t.getHauteur()];
+		for (int i=0;i<t.getHauteur();i++) {
 			LawnMowerNb[i]=1;
 		}
 		selectedPlant.add(new Peashotter(0, 0));
@@ -61,6 +65,7 @@ public class GameData{
 		selectedPlant.add(new SunFlower(0, 0));
 		selectedPlant.add(new PotatoMine(0, 0));
 		selectedPlant.add(new Repeatter(0, 0));
+		selectedPlant.add(new SnowPea(0, 0));
 
 	}
 	
@@ -216,6 +221,9 @@ public class GameData{
 		for(Zombie z:lstZ) {
 			z.move();
 			z.setToInitialSpeed();
+			if(z.isFrozen()) {
+				z.unFreeze();
+			}
 			if(z.matrixOut(v)) {
 				deleted.add(z);
 				System.out.println("Le zombie "+z+" est sorti de la matrice! On le suprimme");
@@ -278,6 +286,10 @@ public class GameData{
 			}else {
 				for(Zombie z: b.colliding(lstZ)) {
 					z.addToHealth(-b.getDamage());
+					if(b.isFreezing()) {
+						z.freeze();
+						System.out.println("Freeze !");
+					}
 					z.setSpeed(0);
 					deleted.add(b);
 				}
@@ -323,7 +335,7 @@ public class GameData{
 	
 	public void updateSun(GameView v,int width,int height) {
 		
-		if(lastSun+10000<System.currentTimeMillis()) {
+		if(lastSun+level.getSunSpawnRate()<System.currentTimeMillis()) {
 			int i = (int)(Math.random()*getNbColumns());
 			int j = (int)(Math.random()*getNbLines());
 			lastSun = System.currentTimeMillis();

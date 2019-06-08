@@ -29,7 +29,7 @@ public class ZombieImplementation implements Zombie{
 
 	@Override
 	public void move() {
-		x += speed;
+		x += (frozen)?(speed/2):speed;
 	}
 	
 	@Override
@@ -50,7 +50,7 @@ public class ZombieImplementation implements Zombie{
 	
 	@Override
 	public Color getColor() {
-		return color;
+		return (frozen)?Color.cyan:color;
 	}
 	
 	@Override
@@ -83,7 +83,7 @@ public class ZombieImplementation implements Zombie{
 
 	@Override
 	public double getDamage() {
-		return 0.05;
+		return (frozen)?0.025:0.05;
 	}
 	
 	public int getY() {
@@ -100,8 +100,16 @@ public class ZombieImplementation implements Zombie{
 		speed= initialSpeed;
 	}
 	
-	public void setFrozen(boolean frozen) {
-		this.frozen = frozen;
+	public void freeze() {
+		frozen = true;
+		lastFrozen = System.currentTimeMillis();
+	}
+	
+	public void unFreeze() {
+		if(lastFrozen+5000 < System.currentTimeMillis()) {
+			System.out.println("Defreez ! ");
+			frozen=false;
+		}
 	}
 	
 	public boolean isFrozen() {

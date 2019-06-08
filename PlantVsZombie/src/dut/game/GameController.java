@@ -2,6 +2,8 @@ package dut.game;
 
 import java.awt.Color;
 
+import dut.game.Terrains.Day;
+import dut.game.Terrains.LevelSelector;
 import fr.umlv.zen5.Application;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
@@ -19,7 +21,7 @@ public class GameController {
 		float height = screenInfo.getHeight();
 		System.out.println("size of the screen (" + width + " x " + height + ")");
 
-		GameData data = new GameData(5, 8);
+		GameData data = new GameData(LevelSelector.selector(context, screenInfo));
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
 		data.initLawnMower(view,(int) width,(int) height);
@@ -28,6 +30,7 @@ public class GameController {
 
 
 		Event event = null;
+		
 
 
 		while (true) {

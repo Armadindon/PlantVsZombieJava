@@ -18,11 +18,13 @@ public class Bullet {
 	private double damage;
 	private int taille =5;
 	private final Color color= Color.BLACK; 
+	private final boolean freezing;
 	
-	public Bullet(int x,int y,double damage) {
+	public Bullet(int x,int y,double damage,boolean freezing) {
 		this.x = x;
 		this.y = y;
 		this.damage = damage;
+		this.freezing = freezing;
 	}
 
 	/**
@@ -116,5 +118,9 @@ public class Bullet {
 	 */
 	public int getY() {
 		return y;
+	}
+	
+	public boolean isFreezing() {
+		return freezing;
 	}
 }

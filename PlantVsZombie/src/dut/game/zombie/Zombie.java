@@ -17,4 +17,7 @@ public interface Zombie {
 	public void setToInitialSpeed();
 	public void setSpeed(int speed);
 	public int getY();
+	public boolean isFrozen();
+	public void freeze();
+	public void unFreeze();
 }
