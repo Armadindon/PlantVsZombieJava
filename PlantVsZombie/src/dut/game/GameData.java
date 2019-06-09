@@ -261,17 +261,9 @@ public class GameData{
 			int typeZombie = (int)(Math.random()*2);
 			System.out.println(typeZombie);
 			if (nbZombies-alive != 5) {
-				switch (typeZombie) {
-				case 0:
-					lstZ.add(new poleVaultingZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
-					break;
-
-				case 1:
-					lstZ.add(new ConeheadZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
-					break;
-				}
+				lstZ.add(level.getZombies().get((int)(Math.random()*level.getZombies().size())).instantiateZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 			}else {
-				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 
 			}
 
@@ -444,6 +436,10 @@ public class GameData{
 	
 	public Integer getSunNumber() {
 		return sunNumber;
+	}
+	
+	public Terrain getLevel() {
+		return level;
 	}
 	
 }

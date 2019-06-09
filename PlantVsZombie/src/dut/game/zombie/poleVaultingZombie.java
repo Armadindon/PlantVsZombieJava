@@ -34,5 +34,10 @@ public class poleVaultingZombie extends ZombieImplementation {
 			setSpeed(-0.8);
 		}
 	}
+	
+	@Override
+	public Zombie instantiateZombie(int x,int y) {
+		return new poleVaultingZombie(x, y);
+	}
 
 }

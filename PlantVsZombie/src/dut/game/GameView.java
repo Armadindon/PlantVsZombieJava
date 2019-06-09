@@ -106,7 +106,6 @@ public class GameView implements GameDrawer {
 	@Override
 	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen,int choixPlante) {
 		
-		
 		graphics.setColor(Color.WHITE);
 		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on réaffiche le fond
 		graphics.setColor(Color.GREEN);
