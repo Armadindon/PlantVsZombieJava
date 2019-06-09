@@ -10,6 +10,7 @@ import java.util.List;
 
 import dut.game.Terrains.Terrain;
 import dut.game.plant.CherryBomb;
+import dut.game.plant.Chomper;
 import dut.game.plant.Peashotter;
 import dut.game.plant.Plant;
 import dut.game.plant.SunFlower;
@@ -21,6 +22,7 @@ import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
 import dut.game.zombie.Zombie;
+import dut.game.zombie.poleVaultingZombie;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.Event.Action;
 
@@ -33,12 +35,12 @@ public class GameData{
 	private final LinkedList<Sun> lstS;
 	private final ArrayList<LawnMower> lstL;
 	private int LawnMowerNb[];
-	private int sunNumber = 50;
+	private int sunNumber = 500;
 	private int zombieNumber[];
 	private int nbZombies= 20;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1,-1,-1,-1,-1};
+	private int respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
 	private int compteur = 0;
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 	private long initialTime = System.currentTimeMillis();
@@ -66,6 +68,7 @@ public class GameData{
 		selectedPlant.add(new PotatoMine(0, 0));
 		selectedPlant.add(new Repeatter(0, 0));
 		selectedPlant.add(new SnowPea(0, 0));
+		selectedPlant.add(new Chomper(0, 0));
 
 	}
 	
@@ -219,6 +222,7 @@ public class GameData{
 	public void updateZombie(GameView v,int width,int height) {
 		ArrayList<Zombie> deleted = new ArrayList<>();
 		for(Zombie z:lstZ) {
+			z.special(lstP, v);
 			z.move();
 			z.setToInitialSpeed();
 			if(z.isFrozen()) {
@@ -259,7 +263,7 @@ public class GameData{
 			if (nbZombies-alive != 5) {
 				switch (typeZombie) {
 				case 0:
-					lstZ.add(new BasicZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40), 40));
+					lstZ.add(new poleVaultingZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 					break;
 
 				case 1:

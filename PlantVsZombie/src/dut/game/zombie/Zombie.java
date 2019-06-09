@@ -2,8 +2,10 @@ package dut.game.zombie;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.LinkedList;
 
 import dut.game.GameView;
+import dut.game.plant.Plant;
 
 public interface Zombie {
 	public boolean matrixOut(GameView v);
@@ -15,9 +17,11 @@ public interface Zombie {
 	public void addToHealth(double i);
 	public double getDamage();
 	public void setToInitialSpeed();
-	public void setSpeed(int speed);
+	public void setSpeed(double speed);
 	public int getY();
 	public boolean isFrozen();
 	public void freeze();
 	public void unFreeze();
+	public void special(LinkedList<Plant> lstP, GameView v);
+	public double getX();
 }

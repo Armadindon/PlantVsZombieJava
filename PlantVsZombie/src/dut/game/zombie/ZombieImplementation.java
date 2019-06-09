@@ -2,9 +2,12 @@ package dut.game.zombie;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Objects;
 
 import dut.game.GameView;
+import dut.game.plant.Plant;
 
 public class ZombieImplementation implements Zombie{
 	private double x;
@@ -91,8 +94,8 @@ public class ZombieImplementation implements Zombie{
 	}
 	
 	@Override
-	public void setSpeed(int speed) {
-		this.speed = speed;
+	public void setSpeed(double d) {
+		this.speed = d;
 	}
 	
 	@Override
@@ -100,11 +103,13 @@ public class ZombieImplementation implements Zombie{
 		speed= initialSpeed;
 	}
 	
+	@Override
 	public void freeze() {
 		frozen = true;
 		lastFrozen = System.currentTimeMillis();
 	}
 	
+	@Override
 	public void unFreeze() {
 		if(lastFrozen+5000 < System.currentTimeMillis()) {
 			System.out.println("Defreez ! ");
@@ -112,8 +117,33 @@ public class ZombieImplementation implements Zombie{
 		}
 	}
 	
+	@Override
 	public boolean isFrozen() {
 		return frozen;
+	}
+	
+	@Override
+	public void special(LinkedList<Plant> lstP,GameView v) {
+		
+	}
+	
+	@Override
+	public double getX() {
+		return x;
+	}
+	
+	public void jump(GameView v) {
+		x-= v.getSquareSize();
+	}
+	
+	public ArrayList<Plant> colliding(LinkedList<Plant> lstP){
+		ArrayList<Plant> col = new ArrayList<Plant>();
+		for(Plant p: lstP) {
+			if(p.collision(draw())) {
+				col.add(p);
+			}
+		}
+		return col;
 	}
 
 }

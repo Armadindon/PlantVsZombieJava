@@ -57,9 +57,9 @@ public class LevelSelector {
 		case 0:
 			return new Day();
 		case 1:
-			return null;
+			return new Night();
 		case 2:
-			return null;
+			return new Pool();
 			
 		}
 		return null;//jamais atteint, présent pour faire plaisir a eclipse
