@@ -5,7 +5,7 @@ import java.awt.Color;
 public class FlagZombie extends ZombieImplementation {
 	
 	public FlagZombie(int x, int y)	{
-		super(x,y,40,-1,3,Color.MAGENTA);
+		super(x,y,40,-1,200,Color.MAGENTA);
 	}
 
 }

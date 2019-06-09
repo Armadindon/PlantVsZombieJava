@@ -5,7 +5,7 @@ import java.awt.Color;
 public class Peashotter extends PlantImplementation {
 	
 	public Peashotter(int x,int y) {
-		super(x,y,40,40,10,1500,Color.BLUE,100,100);
+		super(x,y,40,40,10,1500,Color.BLUE,100,7500);
 	}
 	
 	@Override

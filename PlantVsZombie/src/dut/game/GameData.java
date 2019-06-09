@@ -40,8 +40,7 @@ public class GameData{
 	private int nbZombies= 20;
 	private int alive = 0;
 	private int choixPlante = -1;
-	private int respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
-	private int compteur = 0;
+	private long respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 	private long initialTime = System.currentTimeMillis();
 	private long lastSun = 0;
@@ -213,7 +212,8 @@ public class GameData{
 			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
 			
 			sunNumber-= selectedPlant.get(choixPlante).getCost();
-			respawnTime[choixPlante]=compteur;
+			respawnTime[choixPlante]=System.currentTimeMillis();
+			
 			choixPlante=-1;
 			}else {choixPlante = -1;}
 		
@@ -301,18 +301,23 @@ public class GameData{
 		int prix=selectedPlant.get(choixPlante).getCost();
 		int respawn=selectedPlant.get(choixPlante).getRespawnTime();
 		
-		if(sunNumber < prix) {
-			return false;
-		}
-		if(respawnTime[choixPlante] != -1 && respawnTime[choixPlante]+respawn > compteur ) {
-
-			return false;
-		}
 		for(Plant p: lstP) {
 			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
 				return false;
 			}
 		}
+		
+		if(sunNumber < prix) {
+			return false;
+		}
+		
+		if(respawnTime[choixPlante] == -1 ) {
+			return true;
+		}else if(respawnTime[choixPlante]+respawn > System.currentTimeMillis()) {
+			return false;
+		}
+		
+		
 		return true;
 	}
 	
@@ -355,7 +360,6 @@ public class GameData{
 	 * -Zombies
 	 */
 	public void updateData(GameView v,int width , int height,Event event,boolean debug) {
-		compteur++;
 		Point2D.Float location;
 		updateZombie(v,width,height);
 		updatePlant(v);

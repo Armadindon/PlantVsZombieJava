@@ -14,7 +14,7 @@ public class Chomper extends PlantImplementation {
 	private boolean notChomp = true;
 
 	public Chomper(int x, int y) {
-		super(x, y, 50, 50, 10, 42000l, new Color(204, 0, 255), 150, 100);
+		super(x, y, 50, 50, 10, 42000, new Color(204, 0, 255), 150, 7500);
 	}
 	
 	@Override

@@ -11,7 +11,7 @@ import dut.game.zombie.Zombie;
 public class Wallnut extends PlantImplementation {
 	
 	public Wallnut(int x, int y) {
-		super(x,y,40,60,20,50,new Color(204,153,0),50,300);
+		super(x,y,40,60,20,50,new Color(204,153,0),50,30000);
 	}
 	
 	@Override

@@ -12,7 +12,7 @@ import dut.game.zombie.Zombie;
 public class PotatoMine extends PlantImplementation {
 
 	public PotatoMine(int x, int y) {
-		super(x, y, 40,40, 10, 14000, Color.ORANGE, 25,300);
+		super(x, y, 40,40, 10, 14000, Color.ORANGE, 25,30000);
 	}
 	
 	@Override

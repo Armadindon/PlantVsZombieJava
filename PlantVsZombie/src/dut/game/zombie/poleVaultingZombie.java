@@ -11,7 +11,7 @@ public class poleVaultingZombie extends ZombieImplementation {
 	private boolean jumped =false;
 	
 	public poleVaultingZombie(int x, int y) {
-		super(x, y, 40, -1.2, 4, Color.red);
+		super(x, y, 40, -1.2, 340, Color.red);
 	}
 	
 

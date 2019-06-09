@@ -8,7 +8,7 @@ import dut.game.GameData;
 public class SnowPea extends PlantImplementation {
 	
 	public SnowPea(int x, int y) {
-		super(x,y,40,40,1,1500,Color.CYAN,175,100);;
+		super(x,y,40,40,1,1500,Color.CYAN,175,7500);;
 	}
 	
 	@Override

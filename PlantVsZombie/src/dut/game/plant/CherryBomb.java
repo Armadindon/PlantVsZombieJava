@@ -13,7 +13,7 @@ import dut.game.zombie.Zombie;
 public class CherryBomb extends PlantImplementation{
 	
 	public CherryBomb(int x, int y) {
-		super(x,y,50,50,1,3000,Color.RED,150,200);
+		super(x,y,50,50,1,3000,Color.RED,150,50000);
 	}
 	
 	private Rectangle2D drawImpact(GameView v) {
@@ -28,7 +28,7 @@ public class CherryBomb extends PlantImplementation{
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[]) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 				for(Zombie z: collidingExplosion(lstZ, v)) {
-					z.addToHealth(-10);
+					z.addToHealth(-1800);
 					this.addToHealth(-100);
 				}
 				return true;

@@ -72,7 +72,7 @@ public class PlantImplementation implements Plant  {
 	
 	public Bullet bullet(GameData data) {
 		lastFired=System.currentTimeMillis();
-		return new Bullet(x+tailleX+10,y+tailleY/2,0.5,false);
+		return new Bullet(x+tailleX+10,y+tailleY/2,20,false);
 	}
 
 	@Override

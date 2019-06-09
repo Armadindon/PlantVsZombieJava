@@ -10,7 +10,7 @@ public class Repeatter extends PlantImplementation {
 	boolean nextFire = false;
 	
 	public Repeatter(int x,int y) {
-		super(x,y,40,40,1,1500,Color.pink,200,100);
+		super(x,y,40,40,1,1500,Color.pink,200,7500);
 	}
 	
 	@Override

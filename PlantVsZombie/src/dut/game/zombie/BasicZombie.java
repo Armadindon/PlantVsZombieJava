@@ -5,7 +5,7 @@ import java.awt.Color;
 public class BasicZombie extends ZombieImplementation{
 	
 	public BasicZombie(int x,int y) {
-		super(x,y,40,-0.8,3,Color.gray);
+		super(x,y,40,-0.8,200,Color.gray);
 	}
 	
 	@Override
