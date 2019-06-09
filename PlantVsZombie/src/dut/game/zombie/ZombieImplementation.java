@@ -150,5 +150,9 @@ public class ZombieImplementation implements Zombie{
 	public Zombie instantiateZombie(int x,int y) {
 		return new ZombieImplementation(x, y, taille, speed, health, color);
 	}
+	
+	public double getHealth() {
+		return health;
+	}
 
 }

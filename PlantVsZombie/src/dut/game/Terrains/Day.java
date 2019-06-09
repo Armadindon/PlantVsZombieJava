@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dut.game.zombie.BasicZombie;
+import dut.game.zombie.BucketheadZombie;
 import dut.game.zombie.ConeheadZombie;
+import dut.game.zombie.NewspaperZombie;
 import dut.game.zombie.Zombie;
 import dut.game.zombie.poleVaultingZombie;
 
@@ -19,6 +21,7 @@ public class Day implements Terrain {
 		zombies.add(new BasicZombie(0, 0));
 		zombies.add(new ConeheadZombie(0, 0));
 		zombies.add(new poleVaultingZombie(0, 0));
+		zombies.add(new BucketheadZombie(0, 0));
 	}
 	
 
