@@ -25,4 +25,5 @@ public interface Zombie {
 	public void special(LinkedList<Plant> lstP, GameView v);
 	public double getX();
 	public Zombie instantiateZombie(int x,int y);
+	public boolean isMushroom();
 }

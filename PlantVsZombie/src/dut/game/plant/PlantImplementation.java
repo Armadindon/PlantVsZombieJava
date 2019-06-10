@@ -151,6 +151,10 @@ public class PlantImplementation implements Plant  {
 		this.lastFired = lastFired;
 	}
 	
+	public boolean isMushroom() {
+		return false;
+	}
+	
 	
 	
 	

@@ -1,9 +1,11 @@
-package dut.game.plant;
+package dut.game.plant.Day;
 
 import java.awt.Color;
 
 import dut.game.Bullet;
 import dut.game.GameData;
+import dut.game.plant.Plant;
+import dut.game.plant.PlantImplementation;
 
 public class SnowPea extends PlantImplementation {
 	

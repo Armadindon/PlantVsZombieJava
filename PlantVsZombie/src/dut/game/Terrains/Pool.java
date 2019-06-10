@@ -30,4 +30,9 @@ public class Pool implements Terrain {
 		public ArrayList<Zombie> getZombies() {
 			return zombies;
 		}
+
+	@Override
+	public boolean mushrooms() {
+		return false;
+	}
 }

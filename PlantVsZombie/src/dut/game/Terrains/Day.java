@@ -44,5 +44,10 @@ public class Day implements Terrain {
 	public ArrayList<Zombie> getZombies() {
 		return zombies;
 	}
+	
+	@Override
+	public boolean mushrooms() {
+		return false;
+	}
 
 }

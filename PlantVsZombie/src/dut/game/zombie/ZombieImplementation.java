@@ -154,5 +154,10 @@ public class ZombieImplementation implements Zombie{
 	public double getHealth() {
 		return health;
 	}
+	
+	@Override
+	public boolean isMushroom() {
+		return false;
+	}
 
 }

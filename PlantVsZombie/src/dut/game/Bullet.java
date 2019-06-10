@@ -123,4 +123,7 @@ public class Bullet {
 	public boolean isFreezing() {
 		return freezing;
 	}
+	
+	
+	
 }

@@ -33,5 +33,10 @@ public class Night implements Terrain {
 			return zombies;
 		}
 
+	@Override
+	public boolean mushrooms() {
+		return true;
+	}
+
 
 }

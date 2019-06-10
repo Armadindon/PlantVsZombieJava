@@ -8,11 +8,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.List;
 
-import dut.game.plant.CherryBomb;
-import dut.game.plant.Peashotter;
 import dut.game.plant.Plant;
-import dut.game.plant.SunFlower;
-import dut.game.plant.Wallnut;
+import dut.game.plant.Day.CherryBomb;
+import dut.game.plant.Day.Peashotter;
+import dut.game.plant.Day.SunFlower;
+import dut.game.plant.Day.Wallnut;
 import dut.game.zombie.Zombie;
 import fr.umlv.zen5.ScreenInfo;
 

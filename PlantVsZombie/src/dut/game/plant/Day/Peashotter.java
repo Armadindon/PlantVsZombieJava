@@ -1,6 +1,9 @@
-package dut.game.plant;
+package dut.game.plant.Day;
 
 import java.awt.Color;
+
+import dut.game.plant.PlantImplementation;
+import dut.game.plant.Plant;
 
 public class Peashotter extends PlantImplementation {
 	

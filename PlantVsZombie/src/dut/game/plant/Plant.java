@@ -26,4 +26,5 @@ public interface Plant {
 	public Plant instantiateFlower(int x,int y);
 	public int getSizeX();
 	public int getSizeY();
+	public boolean isMushroom();
 }

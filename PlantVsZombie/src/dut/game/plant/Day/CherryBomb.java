@@ -1,4 +1,4 @@
-package dut.game.plant;
+package dut.game.plant.Day;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import dut.game.Bullet;
 import dut.game.GameData;
 import dut.game.GameView;
+import dut.game.plant.Plant;
+import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
 
 public class CherryBomb extends PlantImplementation{

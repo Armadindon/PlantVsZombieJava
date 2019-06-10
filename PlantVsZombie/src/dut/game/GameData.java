@@ -9,15 +9,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 import dut.game.Terrains.Terrain;
-import dut.game.plant.CherryBomb;
-import dut.game.plant.Chomper;
-import dut.game.plant.Peashotter;
 import dut.game.plant.Plant;
-import dut.game.plant.SunFlower;
-import dut.game.plant.Wallnut;
-import dut.game.plant.PotatoMine;
-import dut.game.plant.Repeatter;
-import dut.game.plant.SnowPea;
+import dut.game.plant.Day.CherryBomb;
+import dut.game.plant.Day.Chomper;
+import dut.game.plant.Day.Peashotter;
+import dut.game.plant.Day.PotatoMine;
+import dut.game.plant.Day.Repeatter;
+import dut.game.plant.Day.SnowPea;
+import dut.game.plant.Day.SunFlower;
+import dut.game.plant.Day.Wallnut;
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
@@ -163,7 +163,7 @@ public class GameData{
 		ArrayList<Plant> deleted = new ArrayList<>();
 		for(Plant p:lstP) {
 			//on tire
-			if(p.isFire(lstZ, v,zombieNumber)) {
+			if(p.isFire(lstZ, v,zombieNumber) && (level.mushrooms()==p.isMushroom())) {
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet(this)!=null) {
 					lstB.add(p.bullet(this));
