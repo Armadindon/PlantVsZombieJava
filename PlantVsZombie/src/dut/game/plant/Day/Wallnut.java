@@ -3,9 +3,11 @@ package dut.game.plant.Day;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.GameView;
+import dut.game.Graves;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
@@ -17,7 +19,7 @@ public class Wallnut extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
 		return false;// ne tire jamais
 	}
 	

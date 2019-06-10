@@ -19,6 +19,7 @@ import dut.game.plant.Day.SnowPea;
 import dut.game.plant.Day.SunFlower;
 import dut.game.plant.Day.Wallnut;
 import dut.game.plant.Night.FumeShroom;
+import dut.game.plant.Night.GraveBuster;
 import dut.game.plant.Night.PuffShroom;
 import dut.game.plant.Night.SunShroom;
 import dut.game.zombie.BasicZombie;
@@ -47,7 +48,7 @@ public class GameData{
 	private long respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
 	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
 	private long initialTime = System.currentTimeMillis();
-	private long lastSun = 0;
+	private long lastSun = System.currentTimeMillis();
 	private Terrain level;
 
 	public GameData(Terrain t) {
@@ -70,7 +71,7 @@ public class GameData{
 		selectedPlant.add(new Wallnut(0, 0));
 		selectedPlant.add(new SunShroom(0, 0));
 		selectedPlant.add(new PotatoMine(0, 0));
-		selectedPlant.add(new Repeatter(0, 0));
+		selectedPlant.add(new GraveBuster(0, 0));
 		selectedPlant.add(new FumeShroom(0, 0));
 		selectedPlant.add(new PuffShroom(0, 0));
 
@@ -184,7 +185,7 @@ public class GameData{
 		ArrayList<Plant> deleted = new ArrayList<>();
 		for(Plant p:lstP) {
 			//on tire
-			if(p.isFire(lstZ, v,zombieNumber) && (level.mushrooms()==p.isMushroom())) {
+			if(p.isFire(lstZ, v,zombieNumber,lstG) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet(this)!=null) {
 					lstB.add(p.bullet(this));
@@ -230,13 +231,15 @@ public class GameData{
 	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
 		if(canPlant(i,j,v,choixPlante) || debug) {
 			int sizeX = selectedPlant.get(choixPlante).getSizeX();int sizeY = selectedPlant.get(choixPlante).getSizeY();
-			addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
-			
-			sunNumber-= selectedPlant.get(choixPlante).getCost();
-			respawnTime[choixPlante]=System.currentTimeMillis();
-			
-			choixPlante=-1;
-			}else {choixPlante = -1;}
+			if(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)).canPlant(lstG, v)) {
+				addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
+				
+				sunNumber-= selectedPlant.get(choixPlante).getCost();
+				respawnTime[choixPlante]=System.currentTimeMillis();
+				
+				this.choixPlante=-1;
+			}else{this.choixPlante = -1;System.out.println("Vous ne pouvez pas planter la !");}
+			}else {this.choixPlante = -1;System.out.println("Vous ne pouvez pas planter la !");}
 		
 	}
 
@@ -327,6 +330,7 @@ public class GameData{
 				return false;
 			}
 		}
+		
 		
 		if(sunNumber < prix) {
 			return false;
@@ -470,5 +474,6 @@ public class GameData{
 	public ArrayList<Graves> getLstG() {
 		return lstG;
 	}
+	
 	
 }

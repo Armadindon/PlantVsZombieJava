@@ -2,11 +2,14 @@ package dut.game.plant.Day;
 
 import java.awt.Color;
 import dut.game.plant.Plant;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Bullet;
 import dut.game.GameData;
 import dut.game.GameView;
+import dut.game.Graves;
 import dut.game.Sun;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
@@ -26,7 +29,7 @@ public class SunFlower extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
 		if(System.currentTimeMillis()>super.getFrequence()+super.getLastFired()) {return true;}
 		return false;
 	}

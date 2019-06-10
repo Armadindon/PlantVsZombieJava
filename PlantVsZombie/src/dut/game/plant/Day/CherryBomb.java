@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import dut.game.Bullet;
 import dut.game.GameData;
 import dut.game.GameView;
+import dut.game.Graves;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
@@ -27,12 +28,12 @@ public class CherryBomb extends PlantImplementation{
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[]) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 				for(Zombie z: collidingExplosion(lstZ, v)) {
 					z.addToHealth(-1800);
-					this.addToHealth(-100);
 				}
+				this.addToHealth(-100);
 				return true;
 				
 		}

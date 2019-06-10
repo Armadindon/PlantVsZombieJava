@@ -11,6 +11,7 @@ import java.util.Objects;
 import dut.game.Bullet;
 import dut.game.GameData;
 import dut.game.GameView;
+import dut.game.Graves;
 import dut.game.zombie.Zombie;
 
 public class PlantImplementation implements Plant  {
@@ -62,7 +63,7 @@ public class PlantImplementation implements Plant  {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[]) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
 		if(System.currentTimeMillis()>lastFired+frequence) {
 			isFire=true;
 		}
@@ -153,6 +154,16 @@ public class PlantImplementation implements Plant  {
 	
 	public boolean isMushroom() {
 		return false;
+	}
+
+	@Override
+	public boolean canPlant(ArrayList<Graves> lstG,GameView v) {
+		for(Graves g: lstG) {
+			if(collision(g.draw())) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	

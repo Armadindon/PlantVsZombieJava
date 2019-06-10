@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import dut.game.plant.Plant;
 import dut.game.zombie.Zombie;
 
 
@@ -36,6 +37,17 @@ public class Graves {
 			if(collision(g.draw())) {
 				System.out.println("Collision Tombe");
 				lstCol.add(g);
+			}
+		}
+		return lstCol;
+	}
+	
+	public ArrayList<Plant> colliding(LinkedList<Plant> lst) {
+		ArrayList<Plant> lstCol = new ArrayList<Plant>();
+		for(Plant p: lst) {
+			if(p.collision(draw())) {
+				System.out.println("Collision Tombe");
+				lstCol.add(p);
 			}
 		}
 		return lstCol;

@@ -1,9 +1,11 @@
 package dut.game.plant.Night;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.GameView;
+import dut.game.Graves;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
@@ -15,7 +17,7 @@ public class PuffShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[]) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 				for(Zombie z: lstZ) {
 					if(z.getX()<=getX()+(v.getSquareSize()*3) && v.lineFromY(getY()) == v.lineFromY(z.getY())) {

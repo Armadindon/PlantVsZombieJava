@@ -10,7 +10,7 @@ public class Night implements Terrain {
 
 	public int hauteur = 5;
 	public int largeur = 8;
-	public int sunSpawnRate = 10000;
+	public int sunSpawnRate = Integer.MAX_VALUE;//les soleils ne tombent pas du ciel
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	
 	public Night() {
