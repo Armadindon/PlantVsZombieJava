@@ -106,7 +106,7 @@ public class GameView implements GameDrawer {
 	@Override
 	public void draw(Graphics2D graphics, GameData data,ScreenInfo screen,int choixPlante) {
 		
-		graphics.setColor(Color.WHITE);
+		graphics.setColor(data.getLevel().getBackgroundColor());
 		graphics.fill(new Rectangle2D.Float(0, 0, screen.getWidth(), screen.getHeight()));//on réaffiche le fond
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
@@ -204,6 +204,10 @@ public class GameView implements GameDrawer {
 
 	
 	public void moveAllAndDraw(Graphics2D graphics,GameData data) {
+		for(Graves l : data.getLstG()) {
+			graphics.setColor(Color.black);
+			graphics.fill(l.draw());
+		}
 		for(Zombie g :data.getLstZ()){
 			if(g.matrixOut(this)) {
 				graphics.setColor(graphics.getBackground());
@@ -234,6 +238,7 @@ public class GameView implements GameDrawer {
 				graphics.fill(l.draw());
 			}
 		}
+		
 		
 	}
 	

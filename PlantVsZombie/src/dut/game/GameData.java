@@ -18,6 +18,9 @@ import dut.game.plant.Day.Repeatter;
 import dut.game.plant.Day.SnowPea;
 import dut.game.plant.Day.SunFlower;
 import dut.game.plant.Day.Wallnut;
+import dut.game.plant.Night.FumeShroom;
+import dut.game.plant.Night.PuffShroom;
+import dut.game.plant.Night.SunShroom;
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
@@ -34,6 +37,7 @@ public class GameData{
 	private final LinkedList<Bullet> lstB;
 	private final LinkedList<Sun> lstS;
 	private final ArrayList<LawnMower> lstL;
+	private final ArrayList<Graves> lstG;
 	private int LawnMowerNb[];
 	private int sunNumber = 500;
 	private int zombieNumber[];
@@ -54,6 +58,7 @@ public class GameData{
 		lstB = new LinkedList<>(); 
 		lstS = new LinkedList<>(); 
 		lstL = new ArrayList<LawnMower>();
+		lstG = new ArrayList<Graves>();
 		
 		zombieNumber = new int[t.getHauteur()];
 		LawnMowerNb = new int[t.getHauteur()];
@@ -63,18 +68,34 @@ public class GameData{
 		selectedPlant.add(new Peashotter(0, 0));
 		selectedPlant.add(new CherryBomb(0, 0));
 		selectedPlant.add(new Wallnut(0, 0));
-		selectedPlant.add(new SunFlower(0, 0));
+		selectedPlant.add(new SunShroom(0, 0));
 		selectedPlant.add(new PotatoMine(0, 0));
 		selectedPlant.add(new Repeatter(0, 0));
-		selectedPlant.add(new SnowPea(0, 0));
-		selectedPlant.add(new Chomper(0, 0));
+		selectedPlant.add(new FumeShroom(0, 0));
+		selectedPlant.add(new PuffShroom(0, 0));
 
 	}
 	
-	public void initLawnMower(GameView v,int width,int height) {
+	public void init(GameView v,int width,int height) {
+		boolean planted;
+		Graves g;
 		for (int i=0;i<getNbLines();i++) {
 			lstL.add(new LawnMower(v.midCell((int) (width/4), -1, 50),v.midCell((int) (height/4), i, 50)));
 		}
+		if(level.haveGraves()) {
+			System.out.println("Création Tombes");
+			for(int i=0; i<4;i++) {
+				planted = false;
+				do {
+					g =new Graves(v.midCell((int) (width/4), (int)(Math.random()*2)+6, 50),v.midCell((int) (height/4), (int)(Math.random()*level.getHauteur()), 50));
+					if(g.colliding(lstG).size()==0) {
+						lstG.add(g);
+						planted = true;
+					}
+				} while (!planted);
+			}
+		}
+		
 	}
 
 	/**
@@ -444,6 +465,10 @@ public class GameData{
 	
 	public Terrain getLevel() {
 		return level;
+	}
+	
+	public ArrayList<Graves> getLstG() {
+		return lstG;
 	}
 	
 }

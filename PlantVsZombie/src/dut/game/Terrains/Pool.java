@@ -1,5 +1,6 @@
 package dut.game.Terrains;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import dut.game.zombie.Zombie;
@@ -34,5 +35,15 @@ public class Pool implements Terrain {
 	@Override
 	public boolean mushrooms() {
 		return false;
+	}
+
+	@Override
+	public boolean haveGraves() {
+		return false;
+	}
+	
+	@Override
+	public Color getBackgroundColor() {
+		return Color.white;
 	}
 }

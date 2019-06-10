@@ -18,7 +18,7 @@ public class PuffShroom extends PlantImplementation {
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[]) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 				for(Zombie z: lstZ) {
-					if(z.getX()<=getX()+(v.getSquareSize()*3)) {
+					if(z.getX()<=getX()+(v.getSquareSize()*3) && v.lineFromY(getY()) == v.lineFromY(z.getY())) {
 						return true;
 					}
 				}	
@@ -28,7 +28,7 @@ public class PuffShroom extends PlantImplementation {
 	
 	@Override
 	public boolean isMushroom() {
-		return false;
+		return true;
 	}
 	
 	@Override

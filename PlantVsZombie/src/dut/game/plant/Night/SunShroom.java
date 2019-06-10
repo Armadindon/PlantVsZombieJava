@@ -38,5 +38,10 @@ public class SunShroom extends PlantImplementation {
 	public Plant instantiateFlower(int x ,int y) {
 		return new SunShroom(x, y);
 	}
+	
+	@Override
+	public boolean isMushroom() {
+		return true;
+	}
 
 }

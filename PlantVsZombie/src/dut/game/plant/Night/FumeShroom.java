@@ -22,9 +22,12 @@ public class FumeShroom extends PlantImplementation {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 			ArrayList<Zombie> col;
 				if((col = collidingSpore(lstZ, v)).size()!=0){
+					System.out.println("GAAAAAAZ");
 					for(Zombie z: col) {
 						z.addToHealth(-20);
 					}
+					setLastFired(System.currentTimeMillis());
+					return true;
 				}
 		}
 		return false;
@@ -59,7 +62,7 @@ public class FumeShroom extends PlantImplementation {
 	
 	@Override
 	public boolean isMushroom() {
-		return false;
+		return true;
 	}
 	
 	@Override
