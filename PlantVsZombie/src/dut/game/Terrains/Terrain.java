@@ -13,4 +13,5 @@ public interface Terrain {
 	public boolean mushrooms();
 	public boolean haveGraves();
 	public Color getBackgroundColor();
+	public boolean haveWater();
 }

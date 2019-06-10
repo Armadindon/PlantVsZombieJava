@@ -111,6 +111,13 @@ public class GameView implements GameDrawer {
 		graphics.setColor(Color.GREEN);
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin, width, length));
 		graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin+squareSize*(data.getNbLines()+1), width,squareSize));
+		//on affiche l'eau
+		if(data.getLevel().haveWater()) {
+			graphics.setColor(new Color(0, 51, 204));
+			graphics.fill(new Rectangle2D.Float(xOrigin, yOrigin+squareSize*(2), width,squareSize*2));
+		}
+				
+		
 		
 		//on affiche la cellule selectionn�e
 		Coordinates c = data.getSelected();
@@ -153,6 +160,7 @@ public class GameView implements GameDrawer {
 		graphics.drawString(data.getSunNumber().toString(), xOrigin+squareSize*data.getNbColumns()-30, yOrigin-10);
 		
 		
+		
 		graphics.setColor(Color.WHITE);
 		for (int i = 0; i <= data.getNbLines()+2; i++) {
 			graphics.draw(
@@ -163,13 +171,17 @@ public class GameView implements GameDrawer {
 			graphics.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin, xOrigin + i * squareSize, yOrigin + length));
 			graphics.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+1), xOrigin + i * squareSize, yOrigin+squareSize*(data.getNbLines()+2)));
 		}
-
 		
 		for (int i = 0; i < data.getNbLines(); i++) {
 			for (int j = 0; j < data.getNbColumns(); j++) {
-				graphics.setColor(Color.GREEN);
-				graphics.fill(drawCell(i, j));
-				graphics.setColor(data.getCellColor(i, j));
+				if((i!=2 && i!= 3)|| !data.getLevel().haveWater()) {
+					graphics.setColor(Color.GREEN);
+					graphics.fill(drawCell(i, j));
+				}else {
+					graphics.setColor(new Color(0, 51, 204));
+					graphics.fill(drawCell(i, j));
+				}
+				
 			}
 		}
 		

@@ -72,9 +72,11 @@ public class PlantImplementation implements Plant  {
 		return false;
 	}
 	
-	public Bullet bullet(GameData data) {
+	public ArrayList<Bullet> bullet(GameData data) {
 		lastFired=System.currentTimeMillis();
-		return new Bullet(x+tailleX+10,y+tailleY/2,20,false);
+		ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
+		Bullets.add(new Bullet(x+tailleX+10,y+tailleY/2,20,false));
+		return Bullets;
 	}
 
 	@Override
@@ -172,6 +174,16 @@ public class PlantImplementation implements Plant  {
 
 	@Override
 	public void die(Zombie z) {	
+	}
+
+	@Override
+	public boolean flotte() {
+		return false;
+	}
+
+	@Override
+	public boolean support() {
+		return false;
 	}
 	
 	

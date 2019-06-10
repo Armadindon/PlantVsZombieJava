@@ -196,5 +196,10 @@ public class ZombieImplementation implements Zombie{
 	public boolean isStun() {
 		return System.currentTimeMillis()<lastStun+3250;
 	}
+	
+	@Override
+	public boolean isHittable() {
+		return true;
+	}
 
 }

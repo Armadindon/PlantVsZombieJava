@@ -1,0 +1,3 @@
+sunNumber = 600
+nbZombies = 40
+refresh = 40

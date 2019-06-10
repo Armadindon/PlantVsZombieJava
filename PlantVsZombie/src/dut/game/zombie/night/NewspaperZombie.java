@@ -1,10 +1,13 @@
-package dut.game.zombie;
+package dut.game.zombie.night;
 
 import java.awt.Color;
 import java.util.LinkedList;
 
 import dut.game.GameView;
 import dut.game.plant.Plant;
+import dut.game.zombie.Zombie;
+import dut.game.zombie.ZombieImplementation;
+import dut.game.zombie.day.BucketheadZombie;
 
 public class NewspaperZombie extends ZombieImplementation {
 	public NewspaperZombie(int x,int y) {
@@ -22,4 +25,6 @@ public class NewspaperZombie extends ZombieImplementation {
 			setSpeed(-1.6);
 		}
 	}
+	
+
 }

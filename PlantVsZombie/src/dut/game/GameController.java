@@ -21,7 +21,7 @@ public class GameController {
 		float height = screenInfo.getHeight();
 		System.out.println("size of the screen (" + width + " x " + height + ")");
 
-		GameData data = new GameData(LevelSelector.selector(context, screenInfo),PlantSelector.selector(context, screenInfo));
+		GameData data = new GameData(LevelSelector.selector(context, screenInfo),PlantSelector.selector(context, screenInfo),new BasisStatistic("Properties.txt"));
 		
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
@@ -50,7 +50,7 @@ public class GameController {
 			Action action = event.getAction();
 			if (action == Action.KEY_PRESSED) {
 				if(event.getKey()!=KeyboardKey.D) {
-					System.out.println("Aaaaahh!");
+					System.out.println("Fermeture du jeu!");
 					context.exit(0);
 					return;
 				}else {

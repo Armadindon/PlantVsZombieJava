@@ -1,6 +1,7 @@
 package dut.game.plant.Day;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import dut.game.Bullet;
 import dut.game.GameData;
@@ -14,9 +15,11 @@ public class SnowPea extends PlantImplementation {
 	}
 	
 	@Override
-	public Bullet bullet(GameData data) {
+	public ArrayList<Bullet> bullet(GameData data) {
 		setLastFired(System.currentTimeMillis());
-		return new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2,0.5,true);
+		ArrayList<Bullet> Bullets = new ArrayList<Bullet>();
+		Bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2,0.5,true));
+		return Bullets;
 	}
 	
 	@Override

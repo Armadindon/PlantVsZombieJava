@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.Zombie;
+import dut.game.zombie.night.FootballZombie;
+import dut.game.zombie.night.NewspaperZombie;
+import dut.game.zombie.night.ScreenDoorZombie;
 
 public class Night implements Terrain {
 
@@ -15,6 +18,9 @@ public class Night implements Terrain {
 	
 	public Night() {
 		zombies.add(new BasicZombie(0, 0));
+		zombies.add(new NewspaperZombie(0, 0));
+		zombies.add(new ScreenDoorZombie(0, 0));
+		zombies.add(new FootballZombie(0, 0));
 	}
 	
 
@@ -52,6 +58,12 @@ public class Night implements Terrain {
 	@Override
 	public Color getBackgroundColor() {
 		return new Color(51, 51, 0);
+	}
+
+
+	@Override
+	public boolean haveWater() {
+		return false;
 	}
 
 

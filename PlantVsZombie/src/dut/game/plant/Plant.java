@@ -20,7 +20,7 @@ public interface Plant {
 	public ArrayList<Zombie> colliding(LinkedList<Zombie> lst);
 	public boolean collision(Shape r);
 	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC);
-	public Bullet bullet(GameData data);
+	public ArrayList<Bullet> bullet(GameData data);
 	public boolean isAlive();
 	public Color getColor();
 	public Integer getCost();
@@ -31,4 +31,6 @@ public interface Plant {
 	public boolean isMushroom();
 	public boolean canPlant(GameData data,GameView v);
 	public void die(Zombie z);
+	public boolean flotte();
+	public boolean support();
 }

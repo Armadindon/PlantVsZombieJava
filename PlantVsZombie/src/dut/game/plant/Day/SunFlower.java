@@ -23,7 +23,7 @@ public class SunFlower extends PlantImplementation {
 	}
 	
 	@Override
-	public Bullet bullet(GameData data) {
+	public ArrayList<Bullet> bullet(GameData data) {
 		setLastFired(System.currentTimeMillis());
 		data.addSun(new Sun(getX()+5, getY()+5,25));
 		return null;

@@ -1,6 +1,9 @@
-package dut.game.zombie;
+package dut.game.zombie.day;
 
 import java.awt.Color;
+
+import dut.game.zombie.Zombie;
+import dut.game.zombie.ZombieImplementation;
 
 public class BucketheadZombie extends ZombieImplementation {
 	

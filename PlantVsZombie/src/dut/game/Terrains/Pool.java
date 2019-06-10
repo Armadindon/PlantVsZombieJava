@@ -3,6 +3,7 @@ package dut.game.Terrains;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import dut.game.zombie.BasicZombie;
 import dut.game.zombie.Zombie;
 
 public class Pool implements Terrain {
@@ -10,6 +11,10 @@ public class Pool implements Terrain {
 	public int largeur = 8;
 	public int sunSpawnRate = 10000;
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
+	
+	public Pool() {
+		zombies.add(new BasicZombie(0, 0));
+	}
 	
 
 	@Override
@@ -46,4 +51,11 @@ public class Pool implements Terrain {
 	public Color getBackgroundColor() {
 		return Color.white;
 	}
+
+	@Override
+	public boolean haveWater() {
+		return true;
+	}
+	
+	
 }

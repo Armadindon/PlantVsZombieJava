@@ -23,10 +23,10 @@ import dut.game.plant.Night.GraveBuster;
 import dut.game.plant.Night.PuffShroom;
 import dut.game.plant.Night.SunShroom;
 import dut.game.zombie.BasicZombie;
-import dut.game.zombie.ConeheadZombie;
 import dut.game.zombie.FlagZombie;
 import dut.game.zombie.Zombie;
-import dut.game.zombie.poleVaultingZombie;
+import dut.game.zombie.day.ConeheadZombie;
+import dut.game.zombie.day.poleVaultingZombie;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.Event.Action;
 
@@ -40,10 +40,12 @@ public class GameData{
 	private final ArrayList<LawnMower> lstL;
 	private final ArrayList<Graves> lstG;
 	private final ArrayList<Crater> lstC;
+	private int refresh;
 	private int LawnMowerNb[];
-	private int sunNumber = 500;
+	private int sunNumber;
 	private int zombieNumber[];
-	private int nbZombies= 20;
+	private int initialZombies;
+	private int nbZombies;
 	private int alive = 0;
 	private int choixPlante = -1;
 	private long respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
@@ -52,7 +54,7 @@ public class GameData{
 	private long lastSun = System.currentTimeMillis();
 	private Terrain level;
 
-	public GameData(Terrain t,ArrayList<Plant> selectedPlant) {
+	public GameData(Terrain t,ArrayList<Plant> selectedPlant,BasisStatistic b) {
 		level = t;
 		matrix = new Cell[t.getHauteur()][t.getLargeur()];
 		lstZ = new LinkedList<>(); 
@@ -69,6 +71,11 @@ public class GameData{
 			LawnMowerNb[i]=1;
 		}
 		this.selectedPlant = selectedPlant;
+		
+		initialZombies = b.getNbZombies();
+		nbZombies = b.getSunNumber();
+		refresh = b.getRefresh();
+		sunNumber = b.getSunNumber();
 
 	}
 	
@@ -183,7 +190,7 @@ public class GameData{
 			if(p.isFire(lstZ, v,zombieNumber,lstG,lstC) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet(this)!=null) {
-					lstB.add(p.bullet(this));
+					lstB.addAll(p.bullet(this));
 				}
 			}
 			for(Zombie z:p.colliding(lstZ)) {
@@ -200,7 +207,7 @@ public class GameData{
 	}
 	
 	public void updateLawnMower(GameView v) {
-		ArrayList<Integer> deleted = new ArrayList<>();
+		ArrayList<LawnMower> deleted = new ArrayList<>();
 		for (LawnMower l: lstL) {
 			if(l!=null && l.isRunning()) {
 				ArrayList<Zombie> colliding = l.colliding(lstZ);
@@ -215,12 +222,12 @@ public class GameData{
 					lstZ.removeAll(colliding);
 				}
 				if(l.matrixOut(v)) {
-					deleted.add(v.lineFromY(l.getY()));
+					deleted.add(l);
 				}
 			}
 		}
-		for(int i:deleted) {
-			lstL.set(i, null);
+		for(LawnMower l:deleted) {
+			lstL.set(lstL.indexOf(l), null);
 		}
 	}
 	
@@ -286,17 +293,15 @@ public class GameData{
 			}
 			
 		}
-		int spawnRate = (nbZombies>5)?125:50;
+		int spawnRate = (nbZombies>initialZombies/4)?125:50;
 		if((int)(Math.random()*spawnRate)==5 && nbZombies-alive!=0 && initialTime+10000<System.currentTimeMillis()) {
 			int ligne =(int) (Math.random()*getNbLines());
 			zombieNumber[ligne]+=1;
 			int typeZombie = (int)(Math.random()*2);
-			System.out.println(typeZombie);
-			if (nbZombies-alive != 5) {
+			if (nbZombies-alive != initialZombies/4) {
 				lstZ.add(level.getZombies().get((int)(Math.random()*level.getZombies().size())).instantiateZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 			}else {
 				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
-
 			}
 
 			System.out.println("Nouveau zombie ligne "+ligne);
@@ -323,7 +328,7 @@ public class GameData{
 				deleted.add(b);
 			}else {
 				for(Zombie z: b.colliding(lstZ)) {
-					if(!(z.isHypnose())){
+					if(!(z.isHypnose())&& z.isHittable()){
 						z.addToHealth(-b.getDamage());
 						if(b.isFreezing()) {
 							z.freeze();
@@ -339,6 +344,7 @@ public class GameData{
 	}
 	
 	public boolean canPlant(int i,int j,GameView v,int choixPlante) {
+		boolean support =false;
 		if(choixPlante==-1) {
 			return false;
 		}
@@ -347,6 +353,10 @@ public class GameData{
 		
 		for(Plant p: lstP) {
 			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
+				if(p.support()) {
+					support = true;
+					continue;
+				}
 				return false;
 			}
 		}
@@ -356,12 +366,25 @@ public class GameData{
 			return false;
 		}
 		
+		//pour éviter sur un support sur un autre support
+		if(support && selectedPlant.get(choixPlante).support()) {
+			return false;
+		}
+		
+		if(selectedPlant.get(choixPlante).support() && j!=2 && j!= 3) {
+			return false;
+		}
+		
+		if(level.haveWater() && (j==2 || j== 3) && !selectedPlant.get(choixPlante).flotte() && !support) {
+			return false;
+		}
+		
+		
 		if(respawnTime[choixPlante] == -1 ) {
 			return true;
 		}else if(respawnTime[choixPlante]+respawn > System.currentTimeMillis()) {
 			return false;
 		}
-		
 		
 		return true;
 	}

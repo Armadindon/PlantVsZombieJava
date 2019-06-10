@@ -1,11 +1,13 @@
-package dut.game.zombie;
+package dut.game.zombie.day;
 
 import java.awt.Color;
+import dut.game.zombie.Zombie;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 
 import dut.game.GameView;
 import dut.game.plant.Plant;
+import dut.game.zombie.ZombieImplementation;
 
 public class poleVaultingZombie extends ZombieImplementation {
 	private boolean jumped =false;

@@ -6,11 +6,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 import dut.game.zombie.BasicZombie;
-import dut.game.zombie.BucketheadZombie;
-import dut.game.zombie.ConeheadZombie;
-import dut.game.zombie.NewspaperZombie;
 import dut.game.zombie.Zombie;
-import dut.game.zombie.poleVaultingZombie;
+import dut.game.zombie.day.BucketheadZombie;
+import dut.game.zombie.day.ConeheadZombie;
+import dut.game.zombie.day.poleVaultingZombie;
+import dut.game.zombie.night.NewspaperZombie;
 
 public class Day implements Terrain {
 	private int hauteur = 5;
@@ -62,5 +62,9 @@ public class Day implements Terrain {
 	public Color getBackgroundColor() {
 		return Color.white;
 	}
-
+	
+	@Override
+	public boolean haveWater() {
+		return false;
+	}
 }

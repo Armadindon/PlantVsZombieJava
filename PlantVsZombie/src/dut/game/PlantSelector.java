@@ -26,6 +26,8 @@ import dut.game.plant.Night.IceShroom;
 import dut.game.plant.Night.PuffShroom;
 import dut.game.plant.Night.ScaredyShroom;
 import dut.game.plant.Night.SunShroom;
+import dut.game.plant.pool.LilyPad;
+import dut.game.plant.pool.Threepeater;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
@@ -56,6 +58,8 @@ public class PlantSelector {
 		available.add(new ScaredyShroom(0, 0));
 		available.add(new IceShroom(0, 0));
 		available.add(new DoomShroom(0, 0));
+		available.add(new LilyPad(0, 0));
+		available.add(new Threepeater(0, 0));
 		
 		while(true) {
 			context.renderFrame(graphics->drawSelector(graphics, screen,(int) (screen.getWidth()/4), (int) (screen.getHeight()/4), (int) screen.getHeight()/2));
@@ -78,7 +82,6 @@ public class PlantSelector {
 					int i =indexFromReaCoord(event.getLocation().x, (int) (screen.getWidth()/4), (int) ((screen.getHeight()/2)*1.0)/5);
 					int j =indexFromReaCoord(event.getLocation().y, (int) (screen.getHeight()/4), (int) ((screen.getHeight()/2)*1.0)/5);
 					int selectedPlant = (j*8+i);
-					System.out.println(selectedPlant);
 					if(j==6 && i>=0 && i< selected.size()) {
 						available.add(selected.get(i));
 						selected.remove(selected.get(i));

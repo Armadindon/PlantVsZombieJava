@@ -32,4 +32,5 @@ public interface Zombie {
 	public ArrayList<Zombie> colliding(LinkedList<Zombie> lstZ);
 	public void stun();
 	public boolean isStun();
+	public boolean isHittable();
 }
