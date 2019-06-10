@@ -39,6 +39,7 @@ public class GameData{
 	private final LinkedList<Sun> lstS;
 	private final ArrayList<LawnMower> lstL;
 	private final ArrayList<Graves> lstG;
+	private final ArrayList<Crater> lstC;
 	private int LawnMowerNb[];
 	private int sunNumber = 500;
 	private int zombieNumber[];
@@ -46,12 +47,12 @@ public class GameData{
 	private int alive = 0;
 	private int choixPlante = -1;
 	private long respawnTime[] = {-1,-1,-1,-1,-1,-1,-1,-1};
-	private final LinkedList<Plant> selectedPlant = new LinkedList<Plant>();
+	private final ArrayList<Plant> selectedPlant;
 	private long initialTime = System.currentTimeMillis();
 	private long lastSun = System.currentTimeMillis();
 	private Terrain level;
 
-	public GameData(Terrain t) {
+	public GameData(Terrain t,ArrayList<Plant> selectedPlant) {
 		level = t;
 		matrix = new Cell[t.getHauteur()][t.getLargeur()];
 		lstZ = new LinkedList<>(); 
@@ -60,20 +61,14 @@ public class GameData{
 		lstS = new LinkedList<>(); 
 		lstL = new ArrayList<LawnMower>();
 		lstG = new ArrayList<Graves>();
+		lstC = new ArrayList<Crater>();
 		
 		zombieNumber = new int[t.getHauteur()];
 		LawnMowerNb = new int[t.getHauteur()];
 		for (int i=0;i<t.getHauteur();i++) {
 			LawnMowerNb[i]=1;
 		}
-		selectedPlant.add(new Peashotter(0, 0));
-		selectedPlant.add(new CherryBomb(0, 0));
-		selectedPlant.add(new Wallnut(0, 0));
-		selectedPlant.add(new SunShroom(0, 0));
-		selectedPlant.add(new PotatoMine(0, 0));
-		selectedPlant.add(new GraveBuster(0, 0));
-		selectedPlant.add(new FumeShroom(0, 0));
-		selectedPlant.add(new PuffShroom(0, 0));
+		this.selectedPlant = selectedPlant;
 
 	}
 	
@@ -185,7 +180,7 @@ public class GameData{
 		ArrayList<Plant> deleted = new ArrayList<>();
 		for(Plant p:lstP) {
 			//on tire
-			if(p.isFire(lstZ, v,zombieNumber,lstG) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
+			if(p.isFire(lstZ, v,zombieNumber,lstG,lstC) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet(this)!=null) {
 					lstB.add(p.bullet(this));
@@ -193,6 +188,7 @@ public class GameData{
 			}
 			for(Zombie z:p.colliding(lstZ)) {
 				p.addToHealth(-z.getDamage());
+				if(!(p.isAlive())){p.die(z);}
 				z.setSpeed(0);
 			}
 			if(!(p.isAlive())) {
@@ -231,7 +227,7 @@ public class GameData{
 	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
 		if(canPlant(i,j,v,choixPlante) || debug) {
 			int sizeX = selectedPlant.get(choixPlante).getSizeX();int sizeY = selectedPlant.get(choixPlante).getSizeY();
-			if(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)).canPlant(lstG, v)) {
+			if(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)).canPlant(this, v)) {
 				addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
 				
 				sunNumber-= selectedPlant.get(choixPlante).getCost();
@@ -246,37 +242,49 @@ public class GameData{
 	public void updateZombie(GameView v,int width,int height) {
 		ArrayList<Zombie> deleted = new ArrayList<>();
 		for(Zombie z:lstZ) {
-			z.special(lstP, v);
-			z.move();
-			z.setToInitialSpeed();
-			if(z.isFrozen()) {
-				z.unFreeze();
-			}
-			if(z.matrixOut(v)) {
-				deleted.add(z);
-				System.out.println("Le zombie "+z+" est sorti de la matrice! On le suprimme");
-				System.out.println("Supression zombie , Restant= "+nbZombies);
-				nbZombies--;
-				alive--;
-				if(LawnMowerNb[v.lineFromY(z.getY())]==1) {
-					System.out.println("Tondeuse lanc�e en "+v.lineFromY(z.getY()));
-					lstL.get(v.lineFromY(z.getY())).run();
-					LawnMowerNb[v.lineFromY(z.getY())]=0;
-				}else {
-					System.out.println("Perdu");
-					System.exit(0);
+			if(!z.isStun()) {
+				z.special(lstP, v);
+				z.move();
+				z.setToInitialSpeed();
+				if(z.isFrozen()) {
+					z.unFreeze();
 				}
-				zombieNumber[v.lineFromY(z.getY())]--;
-			}else {
-				if(!(z.isAlive())) {
+				if(z.matrixOut(v)) {
 					deleted.add(z);
-					System.out.println("Mort du zombie : "+z);
-					zombieNumber[v.lineFromY(z.getY())]--;
+					System.out.println("Le zombie "+z+" est sorti de la matrice! On le suprimme");
 					System.out.println("Supression zombie , Restant= "+nbZombies);
 					nbZombies--;
-					alive--;	
+					alive--;
+					if(LawnMowerNb[v.lineFromY(z.getY())]==1) {
+						System.out.println("Tondeuse lanc�e en "+v.lineFromY(z.getY()));
+						lstL.get(v.lineFromY(z.getY())).run();
+						LawnMowerNb[v.lineFromY(z.getY())]=0;
+					}else {
+						System.out.println("Perdu");
+						System.exit(0);
+					}
+					zombieNumber[v.lineFromY(z.getY())]--;
+				}else {
+					if(!(z.isAlive())) {
+						deleted.add(z);
+						System.out.println("Mort du zombie : "+z);
+						zombieNumber[v.lineFromY(z.getY())]--;
+						System.out.println("Supression zombie , Restant= "+nbZombies);
+						nbZombies--;
+						alive--;	
+					}
+				}
+				if(z.isHypnose()) {
+					ArrayList<Zombie> col =  z.colliding(lstZ);
+					for(Zombie colZ: col) {
+						z.addToHealth(-10);
+						colZ.addToHealth(-10);
+						z.setSpeed(0);
+						colZ.setSpeed(0);
+					}
 				}
 			}
+			
 		}
 		int spawnRate = (nbZombies>5)?125:50;
 		if((int)(Math.random()*spawnRate)==5 && nbZombies-alive!=0 && initialTime+10000<System.currentTimeMillis()) {
@@ -296,6 +304,16 @@ public class GameData{
 		}
 		lstZ.removeAll(deleted);
 	}
+	
+	public void updateCrater() {
+		ArrayList<Crater> deleted= new ArrayList<Crater>();
+		for(Crater c: lstC) {
+			if(!c.isAlive()) {
+				deleted.add(c);
+			}
+		}
+		lstC.removeAll(deleted);
+	}
 
 	public void updateBullet(GameView v) {
 		ArrayList<Bullet> deleted = new ArrayList<>();
@@ -305,13 +323,15 @@ public class GameData{
 				deleted.add(b);
 			}else {
 				for(Zombie z: b.colliding(lstZ)) {
-					z.addToHealth(-b.getDamage());
-					if(b.isFreezing()) {
-						z.freeze();
-						System.out.println("Freeze !");
+					if(!(z.isHypnose())){
+						z.addToHealth(-b.getDamage());
+						if(b.isFreezing()) {
+							z.freeze();
+							System.out.println("Freeze !");
+						}
+						z.setSpeed(0);
+						deleted.add(b);
 					}
-					z.setSpeed(0);
-					deleted.add(b);
 				}
 			}
 		}
@@ -473,6 +493,10 @@ public class GameData{
 	
 	public ArrayList<Graves> getLstG() {
 		return lstG;
+	}
+	
+	public ArrayList<Crater> getLstC() {
+		return lstC;
 	}
 	
 	

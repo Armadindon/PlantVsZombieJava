@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import dut.game.Crater;
 import dut.game.GameView;
 import dut.game.Graves;
 import dut.game.plant.Plant;
@@ -18,7 +19,7 @@ public class Repeatter extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
 		if(System.currentTimeMillis()>getLastFired()+getFrequence() && zombieNumber[v.lineFromY(getY())]!=0) {
 			nextFire =true;
 			return true;

@@ -30,7 +30,7 @@ public class poleVaultingZombie extends ZombieImplementation {
 				jump(v);
 				jumped = true;
 			}
-		}else if(colliding(lstP).size()==0) {
+		}else if(collidingP(lstP).size()==0) {
 			setSpeed(-0.8);
 		}
 	}

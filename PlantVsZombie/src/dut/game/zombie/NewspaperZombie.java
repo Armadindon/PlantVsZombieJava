@@ -18,7 +18,7 @@ public class NewspaperZombie extends ZombieImplementation {
 	
 	@Override
 	public void special(LinkedList<Plant> lstP, GameView v){
-		if(getHealth()<200 && colliding(lstP).size()==0) {
+		if(getHealth()<200 && collidingP(lstP).size()==0) {
 			setSpeed(-1.6);
 		}
 	}

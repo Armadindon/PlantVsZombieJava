@@ -21,8 +21,8 @@ public class GameController {
 		float height = screenInfo.getHeight();
 		System.out.println("size of the screen (" + width + " x " + height + ")");
 
-		GameData data = new GameData(LevelSelector.selector(context, screenInfo));
-		PlantSelector.selector(context, screenInfo);
+		GameData data = new GameData(LevelSelector.selector(context, screenInfo),PlantSelector.selector(context, screenInfo));
+		
 		data.setRandomMatrix();
 		GameView view = GameView.initGameGraphics((int) (width/4), (int) (height/4), (int) height/2, data);
 		data.init(view,(int) width,(int) height);

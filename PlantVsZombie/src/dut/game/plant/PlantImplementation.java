@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 import dut.game.Bullet;
+import dut.game.Crater;
 import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
@@ -58,12 +59,12 @@ public class PlantImplementation implements Plant  {
 	}
 
 	@Override
-	public boolean collision(Rectangle2D r) {
+	public boolean collision(Shape r) {
 		return r.getBounds2D().intersects(this.draw().getBounds2D());
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
 		if(System.currentTimeMillis()>lastFired+frequence) {
 			isFire=true;
 		}
@@ -157,13 +158,20 @@ public class PlantImplementation implements Plant  {
 	}
 
 	@Override
-	public boolean canPlant(ArrayList<Graves> lstG,GameView v) {
-		for(Graves g: lstG) {
+	public boolean canPlant(GameData data,GameView v) {
+		for(Graves g: data.getLstG()) {
 			if(collision(g.draw())) {
 				return false;
 			}
 		}
+		for(Crater c: data.getLstC()){
+			if(collision(c.draw())) {return false;}
+		}
 		return true;
+	}
+
+	@Override
+	public void die(Zombie z) {	
 	}
 	
 	

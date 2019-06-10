@@ -1,18 +1,14 @@
 package dut.game;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Float;
+
 import java.util.ArrayList;
 
-import dut.game.Terrains.Day;
-import dut.game.Terrains.Night;
-import dut.game.Terrains.Pool;
-import dut.game.Terrains.Terrain;
+
 import dut.game.plant.Plant;
 import dut.game.plant.Day.CherryBomb;
 import dut.game.plant.Day.Chomper;
@@ -22,9 +18,13 @@ import dut.game.plant.Day.Repeatter;
 import dut.game.plant.Day.SnowPea;
 import dut.game.plant.Day.SunFlower;
 import dut.game.plant.Day.Wallnut;
+import dut.game.plant.Night.DoomShroom;
 import dut.game.plant.Night.FumeShroom;
 import dut.game.plant.Night.GraveBuster;
+import dut.game.plant.Night.HypnoShroom;
+import dut.game.plant.Night.IceShroom;
 import dut.game.plant.Night.PuffShroom;
+import dut.game.plant.Night.ScaredyShroom;
 import dut.game.plant.Night.SunShroom;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
@@ -52,6 +52,10 @@ public class PlantSelector {
 		available.add(new GraveBuster(0, 0));
 		available.add(new PuffShroom(0, 0));
 		available.add(new SunShroom(0, 0));
+		available.add(new HypnoShroom(0, 0));
+		available.add(new ScaredyShroom(0, 0));
+		available.add(new IceShroom(0, 0));
+		available.add(new DoomShroom(0, 0));
 		
 		while(true) {
 			context.renderFrame(graphics->drawSelector(graphics, screen,(int) (screen.getWidth()/4), (int) (screen.getHeight()/4), (int) screen.getHeight()/2));
@@ -64,17 +68,31 @@ public class PlantSelector {
 
 			Action action = event.getAction();
 			if (action == Action.KEY_PRESSED) {
-				break;
+				if(event.getKey()==KeyboardKey.SPACE && selected.size()==8) {
+					break;
+				}
 			}
 
-			if (action != Action.POINTER_DOWN) {
-				continue;
+			if (action == Action.POINTER_DOWN) {
+				if(event.getLocation()!=null) {
+					int i =indexFromReaCoord(event.getLocation().x, (int) (screen.getWidth()/4), (int) ((screen.getHeight()/2)*1.0)/5);
+					int j =indexFromReaCoord(event.getLocation().y, (int) (screen.getHeight()/4), (int) ((screen.getHeight()/2)*1.0)/5);
+					int selectedPlant = (j*8+i);
+					System.out.println(selectedPlant);
+					if(j==6 && i>=0 && i< selected.size()) {
+						available.add(selected.get(i));
+						selected.remove(selected.get(i));
+					}else if(selectedPlant<available.size() && selectedPlant>=0 && selected.size()<8) {
+						selected.add(available.get(selectedPlant));
+						available.remove(available.get(selectedPlant));
+					}
+				}
+				event = null;
 			}
 			
 		}
 		
-		System.exit(0);
-		return null;//jamais atteint, présent pour faire plaisir a eclipse
+		return selected;//jamais atteint, présent pour faire plaisir a eclipse
 	}
 
 	private static void drawSelector(Graphics2D g,ScreenInfo sc, int xOrigin, int yOrigin, int length) {
@@ -90,6 +108,7 @@ public class PlantSelector {
 		
 		g.setColor(Color.black);
 		
+		//on affiche le cadre principal
 		for (int i = 0; i <= 5+2; i++) {
 			g.draw(new Line2D.Float(xOrigin, yOrigin + i * squareSize, xOrigin + squareSize*8, yOrigin + i * squareSize));
 		}
@@ -98,6 +117,25 @@ public class PlantSelector {
 			g.draw(new Line2D.Float(xOrigin + i * squareSize, yOrigin+squareSize*(5+1), xOrigin + i * squareSize, yOrigin+squareSize*(5+2)));
 		}
 		
+		//on affiche les plantes disponibles
+		for(int i=0;i<available.size();i++) {
+			g.setColor(available.get(i).getColor());
+			g.fill(available.get(i).instantiateFlower(midCell(xOrigin, i%8, available.get(i).getSizeX(), squareSize), midCell(yOrigin, (int)(i/8), available.get(i).getSizeY(), squareSize)).draw());
+		}
 		
+		//on affiche les plantes disponibles
+		for(int i=0;i<selected.size();i++) {
+			g.setColor(selected.get(i).getColor());
+			g.fill(selected.get(i).instantiateFlower(midCell(xOrigin, i, selected.get(i).getSizeX(), squareSize), midCell(yOrigin, 6, selected.get(i).getSizeY(), squareSize)).draw());
+		}
+		
+	}
+	
+	private static int midCell(int origin , int index,int taille,int squareSize) {
+		return (int) (origin+(index*squareSize)+((squareSize-taille)/2));
+	}
+	
+	private static int indexFromReaCoord(float coord, int origin,int squareSize) { // attention, il manque des test de validitÃ© des coordonnÃ©es!
+		return (int) ((coord - origin) / squareSize);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Bullet;
+import dut.game.Crater;
 import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
@@ -19,7 +20,7 @@ public class FumeShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 			ArrayList<Zombie> col;
 				if((col = collidingSpore(lstZ, v)).size()!=0){

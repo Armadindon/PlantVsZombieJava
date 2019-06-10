@@ -19,6 +19,8 @@ public class ZombieImplementation implements Zombie{
 	private final double initialSpeed;
 	private boolean frozen = false;
 	private long lastFrozen;
+	private boolean hypnose;
+	private long lastStun;
 
 	public ZombieImplementation(int x, int y, int taille,double speed,double health,Color color) {
 		this.x = x;
@@ -32,7 +34,11 @@ public class ZombieImplementation implements Zombie{
 
 	@Override
 	public void move() {
-		x += (frozen)?(speed/2):speed;
+		if(hypnose) {
+			x -= (frozen)?(speed/2):speed;
+		}else {
+			x += (frozen)?(speed/2):speed;
+		}
 	}
 	
 	@Override
@@ -136,7 +142,7 @@ public class ZombieImplementation implements Zombie{
 		x-= v.getSquareSize();
 	}
 	
-	public ArrayList<Plant> colliding(LinkedList<Plant> lstP){
+	public ArrayList<Plant> collidingP(LinkedList<Plant> lstP){
 		ArrayList<Plant> col = new ArrayList<Plant>();
 		for(Plant p: lstP) {
 			if(p.collision(draw())) {
@@ -158,6 +164,37 @@ public class ZombieImplementation implements Zombie{
 	@Override
 	public boolean isMushroom() {
 		return false;
+	}
+
+	@Override
+	public void hypnose() {
+		hypnose =true;
+	}
+	
+	@Override
+	public boolean isHypnose() {
+		return hypnose;
+	}
+
+	@Override
+	public ArrayList<Zombie> colliding(LinkedList<Zombie> lstZ) {
+		ArrayList<Zombie> col = new ArrayList<Zombie>();
+		for(Zombie z: lstZ) {
+			if(z.collision(draw()) && !equals(z)) {
+				col.add(z);
+			}
+		}
+		return col;
+	}
+	
+	@Override
+	public void stun() {
+		lastStun =  System.currentTimeMillis();
+	}
+	
+	@Override
+	public boolean isStun() {
+		return System.currentTimeMillis()<lastStun+3250;
 	}
 
 }

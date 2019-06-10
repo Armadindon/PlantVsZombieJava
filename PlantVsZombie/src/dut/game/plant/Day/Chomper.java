@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Bullet;
+import dut.game.Crater;
 import dut.game.plant.Plant;
 import dut.game.GameData;
 import dut.game.GameView;
@@ -26,7 +27,7 @@ public class Chomper extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis() || notChomp) {
 			ArrayList<Zombie> colliding;
 			if((colliding = collidingChomp(lstZ, v)).size()>0) {

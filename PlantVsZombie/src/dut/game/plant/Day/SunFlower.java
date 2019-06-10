@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Bullet;
+import dut.game.Crater;
 import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
@@ -29,7 +30,7 @@ public class SunFlower extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG) {
+	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
 		if(System.currentTimeMillis()>super.getFrequence()+super.getLastFired()) {return true;}
 		return false;
 	}

@@ -1,31 +1,20 @@
-package dut.game.plant.Day;
+package dut.game.plant.Night;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import dut.game.Bullet;
 import dut.game.Crater;
-import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
 
-public class CherryBomb extends PlantImplementation{
-	
-	public CherryBomb(int x, int y) {
-		super(x,y,50,50,1,3000,Color.RED,150,50000);
-	}
-	
-	private Rectangle2D drawImpact(GameView v) {
-		int x =  (int) v.xFromI(v.columnFromX(getX())-1);
-		int y =  (int) v.yFromJ(v.lineFromY(getY())-1);
-		int x2 = (int) v.getSquareSize()*3;
-		int y2 = (int) v.getSquareSize()*3;
-		return new Rectangle2D.Float(x,y,x2,y2);
+public class DoomShroom extends PlantImplementation {
+	public DoomShroom(int x,int y) {
+		super(x, y, 50, 50, 10, 1000, Color.black, 125, 50000);
 	}
 	
 	@Override
@@ -34,16 +23,18 @@ public class CherryBomb extends PlantImplementation{
 				for(Zombie z: collidingExplosion(lstZ, v)) {
 					z.addToHealth(-1800);
 				}
-				this.addToHealth(-100);
-				return true;
-				
+				addToHealth(-100);
+				lstC.add(new Crater(getX(), getY()));
 		}
 		return false;
 	}
 	
-	@Override
-	public Bullet bullet(GameData data) {
-		return null;
+	private Rectangle2D drawImpact(GameView v) {
+		int x =  (int) v.xFromI(v.columnFromX(getX())-3);
+		int y =  (int) v.yFromJ(v.lineFromY(getY())-2);
+		int x2 = (int) v.getSquareSize()*7;
+		int y2 = (int) v.getSquareSize()*5;
+		return new Rectangle2D.Float(x,y,x2,y2);
 	}
 	
 	private boolean collisionExplosion(Zombie g,GameView v) {
@@ -54,7 +45,7 @@ public class CherryBomb extends PlantImplementation{
 		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
 		for(Zombie z: lstG) {
 			if(collisionExplosion(z, v)) {
-				System.out.println("Collision Explosion Cherry Bomb !");
+				System.out.println("Collision Explosion Doom Shroom !");
 				lstCol.add(z);
 			}
 		}
@@ -62,9 +53,12 @@ public class CherryBomb extends PlantImplementation{
 	}
 	
 	@Override
-	public Plant instantiateFlower(int x ,int y) {
-		return new CherryBomb(x, y);
+	public boolean isMushroom() {
+		return true;
 	}
 	
-	
+	@Override
+	public Plant instantiateFlower(int x, int y) {
+		return new DoomShroom(x, y);
+	}
 }

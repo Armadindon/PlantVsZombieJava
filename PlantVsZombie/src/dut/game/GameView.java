@@ -204,6 +204,11 @@ public class GameView implements GameDrawer {
 
 	
 	public void moveAllAndDraw(Graphics2D graphics,GameData data) {
+		for(Crater l : data.getLstC()) {
+			graphics.setColor(Color.black);
+			graphics.fill(l.draw());
+		}
+		
 		for(Graves l : data.getLstG()) {
 			graphics.setColor(Color.black);
 			graphics.fill(l.draw());
@@ -238,6 +243,7 @@ public class GameView implements GameDrawer {
 				graphics.fill(l.draw());
 			}
 		}
+		
 		
 		
 	}

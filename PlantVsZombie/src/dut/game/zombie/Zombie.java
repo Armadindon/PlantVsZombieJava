@@ -2,6 +2,7 @@ package dut.game.zombie;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.GameView;
@@ -26,4 +27,9 @@ public interface Zombie {
 	public double getX();
 	public Zombie instantiateZombie(int x,int y);
 	public boolean isMushroom();
+	public void hypnose();
+	public boolean isHypnose();
+	public ArrayList<Zombie> colliding(LinkedList<Zombie> lstZ);
+	public void stun();
+	public boolean isStun();
 }
