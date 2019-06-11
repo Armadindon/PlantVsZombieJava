@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Crater;
+import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
 import dut.game.plant.Plant;
@@ -18,9 +19,9 @@ public class IceShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
-				for(Zombie z: lstZ) {
+				for(Zombie z: data.getLstZ()) {
 					z.stun();
 					z.addToHealth(-20);
 					addToHealth(-500);

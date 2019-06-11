@@ -29,13 +29,13 @@ public class GraveBuster extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 			Graves deleted=null;
-			for(Graves g: lstG) {
+			for(Graves g: data.getLstG()) {
 				if(collision(g.draw())) {deleted=g;break;}
 			}
-			lstG.remove(deleted);
+			data.getLstG().remove(deleted);
 			addToHealth(-150);
 		}
 		return false;

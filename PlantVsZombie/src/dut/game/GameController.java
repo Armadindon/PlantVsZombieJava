@@ -41,7 +41,7 @@ public class GameController {
 			data.updateData(view,(int) width,(int) height,event,debug);
 
 			view.moveAllAndDraw(context, data);
-			event = context.pollOrWaitEvent(refresh); // modifier pour avoir un affichage fluide
+			event = context.pollOrWaitEvent(data.getRefresh()); // modifier pour avoir un affichage fluide
 
 			if (event == null) { // no event
 				continue;

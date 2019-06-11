@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import dut.game.Crater;
+import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
 import dut.game.plant.Plant;
@@ -19,8 +20,8 @@ public class Repeatter extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
-		if(System.currentTimeMillis()>getLastFired()+getFrequence() && zombieNumber[v.lineFromY(getY())]!=0) {
+	public boolean isFire(GameView v,GameData data) {
+		if(System.currentTimeMillis()>getLastFired()+getFrequence() && data.getZombieNumber()[v.lineFromY(getY())]!=0) {
 			nextFire =true;
 			return true;
 		}else if(nextFire && System.currentTimeMillis()>getLastFired()+50) {//on décale deux balles de 50 ms

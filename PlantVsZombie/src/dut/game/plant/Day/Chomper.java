@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import dut.game.Bullet;
 import dut.game.Crater;
@@ -27,10 +28,10 @@ public class Chomper extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis() || notChomp) {
 			ArrayList<Zombie> colliding;
-			if((colliding = collidingChomp(lstZ, v)).size()>0) {
+			if((colliding = collidingChomp(data.getLstZ(), v)).size()>0) {
 				colliding.get(0).addToHealth(-Integer.MAX_VALUE);
 				notChomp=false;
 				return true;
@@ -52,7 +53,7 @@ public class Chomper extends PlantImplementation {
 		return new Rectangle2D.Float(x,y,x2,y2);
 	}
 	
-	public ArrayList<Zombie> collidingChomp(LinkedList<Zombie> lstG,GameView v){
+	public ArrayList<Zombie> collidingChomp(List<Zombie> lstG,GameView v){
 		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
 		for(Zombie z: lstG) {
 			if(collisionChomp(z, v)) {

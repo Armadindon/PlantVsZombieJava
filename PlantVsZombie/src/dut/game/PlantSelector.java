@@ -26,8 +26,14 @@ import dut.game.plant.Night.IceShroom;
 import dut.game.plant.Night.PuffShroom;
 import dut.game.plant.Night.ScaredyShroom;
 import dut.game.plant.Night.SunShroom;
+import dut.game.plant.pool.Jalapeno;
 import dut.game.plant.pool.LilyPad;
+import dut.game.plant.pool.SpikeWeed;
+import dut.game.plant.pool.Squash;
+import dut.game.plant.pool.TallNut;
+import dut.game.plant.pool.TangleKelp;
 import dut.game.plant.pool.Threepeater;
+import dut.game.plant.pool.TorchWood;
 import fr.umlv.zen5.ApplicationContext;
 import fr.umlv.zen5.Event;
 import fr.umlv.zen5.KeyboardKey;
@@ -60,6 +66,13 @@ public class PlantSelector {
 		available.add(new DoomShroom(0, 0));
 		available.add(new LilyPad(0, 0));
 		available.add(new Threepeater(0, 0));
+		available.add(new TangleKelp(0, 0));
+		available.add(new TallNut(0, 0));
+		available.add(new Squash(0, 0));
+		available.add(new Jalapeno(0, 0));
+		available.add(new SpikeWeed(0, 0));
+		available.add(new TorchWood(0, 0));
+
 		
 		while(true) {
 			context.renderFrame(graphics->drawSelector(graphics, screen,(int) (screen.getWidth()/4), (int) (screen.getHeight()/4), (int) screen.getHeight()/2));
@@ -95,7 +108,7 @@ public class PlantSelector {
 			
 		}
 		
-		return selected;//jamais atteint, présent pour faire plaisir a eclipse
+		return selected;//jamais atteint, prï¿½sent pour faire plaisir a eclipse
 	}
 
 	private static void drawSelector(Graphics2D g,ScreenInfo sc, int xOrigin, int yOrigin, int length) {

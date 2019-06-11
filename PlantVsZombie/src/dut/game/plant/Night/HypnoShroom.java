@@ -35,7 +35,7 @@ public class HypnoShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		return false;
 	}
 	

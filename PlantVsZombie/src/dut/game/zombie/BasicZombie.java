@@ -12,4 +12,9 @@ public class BasicZombie extends ZombieImplementation{
 	public Zombie instantiateZombie(int x,int y) {
 		return new BasicZombie(x, y);
 	}
+	
+	@Override
+	public String toString() {
+		return "BasicZombie";
+	}
 }

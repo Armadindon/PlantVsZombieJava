@@ -17,7 +17,6 @@ public class Night implements Terrain {
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	
 	public Night() {
-		zombies.add(new BasicZombie(0, 0));
 		zombies.add(new NewspaperZombie(0, 0));
 		zombies.add(new ScreenDoorZombie(0, 0));
 		zombies.add(new FootballZombie(0, 0));

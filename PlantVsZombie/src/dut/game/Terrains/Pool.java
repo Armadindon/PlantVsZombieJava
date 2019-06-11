@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import dut.game.zombie.BasicZombie;
 import dut.game.zombie.Zombie;
+import dut.game.zombie.pool.DolphinRiderZombie;
+import dut.game.zombie.pool.DuckyTubeZombie;
 
 public class Pool implements Terrain {
 	public int hauteur = 6;
@@ -13,7 +15,8 @@ public class Pool implements Terrain {
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	
 	public Pool() {
-		zombies.add(new BasicZombie(0, 0));
+		zombies.add(new DuckyTubeZombie(0, 0));
+		zombies.add(new DolphinRiderZombie(0, 0));
 	}
 	
 

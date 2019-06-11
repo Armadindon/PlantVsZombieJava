@@ -6,6 +6,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Float;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import dut.game.Bullet;
@@ -47,7 +48,7 @@ public class PlantImplementation implements Plant  {
 	}
 
 	@Override
-	public ArrayList<Zombie> colliding(LinkedList<Zombie> lst) {
+	public ArrayList<Zombie> colliding(List<Zombie> lst) {
 		ArrayList<Zombie> lstCol = new ArrayList<>();
 		for(Zombie g: lst) {
 			if(collision(g.draw())) {
@@ -64,11 +65,11 @@ public class PlantImplementation implements Plant  {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(System.currentTimeMillis()>lastFired+frequence) {
 			isFire=true;
 		}
-		if(isFire && zombieNumber[v.lineFromY(y)]!=0) {isFire=false;return true;}
+		if(isFire && data.getZombieNumber()[v.lineFromY(y)]!=0) {isFire=false;return true;}
 		return false;
 	}
 	
@@ -186,7 +187,19 @@ public class PlantImplementation implements Plant  {
 		return false;
 	}
 	
+	@Override
+	public boolean isTall() {
+		return false;
+	}
 	
+	public void jump(int i,GameView v) {
+		x = x+(i*v.getSquareSize());
+	}
+
+	@Override
+	public boolean isHitable() {
+		return true;
+	}
 	
 	
 }

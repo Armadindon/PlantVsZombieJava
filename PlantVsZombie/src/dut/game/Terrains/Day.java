@@ -19,7 +19,6 @@ public class Day implements Terrain {
 	private ArrayList<Zombie> zombies = new ArrayList<Zombie>();
 	
 	public Day() {
-		zombies.add(new BasicZombie(0, 0));
 		zombies.add(new ConeheadZombie(0, 0));
 		zombies.add(new poleVaultingZombie(0, 0));
 		zombies.add(new BucketheadZombie(0, 0));

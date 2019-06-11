@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,6 +41,7 @@ public class GameData{
 	private final ArrayList<LawnMower> lstL;
 	private final ArrayList<Graves> lstG;
 	private final ArrayList<Crater> lstC;
+	private final ArrayList<Zombie> remaining =  new ArrayList<>();
 	private int refresh;
 	private int LawnMowerNb[];
 	private int sunNumber;
@@ -64,21 +66,30 @@ public class GameData{
 		lstL = new ArrayList<LawnMower>();
 		lstG = new ArrayList<Graves>();
 		lstC = new ArrayList<Crater>();
-		
+
 		zombieNumber = new int[t.getHauteur()];
 		LawnMowerNb = new int[t.getHauteur()];
 		for (int i=0;i<t.getHauteur();i++) {
 			LawnMowerNb[i]=1;
 		}
 		this.selectedPlant = selectedPlant;
-		
+
 		initialZombies = b.getNbZombies();
-		nbZombies = b.getSunNumber();
+		nbZombies = b.getNbZombies();
 		refresh = b.getRefresh();
 		sunNumber = b.getSunNumber();
 
+		for(int i = 0;i<nbZombies;i++) {
+			if(Math.random()<0.5) {//la moitié des zombies sont basiques
+				remaining.add(new BasicZombie(0, 0));
+			}else {
+				remaining.add(level.getZombies().get((int)(Math.random()*level.getZombies().size())));
+			}
+		}
+		System.out.println(Arrays.toString(remaining.toArray()));
+
 	}
-	
+
 	public void init(GameView v,int width,int height) {
 		boolean planted;
 		Graves g;
@@ -86,7 +97,7 @@ public class GameData{
 			lstL.add(new LawnMower(v.midCell((int) (width/4), -1, 50),v.midCell((int) (height/4), i, 50)));
 		}
 		if(level.haveGraves()) {
-			System.out.println("Cr�ation Tombes");
+			System.out.println("Cr�ation Tombes");
 			for(int i=0; i<4;i++) {
 				planted = false;
 				do {
@@ -98,7 +109,7 @@ public class GameData{
 				} while (!planted);
 			}
 		}
-		
+
 	}
 
 	/**
@@ -187,16 +198,18 @@ public class GameData{
 		ArrayList<Plant> deleted = new ArrayList<>();
 		for(Plant p:lstP) {
 			//on tire
-			if(p.isFire(lstZ, v,zombieNumber,lstG,lstC) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
+			if(p.isFire(v,this) && ((!(p.isMushroom()))||level.mushrooms()==p.isMushroom())) {
 				System.out.println("La plante "+p+" Tire / Explose !");
 				if(p.bullet(this)!=null) {
 					lstB.addAll(p.bullet(this));
 				}
 			}
 			for(Zombie z:p.colliding(lstZ)) {
-				p.addToHealth(-z.getDamage());
-				if(!(p.isAlive())){p.die(z);}
-				z.setSpeed(0);
+				if(p.isHitable()) {
+					p.addToHealth(-z.getDamage());
+					if(!(p.isAlive())){p.die(z);}
+					z.setSpeed(0);
+				}
 			}
 			if(!(p.isAlive())) {
 				deleted.add(p);
@@ -205,7 +218,7 @@ public class GameData{
 
 		lstP.removeAll(deleted);
 	}
-	
+
 	public void updateLawnMower(GameView v) {
 		ArrayList<LawnMower> deleted = new ArrayList<>();
 		for (LawnMower l: lstL) {
@@ -230,20 +243,20 @@ public class GameData{
 			lstL.set(lstL.indexOf(l), null);
 		}
 	}
-	
+
 	public void planterPlante(int i,int j,GameView v,int choixPlante,double width , double height,boolean debug) {
 		if(canPlant(i,j,v,choixPlante) || debug) {
 			int sizeX = selectedPlant.get(choixPlante).getSizeX();int sizeY = selectedPlant.get(choixPlante).getSizeY();
 			if(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)).canPlant(this, v)) {
 				addPlant(selectedPlant.get(choixPlante).instantiateFlower(v.midCell((int) (width/4), i,sizeX),  v.midCell((int) (height/4),j,sizeY)));
-				
+
 				sunNumber-= selectedPlant.get(choixPlante).getCost();
 				respawnTime[choixPlante]=System.currentTimeMillis();
-				
+
 				this.choixPlante=-1;
 			}else{this.choixPlante = -1;System.out.println("Vous ne pouvez pas planter la !");}
-			}else {this.choixPlante = -1;System.out.println("Vous ne pouvez pas planter la !");}
-		
+		}else {this.choixPlante = -1;System.out.println("Vous ne pouvez pas planter la !");}
+
 	}
 
 	public void updateZombie(GameView v,int width,int height) {
@@ -291,15 +304,28 @@ public class GameData{
 					}
 				}
 			}
-			
+
 		}
-		int spawnRate = (nbZombies>initialZombies/4)?125:50;
+		int spawnRate = (nbZombies>initialZombies/4)?100:50;
 		if((int)(Math.random()*spawnRate)==5 && nbZombies-alive!=0 && initialTime+10000<System.currentTimeMillis()) {
 			int ligne =(int) (Math.random()*getNbLines());
+			Zombie zombie = remaining.get((int)(Math.random()*remaining.size()));
+			if(zombie.canFloat()) {
+				ligne = (int)(Math.random()*2)+2;
+			}else if(!zombie.canFloat() && (ligne==2 || ligne ==3)) {
+				switch (ligne) {
+				case 2:
+					ligne--;
+					break;
+				case 3:
+					ligne++;
+					break;
+				}
+			}
+			remaining.remove(zombie);
 			zombieNumber[ligne]+=1;
-			int typeZombie = (int)(Math.random()*2);
 			if (nbZombies-alive != initialZombies/4) {
-				lstZ.add(level.getZombies().get((int)(Math.random()*level.getZombies().size())).instantiateZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
+				lstZ.add(zombie.instantiateZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 			}else {
 				lstZ.add(new FlagZombie(v.midCell((int) (width/4), 8,40),v.midCell((int) (height/4), ligne,40)));
 			}
@@ -307,220 +333,238 @@ public class GameData{
 			System.out.println("Nouveau zombie ligne "+ligne);
 			alive++;
 		}
-		lstZ.removeAll(deleted);
-	}
-	
-	public void updateCrater() {
-		ArrayList<Crater> deleted= new ArrayList<Crater>();
-		for(Crater c: lstC) {
-			if(!c.isAlive()) {
-				deleted.add(c);
-			}
-		}
-		lstC.removeAll(deleted);
-	}
+	lstZ.removeAll(deleted);
+}
 
-	public void updateBullet(GameView v) {
-		ArrayList<Bullet> deleted = new ArrayList<>();
-		for(Bullet b:lstB) {
-			b.move();
-			if(b.matrixOut(v)) {
-				deleted.add(b);
-			}else {
-				for(Zombie z: b.colliding(lstZ)) {
-					if(!(z.isHypnose())&& z.isHittable()){
-						z.addToHealth(-b.getDamage());
-						if(b.isFreezing()) {
-							z.freeze();
-							System.out.println("Freeze !");
+public void updateCrater() {
+	ArrayList<Crater> deleted= new ArrayList<Crater>();
+	for(Crater c: lstC) {
+		if(!c.isAlive()) {
+			deleted.add(c);
+		}
+	}
+	lstC.removeAll(deleted);
+}
+
+public void updateBullet(GameView v) {
+	ArrayList<Bullet> deleted = new ArrayList<>();
+	for(Bullet b:lstB) {
+		b.move();
+		if(b.matrixOut(v)) {
+			deleted.add(b);
+		}else {
+			for(Zombie z: b.colliding(lstZ)) {
+				if(!(z.isHypnose())&& z.isHittable()){
+					z.addToHealth(-b.getDamage());
+					if(b.isFire()) {
+						for(Zombie zb : z.colliding(lstZ)) {
+							zb.addToHealth(-14);
 						}
-						z.setSpeed(0);
-						deleted.add(b);
 					}
+					if(b.isFreezing()) {
+						z.freeze();
+						System.out.println("Freeze !");
+					}
+					z.setSpeed(0);
+					deleted.add(b);
+					break;
 				}
 			}
 		}
-		lstB.removeAll(deleted);
 	}
-	
-	public boolean canPlant(int i,int j,GameView v,int choixPlante) {
-		boolean support =false;
-		if(choixPlante==-1) {
-			return false;
-		}
-		int prix=selectedPlant.get(choixPlante).getCost();
-		int respawn=selectedPlant.get(choixPlante).getRespawnTime();
-		
-		for(Plant p: lstP) {
-			if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
-				if(p.support()) {
-					support = true;
-					continue;
-				}
-				return false;
+	lstB.removeAll(deleted);
+}
+
+public boolean canPlant(int i,int j,GameView v,int choixPlante) {
+	boolean support =false;
+	if(choixPlante==-1) {
+		return false;
+	}
+	int prix=selectedPlant.get(choixPlante).getCost();
+	int respawn=selectedPlant.get(choixPlante).getRespawnTime();
+
+	for(Plant p: lstP) {
+		if(p.collision(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
+			if(p.support()) {
+				support = true;
+				continue;
 			}
-		}
-		
-		
-		if(sunNumber < prix) {
 			return false;
 		}
-		
-		//pour �viter sur un support sur un autre support
-		if(support && selectedPlant.get(choixPlante).support()) {
-			return false;
-		}
-		
-		if(selectedPlant.get(choixPlante).support() && j!=2 && j!= 3) {
-			return false;
-		}
-		
-		if(level.haveWater() && (j==2 || j== 3) && !selectedPlant.get(choixPlante).flotte() && !support) {
-			return false;
-		}
-		
-		
-		if(respawnTime[choixPlante] == -1 ) {
-			return true;
-		}else if(respawnTime[choixPlante]+respawn > System.currentTimeMillis()) {
-			return false;
-		}
-		
+	}
+
+
+	if(sunNumber < prix) {
+		return false;
+	}
+
+	//pour �viter sur un support sur un autre support
+	if(support && selectedPlant.get(choixPlante).support()) {
+		return false;
+	}
+
+	if(selectedPlant.get(choixPlante).support() && j!=2 && j!= 3) {
+		return false;
+	}
+
+	if(level.haveWater() && (j==2 || j== 3) && !selectedPlant.get(choixPlante).flotte() && !support) {
+		return false;
+	}
+
+
+	if(respawnTime[choixPlante] == -1 ) {
 		return true;
+	}else if(respawnTime[choixPlante]+respawn > System.currentTimeMillis()) {
+		return false;
 	}
-	
-	public void clickOnSun (int i,int j,GameView v) {
-		LinkedList<Sun> deleted = new LinkedList<Sun>();
-		for(Sun s: lstS) {
-			if(s.draw().getBounds2D().intersects(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
-				System.out.println("Ramasse un soleil");
-				sunNumber+=s.getValeur();
-				deleted.add(s);
-				choixPlante = -1;
-			}
+
+	return true;
+}
+
+public void clickOnSun (int i,int j,GameView v) {
+	LinkedList<Sun> deleted = new LinkedList<Sun>();
+	for(Sun s: lstS) {
+		if(s.draw().getBounds2D().intersects(new Rectangle2D.Float(v.xFromI(i),v.yFromJ(j),v.getSquareSize(),v.getSquareSize()))) {
+			System.out.println("Ramasse un soleil");
+			sunNumber+=s.getValeur();
+			deleted.add(s);
+			choixPlante = -1;
 		}
-		lstS.removeAll(deleted);
 	}
-	
-	public void updateSun(GameView v,int width,int height) {
-		
-		if(lastSun+level.getSunSpawnRate()<System.currentTimeMillis()) {
-			int i = (int)(Math.random()*getNbColumns());
-			int j = (int)(Math.random()*getNbLines());
-			lastSun = System.currentTimeMillis();
-			System.out.println("Soleil en "+i+","+j);
-			lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30),50));
+	lstS.removeAll(deleted);
+}
+
+public void updateSun(GameView v,int width,int height) {
+
+	if(lastSun+level.getSunSpawnRate()<System.currentTimeMillis()) {
+		int i = (int)(Math.random()*getNbColumns());
+		int j = (int)(Math.random()*getNbLines());
+		lastSun = System.currentTimeMillis();
+		System.out.println("Soleil en "+i+","+j);
+		lstS.add(new Sun(v.midCell((int) (width/4),i , 30),v.midCell((int) (height/4),j , 30),50));
+	}
+
+}
+
+/**
+ * Updates the data contained in the GameData.
+ * Order :
+ * -Vérifie si c'est en dehors de la Matrice , si oui , on supprime et on le dit a l'utilisateur
+ * -On vérifie si une plante tire , si oui , on ajoute une Balle a lstB (Seulement si il y a un zombie sur la même ligne , voir le tableau zombieNumber[])
+ * -On vérifie si il y a des collisions des zombies , si oui , on enlève de la vie et on réduit la vitesse (sinon on remet a la vitesse initiale)
+ * -On ajoute un Zombie sur une ligne aléatoire et de manière aléatoire
+ * 
+ * On traite Dans l'ordre :
+ * -Plantes
+ * -Bullet
+ * -Zombies
+ */
+public void updateData(GameView v,int width , int height,Event event,boolean debug) {
+	Point2D.Float location;
+	updateZombie(v,width,height);
+	updatePlant(v);
+	updateBullet(v);
+	updateSun(v,width,height);
+	updateLawnMower(v);
+
+
+	if(nbZombies == 0){
+		System.out.println("Vous Avez Gagn� !");
+		System.exit(0);
+	}
+
+	if ((event == null || event.getAction() != Action.POINTER_DOWN)&& !(debug) ) {
+		return;
+	}
+
+	if(!(debug)) {
+		location = event.getLocation();
+		clickOnSun(v.columnFromX(location.x), v.lineFromY(location.y), v);
+		selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
+		//pour s�lectionner la plante
+		if(v.lineFromY(location.y) == getNbLines()+1) {
+			choixPlante = v.columnFromX(location.x);
 		}
-		
-	}
 
-	/**
-	 * Updates the data contained in the GameData.
-	 * Order :
-	 * -Vérifie si c'est en dehors de la Matrice , si oui , on supprime et on le dit a l'utilisateur
-	 * -On vérifie si une plante tire , si oui , on ajoute une Balle a lstB (Seulement si il y a un zombie sur la même ligne , voir le tableau zombieNumber[])
-	 * -On vérifie si il y a des collisions des zombies , si oui , on enlève de la vie et on réduit la vitesse (sinon on remet a la vitesse initiale)
-	 * -On ajoute un Zombie sur une ligne aléatoire et de manière aléatoire
-	 * 
-	 * On traite Dans l'ordre :
-	 * -Plantes
-	 * -Bullet
-	 * -Zombies
-	 */
-	public void updateData(GameView v,int width , int height,Event event,boolean debug) {
-		Point2D.Float location;
-		updateZombie(v,width,height);
-		updatePlant(v);
-		updateBullet(v);
-		updateSun(v,width,height);
-		updateLawnMower(v);
-		
-
-		if(nbZombies == 0){
-			System.out.println("Vous Avez Gagn� !");
-			System.exit(0);
+		if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
+			planterPlante(v.columnFromX(location.x), v.lineFromY(location.y), v, choixPlante, width, height,debug);
+		}
+	} else {
+		if((int)(Math.random()*100)==5) {
+			choixPlante = (int) (Math.random()*3);
+			planterPlante((int)(Math.random()*getNbColumns()), (int)(Math.random()*getNbLines()), v, choixPlante, width, height,debug);
 		}
 
-		if ((event == null || event.getAction() != Action.POINTER_DOWN)&& !(debug) ) {
-			return;
-		}
-		
-		if(!(debug)) {
-			location = event.getLocation();
-			clickOnSun(v.columnFromX(location.x), v.lineFromY(location.y), v);
-			selectCell(v.lineFromY(location.y), v.columnFromX(location.x));
-			//pour s�lectionner la plante
-			if(v.lineFromY(location.y) == getNbLines()+1) {
-				choixPlante = v.columnFromX(location.x);
-			}
-
-			if (v.lineFromY(location.y) >=0 && v.lineFromY(location.y) <getNbLines() && (v.columnFromX(location.x) >=0 && v.columnFromX(location.x) < getNbColumns())) {
-				planterPlante(v.columnFromX(location.x), v.lineFromY(location.y), v, choixPlante, width, height,debug);
-			}
-		} else {
-			if((int)(Math.random()*100)==5) {
-				choixPlante = (int) (Math.random()*3);
-				planterPlante((int)(Math.random()*getNbColumns()), (int)(Math.random()*getNbLines()), v, choixPlante, width, height,debug);
-			}
-			
-		}
-		
-		
-
 	}
 
-	public void addPlant(Plant p) {
-		
-		lstP.add(p);
-	}
 
-	public LinkedList<Zombie> getLstZ() {
-		return lstZ;
-	}
 
-	public LinkedList<Bullet> getLstB() {
-		return lstB;
-	}
+}
 
-	public LinkedList<Plant> getLstP() {
-		return lstP;
-	}
 
-	public int getChoixPlante() {
-		return choixPlante;
-	}
-	
-	public LinkedList<Sun> getLstS() {
-		return lstS;
-	}
-	
-	public ArrayList<LawnMower> getLstL() {
-		return lstL;
-	}
-	
-	public void addSun(Sun s) {
-		lstS.add(s);
-	}
-	
-	public List<Plant> getSelectedPlant() {
-		return Collections.unmodifiableList(selectedPlant);
-	}
-	
-	public Integer getSunNumber() {
-		return sunNumber;
-	}
-	
-	public Terrain getLevel() {
-		return level;
-	}
-	
-	public ArrayList<Graves> getLstG() {
-		return lstG;
-	}
-	
-	public ArrayList<Crater> getLstC() {
-		return lstC;
-	}
-	
-	
+public void addPlant(Plant p) {
+	lstP.add(p);
+}
+
+public List<Zombie> getLstZ() {
+	return Collections.unmodifiableList(lstZ);
+}
+
+public List<Bullet> getLstB() {
+	return Collections.unmodifiableList(lstB);
+}
+
+public List<Plant> getLstP() {
+	return Collections.unmodifiableList(lstP);
+}
+
+public int getChoixPlante() {
+	return choixPlante;
+}
+
+public List<Sun> getLstS() {
+	return Collections.unmodifiableList(lstS);
+}
+
+public List<LawnMower> getLstL() {
+	return Collections.unmodifiableList(lstL);
+}
+
+public void addSun(Sun s) {
+	lstS.add(s);
+}
+
+public List<Plant> getSelectedPlant() {
+	return Collections.unmodifiableList(selectedPlant);
+}
+
+public Integer getSunNumber() {
+	return sunNumber;
+}
+
+public Terrain getLevel() {
+	return level;
+}
+
+public List<Graves> getLstG() {
+	return Collections.unmodifiableList(lstG);
+}
+
+public List<Crater> getLstC() {
+	return Collections.unmodifiableList(lstC);
+}
+
+public int[] getZombieNumber() {
+	return zombieNumber;
+}
+
+public int getRefresh() {
+	return refresh;
+}
+
+public void addCrater(Crater c) {
+	lstC.add(c);
+}
+
+
 }

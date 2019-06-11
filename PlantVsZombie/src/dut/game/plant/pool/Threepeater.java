@@ -15,18 +15,36 @@ import dut.game.plant.Day.Repeatter;
 import dut.game.zombie.Zombie;
 
 public class Threepeater extends PlantImplementation {
+	private GameView view =null;
 	
 	public Threepeater(int x,int y) {
 		super(x,y,50,50,1,1500,Color.pink,325,7500);
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {//condition un peu longue
-		if(System.currentTimeMillis()>getLastFired()+getFrequence() && 
-		(zombieNumber[v.lineFromY(getY())]!=0 || 
-		(v.lineFromY(getY())-1>=0)?(zombieNumber[v.lineFromY(getY())-1]!=0):false || 
-		(v.lineFromY(getY())+1<=zombieNumber.length)?zombieNumber[v.lineFromY(getY())+1]!=0:false)){
-			return true;
+	public boolean isFire(GameView v,GameData data) {//condition un peu longue
+		view= v;
+		boolean up = false;
+		boolean mid = false;
+		boolean down = false;
+		if(System.currentTimeMillis()>getLastFired()+getFrequence()){
+			if(data.getZombieNumber()[v.lineFromY(getY())]!=0) {
+				mid = true;
+			}
+			
+			if(v.lineFromY(getY())+1<data.getZombieNumber().length) {
+				if(data.getZombieNumber()[v.lineFromY(getY())+1]!=0) {
+					down = true;
+				}
+			}
+			
+			if(v.lineFromY(getY())-1>=0) {
+				if(data.getZombieNumber()[v.lineFromY(getY())-1]!=0) {
+					up = true;
+				}
+			}
+			
+			return mid||down||up;
 		}
 		return false;
 	}
@@ -35,8 +53,8 @@ public class Threepeater extends PlantImplementation {
 	public ArrayList<Bullet> bullet(GameData data) {
 		ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 		bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2,20,false));
-		bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2-100,20,false));
-		bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2+100,20,false));
+		bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2-view.getSquareSize(),20,false));
+		bullets.add(new Bullet(getX()+getSizeX()+10,getY()+getSizeY()/2+view.getSquareSize(),20,false));
 		setLastFired(System.currentTimeMillis());
 		return bullets;
 	}

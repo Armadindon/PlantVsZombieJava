@@ -30,7 +30,7 @@ public class SunFlower extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v,int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(System.currentTimeMillis()>super.getFrequence()+super.getLastFired()) {return true;}
 		return false;
 	}

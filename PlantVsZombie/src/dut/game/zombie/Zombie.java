@@ -33,4 +33,7 @@ public interface Zombie {
 	public void stun();
 	public boolean isStun();
 	public boolean isHittable();
+	public boolean canFloat();
+	public void melt();
+
 }

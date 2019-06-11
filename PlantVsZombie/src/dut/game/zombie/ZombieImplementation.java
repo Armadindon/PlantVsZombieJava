@@ -201,5 +201,16 @@ public class ZombieImplementation implements Zombie{
 	public boolean isHittable() {
 		return true;
 	}
+	
+	@Override
+	public boolean canFloat() {
+		return false;
+	}
+	
+	@Override
+	public void melt(){
+		lastFrozen = 0;
+		unFreeze();
+	}
 
 }

@@ -7,18 +7,24 @@ import java.util.ArrayList;
 
 import dut.game.Bullet;
 import dut.game.GameData;
+import dut.game.GameView;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 
 public class LilyPad extends PlantImplementation {
 	
 	public LilyPad(int x,int y) {
-		super(x, y, 20, 20, 10, 0, Color.green, 25, 7500);
+		super(x, y, 20, 20, 10, 0, new Color(0, 204, 0), 25, 7500);
 	}
 	
 	@Override
 	public Shape draw() {
 		return new Ellipse2D.Float(getX(),getY(),getSizeX(),getSizeY());
+	}
+	
+	@Override
+	public boolean isFire(GameView v, GameData data) {
+		return false;
 	}
 	
 	@Override

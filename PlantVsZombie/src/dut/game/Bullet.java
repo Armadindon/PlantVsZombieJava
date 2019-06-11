@@ -17,14 +17,16 @@ public class Bullet {
 	private int speed = 10;
 	private double damage;
 	private int taille =5;
-	private final Color color= Color.BLACK; 
-	private final boolean freezing;
+	private Color color; 
+	private boolean freezing;
+	private boolean fire = false;
 	
 	public Bullet(int x,int y,double damage,boolean freezing) {
 		this.x = x;
 		this.y = y;
 		this.damage = damage;
 		this.freezing = freezing;
+		color = (freezing)?Color.blue:Color.black;
 	}
 
 	/**
@@ -105,11 +107,11 @@ public class Bullet {
 	}
 
 	/**
-	 * Return the damagegiven by the bullet
+	 * Return the damage given by the bullet
 	 * @return Damage int
 	 */
 	public double getDamage() {
-		return damage;
+		return (fire)?damage*2:damage;
 	}
 	
 	/**
@@ -122,6 +124,19 @@ public class Bullet {
 	
 	public boolean isFreezing() {
 		return freezing;
+	}
+	
+	public void setOnFire() {
+		if(freezing) {
+			freezing=false;
+		}else{
+			fire = true;
+			color = Color.red;
+		}
+	}
+	
+	public boolean isFire() {
+		return fire;
 	}
 	
 	

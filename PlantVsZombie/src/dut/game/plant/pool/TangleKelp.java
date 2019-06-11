@@ -1,23 +1,19 @@
-package dut.game.plant.Day;
+package dut.game.plant.pool;
 
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
-import dut.game.Crater;
 import dut.game.GameData;
 import dut.game.GameView;
-import dut.game.Graves;
 import dut.game.plant.Plant;
 import dut.game.plant.PlantImplementation;
 import dut.game.zombie.Zombie;
 
-public class PotatoMine extends PlantImplementation {
-
-	public PotatoMine(int x, int y) {
-		super(x, y, 40,40, 10, 14000, Color.ORANGE, 25,30000);
+public class TangleKelp extends PlantImplementation {
+	public TangleKelp(int x, int y) {
+		super(x, y, 40,40, 10, 0, new Color(102, 51, 0), 25,30000);
 	}
 	
 	@Override
@@ -31,7 +27,7 @@ public class PotatoMine extends PlantImplementation {
 			ArrayList<Zombie> colliding;
 			if((colliding = colliding(data.getLstZ())).size()!=0) {
 				for(Zombie z: colliding) {
-					z.addToHealth(-1800);
+					z.addToHealth(-Integer.MAX_VALUE);
 					this.addToHealth(-1000000);
 				}
 				return true;
@@ -42,7 +38,11 @@ public class PotatoMine extends PlantImplementation {
 	
 	@Override
 	public Plant instantiateFlower(int x ,int y) {
-		return new PotatoMine(x, y);
+		return new TangleKelp(x, y);
 	}
-
+	
+	@Override
+	public boolean flotte() {
+		return true;
+	}
 }

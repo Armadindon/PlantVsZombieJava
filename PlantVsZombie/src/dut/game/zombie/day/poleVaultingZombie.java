@@ -22,7 +22,7 @@ public class poleVaultingZombie extends ZombieImplementation {
 		if(!(jumped)) {
 			boolean jumping = false;
 			for(Plant p:lstP) {
-				if(p.collision(draw())) {
+				if(p.collision(draw()) && !p.isTall() && p.isHitable()) {
 					System.out.println("Jumping");
 					jumping = true;
 					break;

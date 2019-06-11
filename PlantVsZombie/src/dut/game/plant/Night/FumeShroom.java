@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import dut.game.Bullet;
 import dut.game.Crater;
@@ -20,10 +21,10 @@ public class FumeShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		if(getLastFired()+getFrequence()<System.currentTimeMillis()) {
 			ArrayList<Zombie> col;
-				if((col = collidingSpore(lstZ, v)).size()!=0){
+				if((col = collidingSpore(data.getLstZ(), v)).size()!=0){
 					System.out.println("GAAAAAAZ");
 					for(Zombie z: col) {
 						z.addToHealth(-20);
@@ -47,7 +48,7 @@ public class FumeShroom extends PlantImplementation {
 		return drawImpact(v).getBounds().intersects(g.draw());
 	}
 	
-	public ArrayList<Zombie> collidingSpore(LinkedList<Zombie> lstG,GameView v){
+	public ArrayList<Zombie> collidingSpore(List<Zombie> lstG,GameView v){
 		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
 		for(Zombie z: lstG) {
 			if(collisionSpore(z, v)) {

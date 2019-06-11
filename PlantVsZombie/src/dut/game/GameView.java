@@ -225,6 +225,13 @@ public class GameView implements GameDrawer {
 			graphics.setColor(Color.black);
 			graphics.fill(l.draw());
 		}
+		
+		for(Plant g :data.getLstP()){
+			graphics.fill(g.draw());
+			graphics.setColor(g.getColor());
+			graphics.fill(g.draw());
+		}
+		
 		for(Zombie g :data.getLstZ()){
 			if(g.matrixOut(this)) {
 				graphics.setColor(graphics.getBackground());
@@ -234,11 +241,7 @@ public class GameView implements GameDrawer {
 			graphics.setColor(g.getColor());
 			graphics.fill(g.draw());
 		}
-		for(Plant g :data.getLstP()){
-			graphics.fill(g.draw());
-			graphics.setColor(g.getColor());
-			graphics.fill(g.draw());
-		}
+		
 		for(Bullet g :data.getLstB()){
 			g.move();
 			graphics.setColor(g.getColor());

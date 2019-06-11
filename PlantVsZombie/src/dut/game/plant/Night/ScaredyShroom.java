@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import dut.game.Crater;
+import dut.game.GameData;
 import dut.game.GameView;
 import dut.game.Graves;
 import dut.game.plant.Plant;
@@ -18,12 +20,12 @@ public class ScaredyShroom extends PlantImplementation {
 	}
 	
 	@Override
-	public boolean isFire(LinkedList<Zombie> lstZ , GameView v, int zombieNumber[],ArrayList<Graves> lstG,ArrayList<Crater> lstC) {
+	public boolean isFire(GameView v,GameData data) {
 		boolean isFire =false;
-		if(System.currentTimeMillis()>getLastFired()+getFrequence() && Proximity(lstZ, v).size()==0) {
+		if(System.currentTimeMillis()>getLastFired()+getFrequence() && Proximity(data.getLstZ(), v).size()==0) {
 			isFire=true;
 		}
-		if(isFire && zombieNumber[v.lineFromY(getY())]!=0) {isFire=false;return true;}
+		if(isFire && data.getZombieNumber()[v.lineFromY(getY())]!=0) {isFire=false;return true;}
 		return false;
 	}
 	
@@ -39,7 +41,7 @@ public class ScaredyShroom extends PlantImplementation {
 		return drawImpact(v).getBounds().intersects(g.draw());
 	}
 	
-	public ArrayList<Zombie> Proximity(LinkedList<Zombie> lstG,GameView v){
+	public ArrayList<Zombie> Proximity(List<Zombie> lstG,GameView v){
 		ArrayList<Zombie> lstCol = new ArrayList<Zombie>();
 		for(Zombie z: lstG) {
 			if(collision(z, v)) {
