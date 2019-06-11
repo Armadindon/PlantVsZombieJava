@@ -89,7 +89,7 @@ public class PlantImplementation implements Plant  {
 	public boolean equals(Object o) {
 		if(!(o instanceof PlantImplementation)) {return false;}
 		PlantImplementation p = (PlantImplementation) o;
-		return x==p.x &&  y==p.y && tailleX == p.tailleX && tailleY == p.tailleY && health==p.health && frequence == p.frequence;
+		return x==p.x &&  y==p.y && tailleX == p.tailleX && tailleY == p.tailleY && health==p.health && frequence == p.frequence && color.equals(p.color);
 	}
 	
 	@Override
